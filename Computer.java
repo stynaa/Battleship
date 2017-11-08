@@ -1,5 +1,6 @@
 import java.util.Random;
 
+//new edits blahblahblah
 public class Computer {
   int MAXROW = 10;
   int MAXCOL = 10;
