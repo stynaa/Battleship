@@ -9,7 +9,7 @@ public class Player extends Board{
   int[] coord = new int[2]; //used to store x,y coordinate for set up and game play
   char direction; //for setPlayer and setComputer, for direction of ships
 
-  boolean win = false; //to determine winner in winCheck()
+  boolean win = false; //to determine the winner in winCheck()
   boolean endGame = false; //to determine when to end game in winCheck()
   public int[][] oldBoard = new int[10][10];
   boolean boardOK;
@@ -32,7 +32,7 @@ public class Player extends Board{
   }
 
   public int[] getMove() {
-    //Gets user input
+    //takes user input
     //stores move in coord
     System.out.println("Enter your next move:");
 
@@ -44,6 +44,7 @@ public class Player extends Board{
     Scanner keyboard2 = new Scanner(System.in);
     System.out.println(" Vertical (1-10):");
     coord[0] = keyboard2.nextInt() - 1;
+    //checks for valid play
     if (coord[1] > 9 || coord[0] > 9) {
       System.out.println("Please enter a valid move.");
       getMove();
@@ -97,7 +98,7 @@ public class Player extends Board{
       c1.trueE = false;
       c1.trueW = false;
       c1.trueS = false;
-      System.out.println("Computer Miss"); //Computer Miss...
+      System.out.println("Computer Miss"); //Computer Miss
       System.out.println(boardState);
     }
     boolean oppwin = true;
@@ -118,7 +119,7 @@ public class Player extends Board{
   public int[][] placeShips(int boardTotal, int shipCode) {
     coord = getCoord();
     if (checkDirection(getShipSize(shipCode))) {
-      setBattleship(shipCode);
+      setBattleship(shipCode); //checks ship placement
       boardOK = checkBoard(boardTotal);
       if (!boardOK) {
         System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
@@ -166,6 +167,8 @@ public class Player extends Board{
     return coord;
   }
 
+
+// getters and setters for determining ship sizing
   public int getShipSize(int shipCode) {
     if (shipCode == 5) {
       shipSize = 5;

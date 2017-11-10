@@ -55,30 +55,53 @@ public class BoardSetUpGUI extends JPanel implements ActionListener {
         boardTotal=25;
         int shipCode=5;
         for (int i = 0; i < maxship; i++) {
+            p.copyBoard();
+            placeShips(shipCode,i,maxship);
+            shipCode++;
+//            System.out.println("After placing:" +boardTotal);
+            boardTotal=boardTotal+(shipCode*p.getShipSize(shipCode));
+//            System.out.println("After increasing:" +boardTotal);
+            updateButtons();
+        }
+
+    }
+
+    public void placeShips(int shipCode, int i, int maxship){
         JDialog dialog = shipSetUpWindow.createDialog(content, "Setting Up Your Ships.");
         String getColumn = shipSetUpWindow.showInputDialog("This is your " + (i+1) + " boat out of " + maxship + ". Please enter a column for your ship to be placed (A-J):");
         if(getColumn.length()>1){
             getColumn = shipSetUpWindow.showInputDialog("Please enter a column for your ship to be placed (A-J):");
         }
-          char column= getColumn.charAt(0);
-          p.coord[1]=p.char2Int(column);
+        char column= getColumn.charAt(0);
+        p.coord[1]=p.Char2Int(column);
 
         String getRow = shipSetUpWindow.showInputDialog("Please enter a row for your ship to be placed (1-10):");
         int row= Integer.parseInt(getRow);
         p.coord[0]= row-1;
 
-
+        //for the user to select the direction
         Object[] possibleValues = { "N", "E", "S", "W" };
         Object selectedValue = shipSetUpWindow.showInputDialog(null,
                 "Select a direction", "Input",
                 shipSetUpWindow.INFORMATION_MESSAGE, null,
                 possibleValues, possibleValues[0]);
         p.direction=selectedValue.toString().charAt(0);
+        try {
+            p.board = p.placeShips(boardTotal, shipCode, p.coord, p.direction);
+            if(!p.checkBoard(boardTotal)){
+                shipSetUpWindow.showMessageDialog(content,
+                        "Please select another position, so you are not placing a ship ontop of another.");
+                p.resetBoard();
+                placeShips(shipCode,i,maxship);
 
-            p.board=p.placeShips(boardTotal,shipCode,p.coord,p.direction);
-            shipCode++;
-            boardTotal=boardTotal+(shipCode*p.getShipSize(shipCode));
-            updateButtons();
+            }
+
+        }
+        catch(ArrayIndexOutOfBoundsException exception){
+            shipSetUpWindow.showMessageDialog(content,
+                    "Please select another position, so your entire ship is on the board");
+            p.resetBoard();
+            placeShips(shipCode,i,maxship);
         }
 
     }

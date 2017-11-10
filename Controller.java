@@ -12,7 +12,7 @@ public class Controller {
    private BattleFrameGUI gui= new BattleFrameGUI(p);
 
 
-
+//displays user controls 
     public Controller(){
         frame.setLayout(new BorderLayout());
         container.setLayout(c);

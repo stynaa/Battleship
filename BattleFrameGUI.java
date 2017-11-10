@@ -20,7 +20,7 @@ public class BattleFrameGUI extends JPanel{
 
   private InfoPanel info;
 
-  private GamePlay game = new GamePlay();
+  public GamePlay game = new GamePlay();
   private Display screen = new Display();
   private Player p1 = new Player();
   private Computer c1 = new Computer();

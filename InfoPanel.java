@@ -15,6 +15,8 @@ public class InfoPanel extends JPanel
 {
     /** integer represenging the number of guesses made*/
     int numberOfGuesses = 0;
+    final int WIDTH = 300;
+    final int HEIGHT = 115;
     //String words;
 
     /** JLabel containing the integer numberOfGuesses*/
@@ -28,13 +30,13 @@ public class InfoPanel extends JPanel
     public InfoPanel()
     {
         setLayout(new FlowLayout(FlowLayout.CENTER));
-        setPreferredSize(new Dimension(400,100));
+        setPreferredSize(new Dimension(WIDTH,HEIGHT + 25));
         guesses = new JLabel("Guesses: " + numberOfGuesses);
         guesses.setForeground(Color.red);
         add(guesses);
 
         talk = new JLabel("Hello!");
-        talk.setForeground(Color.green);
+        talk.setForeground(Color.black);
         add(talk);
     }
 
@@ -49,24 +51,28 @@ public class InfoPanel extends JPanel
         super.paintComponent(g);
         setBackground(Color.white);
         g.setColor(Color.black);
-        g.drawRect(0,0,399,99);
-        g.fillRect(5,15,10,10);
-        g.drawString("Miss",20,25);
-        g.setColor(Color.green);
+        g.drawRect(0,25,WIDTH - 1, HEIGHT - 1);
+        //g.fillRect(5,15,10,10);
+        //g.drawString("Miss",20,25);
+        g.setColor(Color.magenta);
         g.fillRect(5,30,10,10);
         g.setColor(Color.black);
         g.drawString("Destroyer (2)",20,40);
-        g.setColor(Color.blue);
+        g.setColor(Color.green);
         g.fillRect(5,45,10,10);
         g.setColor(Color.black);
-        g.drawString("Frigate (3)",20,55);
-        g.setColor(Color.red);
+        g.drawString("Submarine (3)",20,55);
+        g.setColor(Color.orange);
         g.fillRect(5,60,10,10);
         g.setColor(Color.black);
-        g.drawString("Cruiser (4)",20,70);
-        g.setColor(Color.yellow);
+        g.drawString("Crusier (3)",20,70);
+        g.setColor(Color.red);
         g.fillRect(5,75,10,10);
         g.setColor(Color.black);
-        g.drawString("Battleship (5)",20,85);
+        g.drawString("Battleship (4)",20,85);
+        g.setColor(Color.yellow);
+        g.fillRect(5,90,10,10);
+        g.setColor(Color.black);
+        g.drawString("Carrier (5)",20,100);
     }
 }
