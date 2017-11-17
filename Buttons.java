@@ -6,12 +6,12 @@ public class Buttons extends  JPanel{
     public static int MAXROW = 10;
     public static int MAXCOL = 10;
     private JButton[][] button = new JButton[MAXROW][MAXCOL];
-    public JPanel contributerGrid= new JPanel();
+    public JPanel contributorGrid= new JPanel();
 
     //board value constants
     public static int EMPTY=0;
     public static int HIT=3;
-    public static int MISS=2:
+    public static int MISS=2;
     public static int CARRIER=5;
     public static int BATTLESHIP=6;
     public static int CRUISER=7;
@@ -20,7 +20,7 @@ public class Buttons extends  JPanel{
 
 
     public Buttons(Contributor aContributor, ActionListener listener) {
-        contributerGrid.setLayout(new GridLayout(MAXROW,MAXCOL));
+        contributorGrid.setLayout(new GridLayout(MAXROW,MAXCOL));
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
                 button[r][c] = new JButton();
@@ -29,14 +29,14 @@ public class Buttons extends  JPanel{
                 button[r][c].addActionListener(listener);
                 button[r][c].setActionCommand("r"+"c");
 
-                contributerGrid.add(button[r][c]);
+                contributorGrid.add(button[r][c]);
             }
         }
         colorButtons(Contributor aContributor);
     }
 
 
-    public void colorButtons(Contributer aContributor) {
+    public void colorButtons(Contributor aContributor) {
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
                 if (aContributor.board[r][c] == EMPTY) { //empty
@@ -61,4 +61,3 @@ public class Buttons extends  JPanel{
     }
 
 }
-
