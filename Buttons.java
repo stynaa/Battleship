@@ -1,7 +1,8 @@
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Buttons extends  JPanel {
+public class Buttons extends  JPanel{
     public static int MAXROW = 10;
     public static int MAXCOL = 10;
     private JButton[][] button = new JButton[MAXROW][MAXCOL];
@@ -18,14 +19,16 @@ public class Buttons extends  JPanel {
     public static int DESTROYER=9;
 
 
-    public Buttons(Contributor aContributor) {
+    public Buttons(Contributor aContributor, ActionListener listener) {
         contributerGrid.setLayout(new GridLayout(MAXROW,MAXCOL));
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
                 button[r][c] = new JButton();
                 button[r][c].setPreferredSize(new Dimension(48, 48));
                 button[r][c].setBackground(Color.blue);
-//                button[r][c].addActionListener(new ButtonPressed(r,c));
+                button[r][c].addActionListener(listener);
+                button[r][c].setActionCommand("r"+"c");
+
                 contributerGrid.add(button[r][c]);
             }
         }
