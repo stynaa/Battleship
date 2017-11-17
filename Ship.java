@@ -1,3 +1,5 @@
+import java.util.Random;
+
 
 public class Ship 
 {
@@ -12,7 +14,19 @@ public class Ship
 	
 	public int getShipSize(int shipCode)
 	{
-		return 0;
+		int shipSize = 0;
+	    if (shipCode == CARRIER) {
+	        shipSize = 5;
+	      } else if (shipCode == BATTLESHIP) {
+	        shipSize = 4;
+	      } else if (shipCode == CRUISER) {
+	        shipSize = 3;
+	      } else if (shipCode == SUBMARINE) {
+	        shipSize = 3;
+	      } else if (shipCode == DESTROYER) {
+	        shipSize = 2;
+	      }
+	      return shipSize;	
 	}
 	
 	public Ship getShip()
@@ -20,9 +34,9 @@ public class Ship
 		return null;
 	}
 	
-	public void setShip()
+	public void setShip(int shipCode)
 	{
-		
+
 	}
 	
 	public boolean isShipDestroyed()

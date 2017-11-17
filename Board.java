@@ -1,8 +1,8 @@
 
 public class Board 
 {
-	private final static int MAXROW = 10;
-	private final static int MAXCOL = 10;
+	public final static int MAXROW = 10;
+	public final static int MAXCOL = 10;
 	private int[][] board = new int[MAXCOL][MAXROW];
 	private int[] coord = new int[2];
 	private boolean boardOK;
@@ -56,12 +56,23 @@ public class Board
 
 	public void createBoard()
 	{
-
+		for (int row = 0; row < MAXROW; row++) {
+			for (int column = 0; column < MAXCOL; column++) {
+				board[row][column] = 0;
+			}
+		}
 	}
 
 	public void printBoard()
 	{
-
+	    for (int row = 0; row < MAXROW; row++)
+	    {
+	      for (int col = 0; col < MAXCOL; col++)
+	      {
+	        System.out.print(" " + board[row][col] + " ");
+	      }
+	      System.out.println("");
+	    }
 	}
 
 	public int[][] getBoard()
@@ -77,6 +88,26 @@ public class Board
 	public void setBoard(boolean shipHit, int coord)
 	{
 
+	}
+
+	public int getXCoord()
+	{
+		return coord[1];
+	}
+
+	public int getYCoord()
+	{
+		return coord[0];
+	}
+
+	public void setXCoord(int row)
+	{
+		coord[1] = row;
+	}
+
+	public void setYCoord(int col)
+	{
+		coord[0] = col;
 	}
 
 	public void convertCoordToPosition(int coord)

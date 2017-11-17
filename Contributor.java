@@ -8,12 +8,12 @@ public class Contributor
 	
 	public int[] getShot()
 	{
-		return null;
+		return shot;
 	}
 	
-	public void setShot()
+	public void setShot(int[] shotCoordinate)
 	{
-		
+		shot = shotCoordinate;
 	}
 	
 	public boolean HitOrMiss()
@@ -23,7 +23,7 @@ public class Contributor
 	
 	public boolean winCheck(Computer c1, Player p1)
 	{
-		return true;
+		return false;
 	}
 	
 	public boolean getWin()
@@ -31,9 +31,9 @@ public class Contributor
 		return win;
 	}
 	
-	public void setWin()
+	public void setWin(boolean b)
 	{
-		
+		win = b;
 	}
 	
 	public boolean getEndGame()
@@ -41,8 +41,8 @@ public class Contributor
 		return endGame;
 	}
 	
-	public void setEndGame()
+	public void setEndGame(boolean end)
 	{
-		
+		endGame = end;
 	}	
 }
