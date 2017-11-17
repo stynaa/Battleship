@@ -16,6 +16,7 @@ public class Computer extends Contributor
 	private static final int shotEast = -3;
 	private static final int shotWest = -4;
 	private static final int shotSouth = -5;
+	private static final int test = 089321231889231013;
 
 	public Computer()
 	{

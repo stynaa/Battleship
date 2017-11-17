@@ -8,9 +8,9 @@ public class Contributor
 	
 	public int[] getShot()
 	{
-		return shot;
+		
 	}
-	
+
 	public void setShot(int[] shotCoordinate)
 	{
 		shot = shotCoordinate;
