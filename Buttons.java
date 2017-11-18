@@ -19,7 +19,7 @@ public class Buttons extends  JPanel{
     public static int DESTROYER=9;
 
 
-    public Buttons(Player aContributor, ActionListener listener) {
+    public Buttons(Board aContributor, ActionListener listener) {
         contributorGrid.setVisible(true);
         contributorGrid.setLayout(new GridLayout(MAXROW,MAXCOL));
         for (int r = 0; r < MAXROW; r++) {
@@ -28,7 +28,7 @@ public class Buttons extends  JPanel{
                 button[r][c].setPreferredSize(new Dimension(48, 48));
                 button[r][c].setBackground(Color.blue);
                 button[r][c].addActionListener(listener);
-                button[r][c].setActionCommand("aContributor"+"r"+"c");
+                button[r][c].setActionCommand(aContributor.getClass().getName()+" "+Integer.toString(r)+ " "+Integer.toString(c));
                 contributorGrid.add(button[r][c]);
             }
         }
@@ -36,7 +36,9 @@ public class Buttons extends  JPanel{
         add(contributorGrid);
     }
 
-    public void colorButtons(Player aContributor) {
+    //updates the colors of the buttons to show the user where their ships are placed
+    //Also shows if the user has hit or missed during the gamePlay
+    public void colorButtons(Board aContributor) {
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
                 if (aContributor.board[r][c] == EMPTY) { //empty
@@ -45,7 +47,9 @@ public class Buttons extends  JPanel{
                     button[r][c].setBackground(Color.green);
                 } else if (aContributor.board[r][c] == HIT) { //Carrier
                     button[r][c].setBackground(Color.red);
-                } else if (aContributor.board[r][c] == CARRIER) { //Carrier
+                }
+                if(aContributor.getClass().getName().equals("Player")){
+                if (aContributor.board[r][c] == CARRIER) { //Carrier
                     button[r][c].setBackground(Color.yellow);
                 } else if (aContributor.board[r][c] == BATTLESHIP) { //Battleship
                     button[r][c].setBackground(Color.cyan);
@@ -55,7 +59,7 @@ public class Buttons extends  JPanel{
                     button[r][c].setBackground(Color.pink);
                 } else if (aContributor.board[r][c] == DESTROYER) { //Destroyer
                     button[r][c].setBackground(Color.magenta);
-                }
+                }}
             }
         }
     }
