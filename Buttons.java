@@ -19,7 +19,8 @@ public class Buttons extends  JPanel{
     public static int DESTROYER=9;
 
 
-    public Buttons(Contributor aContributor, ActionListener listener) {
+    public Buttons(Player aContributor, ActionListener listener) {
+        contributorGrid.setVisible(true);
         contributorGrid.setLayout(new GridLayout(MAXROW,MAXCOL));
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
@@ -27,16 +28,15 @@ public class Buttons extends  JPanel{
                 button[r][c].setPreferredSize(new Dimension(48, 48));
                 button[r][c].setBackground(Color.blue);
                 button[r][c].addActionListener(listener);
-                button[r][c].setActionCommand("r"+"c");
-
+                button[r][c].setActionCommand("aContributor"+"r"+"c");
                 contributorGrid.add(button[r][c]);
             }
         }
-        colorButtons(Contributor aContributor);
+       colorButtons(aContributor);
+        add(contributorGrid);
     }
 
-
-    public void colorButtons(Contributor aContributor) {
+    public void colorButtons(Player aContributor) {
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
                 if (aContributor.board[r][c] == EMPTY) { //empty
