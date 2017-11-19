@@ -134,9 +134,9 @@ public class Computer extends Contributor
 			setShot(shotHit);
 		}
 		storage.add(new Point(x,y));
-		coord[1] = rand.nextInt(x); //x
-		coord[0] = rand.nextInt(y); //y
-		//Missing the multidimensional array setter
+		//
+		shot[1] = x;
+		shot[0] = y;
 	}
 	
 
