@@ -1,28 +1,24 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
 
-//creates the starting game GUI view , where the player can place their ships.
-public class BoardSetUpGUI extends JPanel implements ActionListener {
-    private JPanel content= new JPanel(); //holds the content of the GameStarting screen
+//creates the starting game GUI view , where the user can place their ships.
+public class BoardSetUpGUI extends JPanel {
     private JPanel doneResetPanel = new JPanel(); //holds the done and reset buttons
-//    private JOptionPane shipSetUpWindow = new JOptionPane();
-    private JLabel msg = new JLabel("Welcome to Battleship!");
-    private Player player = new Player();
     private Buttons playerGrid; //Holds the players game grid
-    private int boardTotal;
     private JPanel directionPanel= new JPanel();
-    private JLabel directionMsg = new JLabel("Let's place our ships.");
+    private JLabel directionMsg = new JLabel("Please select a square then a direction for placing your ships.");
     private JPanel shipSetUpPanel = new JPanel();
+    private JPanel difficultyPanel=new JPanel();
 
     //initializes the player set up view
-    public BoardSetUpGUI(Player playerToCopy, ActionListener listener){
-        player =playerToCopy;
+    public BoardSetUpGUI(Player player, ActionListener listener){
+        JPanel content = new JPanel();//holds the content of the GameStarting screen
+        JLabel msg = new JLabel("Welcome to Battleship!");
         playerGrid = new Buttons(player, listener);
-        setPreferredSize(new Dimension(600,800));
+        setPreferredSize(new Dimension(1000,800));
         setSize(550,550);
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -36,14 +32,17 @@ public class BoardSetUpGUI extends JPanel implements ActionListener {
         content.add(directionMsg);
         setShipSetUpPanel(listener);
         content.add(shipSetUpPanel);
+        setDifficultyPanel(listener);
+        content.add(difficultyPanel);
         add(content);
-
     }
 
+    //accessor for the player's button array that display's the user's board
     public Buttons getPlayerGrid() {
         return playerGrid;
     }
 
+    //Creates the panel with the direction buttons and the next ship button for the user
     public void setShipSetUpPanel(ActionListener listener){
         setDirectionPanel(listener);
         shipSetUpPanel.setLayout(new BoxLayout(shipSetUpPanel, BoxLayout.X_AXIS));
@@ -54,14 +53,6 @@ public class BoardSetUpGUI extends JPanel implements ActionListener {
         shipSet.setActionCommand("NEXT_SHIP");
         shipSetUpPanel.add(shipSet);
         shipSetUpPanel.add(Box.createHorizontalGlue());
-
-    }
-
-    //Creates a pop-up window that gets user input to place their ships on the board.
-
-
-    public void placeShipsButton(){
-        directionMsg.setText("Please select a square then a direction for placing your ships. ");
     }
 
     //Creates the button options to set the ships, complete ship setup or reset their board.
@@ -72,17 +63,10 @@ public class BoardSetUpGUI extends JPanel implements ActionListener {
         JButton done = new JButton("Done");
         done.addActionListener(listener);
         done.setActionCommand("DONE");
-
         JButton reset= new JButton("Reset");
         reset.addActionListener(listener);
         reset.setActionCommand("RESET");
 
-        JButton setShips = new JButton("Set Up Your Ships");
-        setShips.addActionListener(listener);
-        setShips.setActionCommand("SET_SHIPS");
-
-        doneResetPanel.add(Box.createHorizontalGlue());
-        doneResetPanel.add(setShips);
         doneResetPanel.add(Box.createHorizontalGlue());
         doneResetPanel.add(done);
         doneResetPanel.add(Box.createHorizontalGlue());
@@ -123,16 +107,32 @@ public class BoardSetUpGUI extends JPanel implements ActionListener {
         directionPanel.add(new JLabel()); //for spacing out the buttons in a nice way
     }
 
-    public void updateMsg(String s){
-        msg.setText(s);
+    //creates the panel for the user to select their opponent's difficulty level.
+    public void setDifficultyPanel(ActionListener listener){
+        difficultyPanel.setBackground(Color.LIGHT_GRAY);
+        JLabel difficultyMessage= new JLabel("Please select your difficulty:");
+        difficultyMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ButtonGroup group = new ButtonGroup();
+        JRadioButton easy= new JRadioButton("Easy");
+        easy.addActionListener(listener);
+        easy.setActionCommand("EASY");
+        easy.setSelected(true);
+        JRadioButton medium =new JRadioButton("Medium");
+        medium.addActionListener(listener);
+        medium.setActionCommand("MEDIUM");
+        JRadioButton hard =new JRadioButton("Hard");
+        hard.addActionListener(listener);
+        hard.setActionCommand("HARD");
+        group.add(easy);
+        group.add(medium);
+        group.add(hard);
+        difficultyPanel.add(difficultyMessage);
+        difficultyPanel.add(easy);
+        difficultyPanel.add(medium);
+        difficultyPanel.add(hard);
     }
 
+    //mutator for the JLabel directionMsg that sits below the board.
     public void updateDirectionMsg(String s){directionMsg.setText(s);}
-
-    //manages the actions when the user presses the done, reset and set ships button.
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        playerGrid.colorButtons(player);
-    }
 
 }
