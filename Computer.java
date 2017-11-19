@@ -6,20 +6,18 @@ import java.util.ArrayList;
 public class Computer extends Contributor
 {
 	private boolean lastGood = false; //Boolean for checking around the shot location and which direction
-	private boolean sweepShot = false;
+	//private boolean sweepShot = false; // Boolean for checking surrounding tiles, currently unused, lack of input
 	private boolean trueN = false;
 	private boolean trueS = false;
 	private boolean trueE = false;
 	private boolean trueW = false;
-	/*
-	 * Might have the button click this boolean
-	 * Might have it as an int and have the hard-medium-easy click it for a number
-	 * Will then have an if-statement in the logic
-	 */
+	
+	 //Might have the button click this boolean
+	 //Might have it as an int and have the hard-medium-easy click it for a number
+	 //Will then have additional parameters for the if-statement in the logic
 	public boolean stupidAI = false;
 	
-	public ArrayList<Point> shotStore = new ArrayList<Point>();
-
+	public ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
 	private int shotType = 0;
 	private int x = 0;
 	private int y = 0;
@@ -61,15 +59,19 @@ public class Computer extends Contributor
 	@Override
 	public void setShot(Boolean shotHit) {
 		Random rand = new Random();
-		if 
+		if (!shotHit) {
+			lastGood = false;
+			shotType = weighted;
+		}
 		else if (shotHit && !lastGood) {
-			sweepShot = true;
-			lastGood = true;
 		    int tempDir = rand.nextInt(4);
-		    shotType = -(tempDir + 2);
+		    shotType = -(tempDir + 2); //Can be re-implemented as a random number from an array, current chooses between -2 and -5
+		}
+		else if (shotHit && lastGood) {
+			shotType = shotType;
 		}
 		else {
-			shotType = weighted;
+			shotType = weighted; //If I messed anything up
 		}
 		
 		if (stupidAI) {
@@ -87,9 +89,9 @@ public class Computer extends Contributor
 			x = getShot()[1];
 			y = getShot()[0]-1;
 			if (y<0) {
-				sweepShot = false;
-				lastGood = false;
-				setShot(lastGood);
+				//sweepShot = false;
+				//lastGood = false;
+				setShot(shotHit);
 			}
 		}
 		
@@ -98,9 +100,9 @@ public class Computer extends Contributor
 			y = getShot()[0];
 			// x>9 must be replaced
 			if (x>9) {
-				sweepShot = false;
-				lastGood = false;
-				setShot(lastGood);
+				//sweepShot = false;
+				//lastGood = false;
+				setShot(shotHit);
 			}
 		}
 		
@@ -108,9 +110,9 @@ public class Computer extends Contributor
 			x = getShot()[1]-1;
 			y = getShot()[0];
 			if (x<0) {
-				sweepShot = false;
-				lastGood = false;
-				setShot(lastGood);
+				//sweepShot = false;
+				//lastGood = false;
+				setShot(shotHit);
 			}
 		}
 		
@@ -119,17 +121,17 @@ public class Computer extends Contributor
 			y = getShot()[0]+1;
 			// y>9 must be replaced
 			if (y>9) {
-				sweepShot = false;
-				lastGood = false;
-				setShot(lastGood);
+				//sweepShot = false;
+				//lastGood = false;
+				setShot(shotHit);
 			}
 		}
 		
 		Point temp = new Point(x,y);
 		if (storage.contains(temp)) {
-			sweepShot = false;
-			lastGood = false;
-			setShot(lastGood);
+			//sweepShot = false;
+			//lastGood = false;
+			setShot(shotHit);
 		}
 		storage.add(new Point(x,y));
 		coord[1] = rand.nextInt(x); //x
@@ -145,6 +147,9 @@ public class Computer extends Contributor
 
 	public Computer getComputer()
 	{
-		return null;
+		/*
+		 * Will return a reference of computer
+		 */
+		return Computer; //Desired(?) privacy leak
 	}
 }
