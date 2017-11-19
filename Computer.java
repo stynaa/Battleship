@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class Computer extends Contributor
 {
+	/*
+	 * The first set of booleans are used to determine shot direction and will direct the computer to fire across a line from their original shot.
+	 */
 	private boolean lastGood = false; //Boolean for checking around the shot location and which direction
 	//private boolean sweepShot = false; // Boolean for checking surrounding tiles, currently unused, lack of input
 	private boolean trueN = false;
@@ -15,7 +18,15 @@ public class Computer extends Contributor
 	 //Might have the button click this boolean
 	 //Might have it as an int and have the hard-medium-easy click it for a number
 	 //Will then have additional parameters for the if-statement in the logic
-	public boolean stupidAI = false;
+	 //public boolean stupidAI = false;
+	public int aiDiff = 1;
+	private static final easy = 1;
+	private static final medium = 2;
+	private static final hard = 3;
+	
+	/*
+	 *
+	 */
 	
 	public ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
 	private int shotType = 0;
@@ -56,6 +67,12 @@ public class Computer extends Contributor
 		return emptySpace;
 	}
 	
+	/*
+	 * An overridden setShot of Contributor
+	 * Two if-else blocks
+	 * The first block determines the nature and shot selection method, based on if the current previous shot(s) had landed.
+	 * The second block are the shot selection protocols. 
+	 */
 	@Override
 	public void setShot(Boolean shotHit) {
 		Random rand = new Random();
@@ -63,7 +80,7 @@ public class Computer extends Contributor
 			lastGood = false;
 			shotType = weighted;
 		}
-		else if (shotHit && !lastGood) {
+		else if (shotHit && !lastGood && aiDiff == hard) {
 		    int tempDir = rand.nextInt(4);
 		    shotType = -(tempDir + 2); //Can be re-implemented as a random number from an array, current chooses between -2 and -5
 		}
@@ -74,12 +91,12 @@ public class Computer extends Contributor
 			shotType = weighted; //If I messed anything up
 		}
 		
-		if (stupidAI) {
+		if (aiDiff == easy) {
 			int x = rand.nextInt(10);
 			int y = rand.nextInt(10);
 		}
 		
-		else if (shotType == weighted) {
+		else if (shotType == weighted && aiDiff = medium) {
 		      int[] boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
 		      coord[1] = boardChoice[rand.nextInt(boardChoice.length)]; //X
 		      coord[0] = boardChoice[rand.nextInt(boardChoice.length)]; //Y
