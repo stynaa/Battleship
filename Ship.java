@@ -6,11 +6,28 @@ public class Ship
 	private char Direction;
 	private int[] coord = new int[2];
 	private int SHIPCODE;
+	private int shipSize;
 	private final static int CARRIER = 5;
 	private final static int BATTLESHIP = 6;
 	private final static int CRUISER = 7;
 	private final static int SUBMARINE = 8;
 	private final static int DESTROYER = 9;
+	
+	public Ship(int size, int code)
+	{
+		SHIPCODE = code;
+		shipSize = size;
+	}
+	
+	public int getSize()
+	{
+		return shipSize;
+	}
+	
+	public int getCode()
+	{
+		return SHIPCODE;
+	}
 	
 	public int getShipSize(int shipCode)
 	{
