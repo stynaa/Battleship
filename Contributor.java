@@ -1,48 +1,84 @@
 
-public class Contributor 
+public class Contributor
 {
-	private boolean win;
-	private boolean endGame;
-	private boolean shotHit;
-	private int[] shot;
-	
+	private boolean win = false;
+	private boolean endGame = false;
+	private boolean shotHit = false;
+	private Board b = new Board();
+	private int[] shot = new int[2];
+	//maybe add another board to track the shots on the opponent's board??
+
 	public int[] getShot()
 	{
-		
+		//not pass by reference, can change this
+		int[] copyShot = new int[2];
+		copyShot[0] = shot[0];
+		copyShot[1] = shot[1];
+
+		return copyShot;
 	}
 
 	public void setShot(int[] shotCoordinate)
 	{
-		shot = shotCoordinate;
+		shot[0] = shotCoordinate[0];
+		shot[1] = shotCoordinate[1];
 	}
-	
-	public boolean HitOrMiss()
+
+	public boolean HitOrMiss(int[] oppShot)
 	{
-		return true;
+		//Takes in computer’s move and see if hit’s player's game pieces
+		//uses coord from p1 and computer's board
+		//checks if p1 coords hit computer's board
+		//alters computer's board accordingly
+		boolean oppHit = false;
+		if (b.getBoard().[oppShot[0]][oppShot[1]] == 1 )
+			{
+
+			b.getBoard().[oppShot[0]][oppShot[1]] = 3;
+			oppHit = true;
+			//hitCounter();
+
+		} else {
+			//make sure something else checks validity of shot
+			b.getBoard().[oppShot[0]][oppShot[1]] = 2;
+			oppHit = false;
+		}
+		return oppHit;
 	}
-	
-	public boolean winCheck(Computer c1, Player p1)
+
+	public boolean winCheck()
 	{
-		return false;
+		boolean oppwin = true;
+
+		for (int i=0; i<MAXCOL; i++) {
+			for (int j=0; j<MAXROW; j++) {
+
+				if (b.getBoard().[j][i] == 1) {
+					oppwin = false;
+				}
+
+			}
+		}
+		return oppwin;
 	}
-	
+
 	public boolean getWin()
 	{
 		return win;
 	}
-	
+
 	public void setWin(boolean b)
 	{
 		win = b;
 	}
-	
+
 	public boolean getEndGame()
 	{
 		return endGame;
 	}
-	
+
 	public void setEndGame(boolean end)
 	{
 		endGame = end;
-	}	
+	}
 }
