@@ -1,64 +1,67 @@
-import java.util.Random;
+public class Ship {
 
+    private char Direction;
+    private int Coord;
+    private int shipSize;
+    private int shipCode;
+    private int CARRIER = 5; 
+    private int BATTLESHIP = 6;
+    private int CRUISER = 7;
+    private int SUBMARINE = 8;
+    private int DESTROYER = 9;
 
-public class Ship 
-{
-	private char Direction;
-	private int[] coord = new int[2];
-	private int SHIPCODE;
-	private int shipSize;
-	private final static int CARRIER = 5;
-	private final static int BATTLESHIP = 6;
-	private final static int CRUISER = 7;
-	private final static int SUBMARINE = 8;
-	private final static int DESTROYER = 9;
-	
-	public Ship(int size, int code)
-	{
-		SHIPCODE = code;
-		shipSize = size;
-	}
-	
-	public int getSize()
-	{
-		return shipSize;
-	}
-	
-	public int getCode()
-	{
-		return SHIPCODE;
-	}
-	
-	public int getShipSize(int shipCode)
-	{
-		int shipSize = 0;
-	    if (shipCode == CARRIER) {
-	        shipSize = 5;
-	      } else if (shipCode == BATTLESHIP) {
-	        shipSize = 4;
-	      } else if (shipCode == CRUISER) {
-	        shipSize = 3;
-	      } else if (shipCode == SUBMARINE) {
-	        shipSize = 3;
-	      } else if (shipCode == DESTROYER) {
-	        shipSize = 2;
-	      }
-	      return shipSize;	
-	}
-	
-	public Ship getShip()
-	{
-		return null;
-	}
-	
-	public void setShip(int shipCode)
-	{
+    public Ship(int shipSize, int shipCode){
+        this.shipSize = shipSize;
+        this.shipCode = shipCode;
+    }
 
-	}
-	
-	public boolean isShipDestroyed()
-	{
-		return true;
-	}
+    public void setShipCode(){
+        if (shipCode == 5){
+             shipCode = CARRIER;
+        }
+        else if (shipCode == 6){
+            shipCode = BATTLESHIP;
+        }
+        else if (shipCode == 7){
+            shipCode = CRUISER;
+        }
+        else if (shipCode == 8){
+            shipCode = SUBMARINE;
+        }
+        else if (shipCode == 9){
+            shipCode = DESTROYER;
+        }
+    }
+
+    public int getShipCode(int shipCode){
+        return shipCode;
+    }
+
+    public void setShipSize(){
+
+        if (shipCode == 5){
+            shipSize = 5;
+        }
+        else if (shipCode == 6){
+            shipSize = 4;
+        }
+        else if (shipCode == 7){
+            shipSize = 3;
+        }
+        else if (shipCode == 8){
+            shipSize = 3;
+        }
+        else if (shipCode == 9){
+            shipSize = 2;
+        }
+    }
+
+    public int getShipSize(int shipSize){
+        return shipSize;
+    }
+
+    public boolean isShipDestroyed(){
+        return true;
+    }
 
 }
