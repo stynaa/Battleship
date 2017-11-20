@@ -10,6 +10,10 @@ public class Player extends Contributor
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public Player(Player toCopy){
+		super(toCopy);
+	}
 	
 	public int[] getShot()
 	{
