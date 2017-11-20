@@ -33,7 +33,7 @@ public class Ship {
         }
     }
 
-    public int getShipCode(int shipCode){
+    public int getShipCode(){
         return shipCode;
     }
 
@@ -56,7 +56,7 @@ public class Ship {
         }
     }
 
-    public int getShipSize(int shipSize){
+    public int getShipSize(){
         return shipSize;
     }
 

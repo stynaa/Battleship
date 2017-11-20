@@ -107,8 +107,8 @@ public class Board
 
 	public void setComputerShip(Ship boat)
 	{
-		int shipLength = boat.getSize();
-		int shipCode = boat.getCode();
+		int shipLength = boat.getShipSize();
+		int shipCode = boat.getShipCode();
 		//Chooses a random point on the array to start off.
 		Random rand = new Random();
 		//Limits starting point based on the ship's length.
@@ -148,19 +148,19 @@ public class Board
 	public Ship getShip(int shipCode){
 		Ship s= new Ship(5,5);
 		if(shipCode==5){
-			s = Carrier.getShip();
+			s = Carrier;
 		}
 		else if(shipCode==6){
-			s = Battleship.getShip();
+			s = Battleship;
 		}
 		else if(shipCode==7){
-			s = Cruiser.getShip();
+			s = Cruiser;
 		}
 		else if(shipCode==8){
-			s = Submarine.getShip();
+			s = Submarine;
 		}
-		else if(shipCode==8){
-			s = Destroyer.getShip();
+		else if(shipCode==9){
+			s = Destroyer;
 		}
 		return s;
 	}
@@ -245,8 +245,8 @@ public class Board
 
 	public int[][] placeShips(int boardTotal, Ship boat, Board gameBoard) {
 		coord = getPlayerCoord();
-		int shipSize = boat.getSize();
-		int shipCode = boat.getCode();
+		int shipSize = boat.getShipSize();
+		int shipCode = boat.getShipCode();
 		if (checkDirection(shipCode)) 
 		{
 			setBoard(boat);
@@ -275,8 +275,8 @@ public class Board
 	//boat: which ship is being placed on the board.
 	public void setBoard(Ship boat)
 	{
-		int shipSize = boat.getSize();
-		int shipCode = boat.getCode();
+		int shipSize = boat.getShipSize();
+		int shipCode = boat.getShipCode();
 		for (int i = 0; i < shipSize; i++) 
 		{
 			if (direction == 'N' || direction == 'n') 

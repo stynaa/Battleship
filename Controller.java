@@ -93,7 +93,7 @@ public class Controller implements ActionListener {
             if(player.getBoard().checkBoard(boardTotal)){
                 nextShipFlag=true;
                 shipCode++;
-                boardTotal = boardTotal + (shipCode * player.getBoard().getShip(shipCode).getShipSize(shipCode));
+                boardTotal = boardTotal + (shipCode * player.getBoard().getShip(shipCode).getShipSize());
                 if(shipCode==10){
                     String s= "You have placed all of your ships!";
                     start.updateDirectionMsg(s);
@@ -168,7 +168,7 @@ public class Controller implements ActionListener {
             direction='E';
             player.setDirection(direction);
         }
-        if(player.getBoard().checkDirection(player.getBoard().getShip(shipCode).getShipSize(shipCode)));{
+        if(player.getBoard().checkDirection(player.getBoard().getShip(shipCode).getShipSize()));{
             placePlayerShips();
         }
         start.updateDirectionMsg(player.getMessage());
