@@ -17,7 +17,7 @@ public class Player extends Contributor
 
 	    Scanner keyboard = new Scanner(System.in);
 	    System.out.println(" Horizontal (A-J):");
-	    shot[1] = Char2Int(keyboard.next().charAt(0));
+	    shot[1] = getBoard().Char2Int(keyboard.next().charAt(0));
 
 	    //Exception for if Vertical is not a number,
 	    //or if Direction is not a letter.
