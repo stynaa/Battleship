@@ -1,11 +1,11 @@
 import java.util.*;
 
-public class Board 
+public class Board
 {
 	public final static int MAXROW = 10;
 	public final static int MAXCOL = 10;
-	private final static int MISS = 2; //Fill in
-	private final static int HIT = 3; //Fill in
+	private final static int MISS = 0; //Fill in
+	private final static int HIT = 0; //Fill in
 	private final static int EMPTY = 0; //Fill in
 	private int[][] board = new int[MAXCOL][MAXROW];
 	private int[] coord = new int[2]; //0 = col, 1 = row;
@@ -21,9 +21,9 @@ public class Board
 
 	public Board()
 	{
-		for (int row = 0; row < MAXROW; row++) 
+		for (int row = 0; row < MAXROW; row++)
 		{
-			for (int column = 0; column < MAXCOL; column++) 
+			for (int column = 0; column < MAXCOL; column++)
 			{
 				board[row][column] = EMPTY;
 			}
@@ -67,8 +67,7 @@ public class Board
 		}
 		return num;
 	}
-	
-	public void addShipsToList()
+	void addShipsToList()
 	{
 		shipList.add(Carrier);
 		shipList.add(Battleship);
@@ -80,9 +79,9 @@ public class Board
 	//Creates an empty board array.
 	public void createBoard()
 	{
-		for (int row = 0; row < MAXROW; row++) 
+		for (int row = 0; row < MAXROW; row++)
 		{
-			for (int column = 0; column < MAXCOL; column++) 
+			for (int column = 0; column < MAXCOL; column++)
 			{
 				board[row][column] = EMPTY;
 			}
@@ -151,12 +150,32 @@ public class Board
 				}
 			}
 		}
-		else
+		else{
 			//Finds a new startingRow and Col if the space is occupied.
 			//Recursive, so repeats until it finds an empty space.
 			setComputerShip(boat);
-	}
 
+	}}
+
+	public Ship getShip(int shipCode){
+		Ship s= new Ship(5,5);
+		if(shipCode==5){
+			s = Carrier;
+		}
+		else if(shipCode==6){
+			s = Battleship;
+		}
+		else if(shipCode==7){
+			s = Cruiser;
+		}
+		else if(shipCode==8){
+			s = Submarine;
+		}
+		else if(shipCode==9){
+			s = Destroyer;
+		}
+		return s;
+	}
 
 	//Checks if the space the piece is to be placed is empty.
 	public boolean checkComputerSetup(int[][] boardToCheck, int row,
@@ -170,7 +189,7 @@ public class Board
 			if (boardToCheck[col][row] != 0)
 				emptySpace = false;
 			else
-				emptySpace = emptySpace && true;
+				emptySpace = true;
 			//Alters what spaces to check, depending on ship placement.
 			if (vertOrHor == 0) //Vertical checking
 				col++;
@@ -180,21 +199,21 @@ public class Board
 		return emptySpace;
 	}
 
-	public boolean checkBoard(int currentBoardSum) 
+	public boolean checkBoard(int currentBoardSum)
 	{
 		int sumBoard = 0;
-		for (int i = 0; i < board[0].length; i++) 
+		for (int i = 0; i < board[0].length; i++)
 		{
-			for (int j = 0; j < board[0].length; j++) 
+			for (int j = 0; j < board[0].length; j++)
 			{
 				sumBoard += board[i][j];
 			}
 		}
-		if (sumBoard == currentBoardSum) 
+		if (sumBoard == currentBoardSum)
 		{
 			boardOK = true;
-		} 
-		else 
+		}
+		else
 		{
 			boardOK = false;
 		}
@@ -202,31 +221,31 @@ public class Board
 	}
 
 	//Checks the direction of the ship placement.
-	public boolean checkDirection(int shipSize) 
+	public boolean checkDirection(int shipSize)
 	{
 		boolean validDirection = true;
 		//Checks if the ship would go out of bounds.
-		if (direction == 'N' || direction == 'n') 
+		if (direction == 'N' || direction == 'n')
 		{
 			if ((coord[0] - shipSize) < 0)
 				validDirection = false;
-		} 
-		else if (direction == 'S' || direction == 's') 
+		}
+		else if (direction == 'S' || direction == 's')
 		{
 			if ((coord[0] + shipSize) > MAXCOL)
 				validDirection = false;
-		} 
-		else if (direction == 'E' || direction == 'e') 
+		}
+		else if (direction == 'E' || direction == 'e')
 		{
 			if ((coord[1] + shipSize) > MAXROW)
 				validDirection = false;
-		} 
-		else if (direction == 'W' || direction == 'w') 
+		}
+		else if (direction == 'W' || direction == 'w')
 		{
 			if ((coord[1] - shipSize) < 0)
 				validDirection = false;
-		} 
-		else 
+		}
+		else
 		{
 			//If N, S, E, or W is not entered as a direction.
 			System.out.println("Invalid direction selected.");
@@ -240,11 +259,11 @@ public class Board
 		coord = getPlayerCoord();
 		int shipSize = boat.getShipSize();
 		int shipCode = boat.getShipCode();
-		if (checkDirection(shipCode)) 
+		if (checkDirection(shipCode))
 		{
 			setBoard(boat);
 			boardOK = checkBoard(boardTotal);
-			if (!boardOK) 
+			if (!boardOK)
 			{
 				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
 				System.out.println();
@@ -252,8 +271,8 @@ public class Board
 				placeShips(boardTotal, boat, copyBoard);
 			}
 			Board copyBoard = new Board(gameBoard);
-		} 
-		else 
+		}
+		else
 		{
 			System.out.println("Direction is out of bounds.");
 			System.out.println("Please select again.");
@@ -263,6 +282,50 @@ public class Board
 		return board;
 	}
 
+	public int[][] placeShips(int shipCode,char directionCopy, int[] coordCopy) {
+		Ship boat= getShip(shipCode);
+		direction=directionCopy;
+		coord=coordCopy;
+		int shipSize = boat.getShipSize();
+		System.out.println("Correct method");
+
+		return board;
+	}
+
+	public boolean checkDirection(int shipSize, char direction)
+	{
+		boolean validDirection = true;
+		//Checks if the ship would go out of bounds.
+		if (direction == 'N' || direction == 'n')
+		{
+			if ((coord[0] - shipSize) < 0)
+				validDirection = false;
+		}
+		else if (direction == 'S' || direction == 's')
+		{
+			if ((coord[0] + shipSize) > MAXCOL)
+				validDirection = false;
+		}
+		else if (direction == 'E' || direction == 'e')
+		{
+			if ((coord[1] + shipSize) > MAXROW)
+				validDirection = false;
+		}
+		else if (direction == 'W' || direction == 'w')
+		{
+			if ((coord[1] - shipSize) < 0)
+				validDirection = false;
+		}
+		else
+		{
+			//If N, S, E, or W is not entered as a direction.
+			System.out.println("Invalid direction selected.");
+			System.out.println("Enter N, S, E, or W.");
+			validDirection = false;
+		}
+		return validDirection;
+	}
+
 	//Updates the board array by placing the ships.
 	//direction: which direction the ships are placed.
 	//boat: which ship is being placed on the board.
@@ -270,21 +333,22 @@ public class Board
 	{
 		int shipSize = boat.getShipSize();
 		int shipCode = boat.getShipCode();
-		for (int i = 0; i < shipSize; i++) 
+
+		for (int i = 0; i < shipSize; i++)
 		{
-			if (direction == 'N' || direction == 'n') 
+			if (direction == 'N' || direction == 'n')
 			{
 				board[coord[0] - i][coord[1]] = shipCode;
 			}
-			if (direction == 'S' || direction == 's') 
+			if (direction == 'S' || direction == 's')
 			{
 				board[coord[0] + i][coord[1]] = shipCode;
 			}
-			if (direction == 'E' || direction == 'e') 
+			if (direction == 'E' || direction == 'e')
 			{
 				board[coord[0]][coord[1] + i] = shipCode;
 			}
-			if (direction == 'W' || direction == 'w') 
+			if (direction == 'W' || direction == 'w')
 			{
 				board[coord[0]][coord[1] - i] = shipCode;
 			}
@@ -344,11 +408,11 @@ public class Board
 	{
 		return coord;
 	}
-	
+
 	public ArrayList<Ship> getShipList()
 	{
 		return shipList;
-		
+
 	}
 
 	public void setCoord(int row, int col)
@@ -367,10 +431,22 @@ public class Board
 		coord[0] = col;
 	}
 
+
+
 	public static void main(String[] args)
 	{
 		Board test = new Board();
-		test.placeComputerShip();
-		test.printBoard();
+		int[] coordinates = new int[2];
+		coordinates[0] = 5;
+		coordinates[1] = 5;
+		System.out.println("Zero: " + coordinates[0] + " One! " + coordinates[1]);
+		test.convertCoordToPosition(coordinates, 1);
+
+		int[][] array = test.getBoard();
+		System.out.println(array[5][5]);
+		boolean same = (array[5][5] == 1);
+		System.out.println(same);
 	}
+
+
 }
