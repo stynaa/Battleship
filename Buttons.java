@@ -41,23 +41,23 @@ public class Buttons extends  JPanel{
     public void colorButtons(Contributor aContributor) {
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
-                if (aContributor.board[r][c] == EMPTY) { //empty
+                if (aContributor.getBoard().getBoard()[r][c] == EMPTY) { //empty
                     button[r][c].setBackground(Color.blue);
-                } else if (aContributor.board[r][c] == MISS) { //Carrier
+                } else if (aContributor.getBoard().getBoard()[r][c] == MISS) { //Carrier
                     button[r][c].setBackground(Color.green);
-                } else if (aContributor.board[r][c] == HIT) { //Carrier
+                } else if (aContributor.getBoard().getBoard()[r][c] == HIT) { //Carrier
                     button[r][c].setBackground(Color.red);
                 }
 //                if(aContributor.getClass().getName().equals("Player")){
-                else if (aContributor.board[r][c] == CARRIER) { //Carrier
+                else if (aContributor.getBoard().getBoard()[r][c] == CARRIER) { //Carrier
                     button[r][c].setBackground(Color.yellow);
-                } else if (aContributor.board[r][c] == BATTLESHIP) { //Battleship
+                } else if (aContributor.getBoard().getBoard()[r][c] == BATTLESHIP) { //Battleship
                     button[r][c].setBackground(Color.cyan);
-                } else if (aContributor.board[r][c] == CRUISER) {//Cruiser
+                } else if (aContributor.getBoard().getBoard()[r][c] == CRUISER) {//Cruiser
                     button[r][c].setBackground(Color.orange);
-                } else if (aContributor.board[r][c] == SUBMARINE) { //Submarine
+                } else if (aContributor.getBoard().getBoard()[r][c] == SUBMARINE) { //Submarine
                     button[r][c].setBackground(Color.pink);
-                } else if (aContributor.board[r][c] == DESTROYER) { //Destroyer
+                } else if (aContributor.getBoard().getBoard()[r][c] == DESTROYER) { //Destroyer
                     button[r][c].setBackground(Color.magenta);
                 }//}
             }
