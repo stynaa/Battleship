@@ -50,6 +50,7 @@ public class Controller implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String buttonPressed= e.getActionCommand(); //initialized variable to increase readability
+        System.out.println(buttonPressed); //for debugging
         if(buttonPressed.contains("Computer")){ //for during gamePlay
             int[] coord=convertButtons(buttonPressed);
             player.setShot(coord);
@@ -74,7 +75,6 @@ public class Controller implements ActionListener {
         else{
             startGUIActions(buttonPressed); //for during game set up
         }
-//        System.out.println(buttonPressed); //for debugging
     }
 
 
@@ -168,7 +168,7 @@ public class Controller implements ActionListener {
             direction='E';
             player.setDirection(direction);
         }
-        if(player.getBoard().checkDirection(player.getBoard().getShip(shipCode).getShipSize()));{
+        if(player.getBoard().checkDirection(player.getBoard().getShip(shipCode).getShipSize(),player.getDirection())){
             placePlayerShips();
         }
         start.updateDirectionMsg(player.getMessage());
@@ -194,17 +194,16 @@ public class Controller implements ActionListener {
             if(nextShipFlag){
                 nextShipFlag=false;
                 copyPlayer= new Player(player);
-                computer.getBoard().placeShips(boardTotal,player.getBoard().getShip(shipCode), player.getBoard());
+                player.getBoard().placeShips(shipCode,player.getDirection(),player.getShot());
             }
             else if(!nextShipFlag){
                 player= new Player(copyPlayer);
-                player.getBoard().placeShips(boardTotal,computer.getBoard().getShip(shipCode), computer.getBoard());
+               // player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection(),player.getBoard());
             }
             if(!player.getBoard().checkBoard(boardTotal)){
                 player= new Player(copyPlayer);
                 start.updateDirectionMsg(player.getMessage());
             }
-
             start.getPlayerGrid().colorButtons(player);
         }
         else {
