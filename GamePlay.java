@@ -4,11 +4,11 @@ public class GamePlay {
 	int MAXROW = 10;
 	int MAXCOL = 10;
 	int shipSize;
-	// Carrier – 5 squares - shipCode=5;
-	// Battleship – 4 squares- shipCode=6;
-	// Cruiser – 3 squares- shipCode=7;
-	// Submarine – 3 squares- shipCode=8;
-	// Destroyer – 2 squares- shipCode=9;
+	// Carrier ï¿½ 5 squares - shipCode=5;
+	// Battleship ï¿½ 4 squares- shipCode=6;
+	// Cruiser ï¿½ 3 squares- shipCode=7;
+	// Submarine ï¿½ 3 squares- shipCode=8;
+	// Destroyer ï¿½ 2 squares- shipCode=9;
 
 	public Player setPlayer() {
 		//gets user input to pick positions on the board
@@ -58,10 +58,10 @@ public class GamePlay {
 		boolean endGame = p1.getEndGame();
 
 		while (!endGame) {
-			p1.setShot(p1.getShot());
 
-			//Gets player’s move
-			boolean playerHit = (p1.HitOrMiss()); //Check if hit or a miss, updates c1 board and p1.win
+			//Gets playerï¿½s move
+			p1.setShot();
+			boolean playerHit = (p1.HitOrMiss(p1.shot,c1)); //Check if hit or a miss, updates c1 board and p1.win
 			if (playerHit)
 			{
 				System.out.println("You hit!");
@@ -73,8 +73,8 @@ public class GamePlay {
 			}
 			//screen.showPlayerBoard(p1.board); //// COMMENT LATER
 
-			c1.setShot(true); //Gets computer’s move
-			boolean compHit = (c1.HitOrMiss()); //Check if hit or miss, updates p1 board and c1.win
+			c1.setShot(true); //Gets computerï¿½s move
+			boolean compHit = (c1.HitOrMiss(c1.shot,p1)); //Check if hit or miss, updates p1 board and c1.win
 			if (compHit)
 			{
 				System.out.println("Computer hit!");
@@ -91,7 +91,7 @@ public class GamePlay {
 			//screen.showPlayerBoard(p1.board); Troubleshooting;
 			// System.out.println("COMP");
 			// c1.printBoard(c1.board);
-			//Screen.displayGameProgress(c1,p1); //Display turns, player’s health etc.
+			//Screen.displayGameProgress(c1,p1); //Display turns, playerï¿½s health etc.
 
 			//endGame = game.winCheck(c1,p1); // Check if game is over
 		}

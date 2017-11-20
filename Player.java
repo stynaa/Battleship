@@ -40,4 +40,27 @@ public class Player extends Contributor
 	    return shot;
 	}
 
+	public void setShot() {
+		System.out.println("Enter your coordinates...");
+
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println(" Horizontal (A-J):");
+		shot[1] = getBoard().Char2Int(keyboard.next().charAt(0));
+
+		//Exception for if Vertical is not a number,
+		//or if Direction is not a letter.
+		try {
+			System.out.println(" Vertical (1-10):");
+			shot[0] = keyboard.nextInt() - 1;
+
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input - try again.");
+			setShot();
+		}
+		super.setShot(shot);
+	}
+	
+
+
+
 }

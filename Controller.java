@@ -194,7 +194,7 @@ public class Controller implements ActionListener {
             if(nextShipFlag){
                 nextShipFlag=false;
                 copyPlayer= new Player(player);
-                player.getBoard().placeShips(shipCode,player.getDirection(),player.getShot());
+                player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection());
             }
             else if(!nextShipFlag){
                 player= new Player(copyPlayer);

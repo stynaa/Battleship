@@ -299,17 +299,51 @@ public class Board
 	}
 
 
-	public int[][] placeShips(int shipCode,char directionCopy, int[] coordCopy) {
-		Ship boat= getShip(shipCode);
+	public int[][] placeShips(int boardTotal, int shipCode, int[] coord, char directionCopy) {
+		Ship s= getShip(shipCode);
 		direction=directionCopy;
-		coord=coordCopy;
-		int shipSize = boat.getShipSize();
-		System.out.println("Correct method");
+		setBoard(s,coord);
+		return getBoard();
+	}
+//	public int[][] placeShips(int shipCode,char directionCopy, int[] coordCopy) {
+//		Ship boat= getShip(shipCode);
+//		direction=directionCopy;
+//		coord=coordCopy;
+//		int shipSize = boat.getShipSize();
+//		System.out.println("Correct method");
+//
+//		return board;
+//	}
 
-		return board;
+	public void setBoard(Ship boat, int[] coord){
+		int row= coord[0];
+		int column = coord[1];
+		int shipSize = boat.getShipSize();
+		int shipCode = boat.getShipCode();
+		for (int i = 0; i < shipSize; i++)
+		{
+			if (direction == 'N' || direction == 'n')
+			{
+				board[coord[row] - i][coord[column]] = shipCode;
+			}
+			if (direction == 'S' || direction == 's')
+			{
+				board[coord[row] + i][coord[column]] = shipCode;
+			}
+			if (direction == 'E' || direction == 'e')
+			{
+				board[coord[row]][coord[column] + i] = shipCode;
+			}
+			if (direction == 'W' || direction == 'w')
+			{
+				board[coord[row]][coord[column] - i] = shipCode;
+			}
+		}
+
+
 	}
 
-	
+
 	//Updates the board array by placing the ships.
 	//direction: which direction the ships are placed.
 	//boat: which ship is being placed on the board.
