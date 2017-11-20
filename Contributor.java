@@ -15,6 +15,10 @@ public class Contributor {
 		b = new Board();
 	}
 
+	public Contributor(Contributor toCopy){
+		b= new Board(toCopy.getBoard());
+	}
+
 	public int[] getShot() {
 		//not pass by reference, can change this
 		int[] copyShot = new int[2];
