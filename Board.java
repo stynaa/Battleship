@@ -67,7 +67,8 @@ public class Board
 		}
 		return num;
 	}
-	void addShipsToList()
+
+	public void addShipsToList()
 	{
 		shipList.add(Carrier);
 		shipList.add(Battleship);
@@ -150,32 +151,12 @@ public class Board
 				}
 			}
 		}
-		else{
+		else
 			//Finds a new startingRow and Col if the space is occupied.
 			//Recursive, so repeats until it finds an empty space.
 			setComputerShip(boat);
-
-		}}
-
-	public Ship getShip(int shipCode){
-		Ship s= new Ship(5,5);
-		if(shipCode==5){
-			s = Carrier;
-		}
-		else if(shipCode==6){
-			s = Battleship;
-		}
-		else if(shipCode==7){
-			s = Cruiser;
-		}
-		else if(shipCode==8){
-			s = Submarine;
-		}
-		else if(shipCode==9){
-			s = Destroyer;
-		}
-		return s;
 	}
+
 
 	//Checks if the space the piece is to be placed is empty.
 	public boolean checkComputerSetup(int[][] boardToCheck, int row,
@@ -189,7 +170,7 @@ public class Board
 			if (boardToCheck[col][row] != 0)
 				emptySpace = false;
 			else
-				emptySpace = true;
+				emptySpace = emptySpace && true;
 			//Alters what spaces to check, depending on ship placement.
 			if (vertOrHor == 0) //Vertical checking
 				col++;
@@ -255,41 +236,7 @@ public class Board
 		return validDirection;
 	}
 
-	public int[][] placeShips(int boardTotal, Ship boat, Board gameBoard) {
-		coord = getPlayerCoord();
-		int shipSize = boat.getShipSize();
-		int shipCode = boat.getShipCode();
-		if (checkDirection(shipCode))
-		{
-			setBoard(boat);
-			boardOK = checkBoard(boardTotal);
-			if (!boardOK)
-			{
-				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
-				System.out.println();
-				Board copyBoard = new Board(gameBoard);
-				placeShips(boardTotal, boat, copyBoard);
-			}
-			Board copyBoard = new Board(gameBoard);
-		}
-		else
-		{
-			System.out.println("Direction is out of bounds.");
-			System.out.println("Please select again.");
-			Board copyBoard = new Board(gameBoard);
-			placeShips(boardTotal, boat, copyBoard);
-		}
-		return board;
-	}
 
-	public int[][] placeShips(int shipCode,char directionCopy, int[] coordCopy) {
-		Ship boat= getShip(shipCode);
-		direction=directionCopy;
-		coord=coordCopy;
-		int shipSize = boat.getShipSize();
-		System.out.println("Correct method");
-		return board;
-	}
 
 	public boolean checkDirection(int shipSize, char direction)
 	{
@@ -324,7 +271,45 @@ public class Board
 		}
 		return validDirection;
 	}
+	public int[][] placeShips(int boardTotal, Ship boat, Board gameBoard) {
+		coord = getPlayerCoord();
+		int shipSize = boat.getShipSize();
+		int shipCode = boat.getShipCode();
+		if (checkDirection(shipCode))
+		{
+			setBoard(boat);
+			boardOK = checkBoard(boardTotal);
+			if (!boardOK)
+			{
+				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
+				System.out.println();
+				Board copyBoard = new Board(gameBoard);
+				placeShips(boardTotal, boat, copyBoard);
+			}
+			Board copyBoard = new Board(gameBoard);
+		}
+		else
+		{
+			System.out.println("Direction is out of bounds.");
+			System.out.println("Please select again.");
+			Board copyBoard = new Board(gameBoard);
+			placeShips(boardTotal, boat, copyBoard);
+		}
+		return board;
+	}
 
+
+	public int[][] placeShips(int shipCode,char directionCopy, int[] coordCopy) {
+		Ship boat= getShip(shipCode);
+		direction=directionCopy;
+		coord=coordCopy;
+		int shipSize = boat.getShipSize();
+		System.out.println("Correct method");
+
+		return board;
+	}
+
+	
 	//Updates the board array by placing the ships.
 	//direction: which direction the ships are placed.
 	//boat: which ship is being placed on the board.
@@ -332,7 +317,6 @@ public class Board
 	{
 		int shipSize = boat.getShipSize();
 		int shipCode = boat.getShipCode();
-
 		for (int i = 0; i < shipSize; i++)
 		{
 			if (direction == 'N' || direction == 'n')
@@ -430,22 +414,31 @@ public class Board
 		coord[0] = col;
 	}
 
+	public Ship getShip(int shipCode){
+		Ship s= new Ship(5,5);
+		if(shipCode==5){
+			s = Carrier;
+		}
+		else if(shipCode==6){
+			s = Battleship;
+		}
+		else if(shipCode==7){
+			s = Cruiser;
+		}
+		else if(shipCode==8){
+			s = Submarine;
+		}
+		else if(shipCode==9){
+			s = Destroyer;
+		}
+		return s;
+	}
 
 
 	public static void main(String[] args)
 	{
 		Board test = new Board();
-		int[] coordinates = new int[2];
-		coordinates[0] = 5;
-		coordinates[1] = 5;
-		System.out.println("Zero: " + coordinates[0] + " One! " + coordinates[1]);
-		test.convertCoordToPosition(coordinates, 1);
-
-		int[][] array = test.getBoard();
-		System.out.println(array[5][5]);
-		boolean same = (array[5][5] == 1);
-		System.out.println(same);
+		test.placeComputerShip();
+		test.printBoard();
 	}
-
-
 }
