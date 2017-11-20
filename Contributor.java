@@ -5,7 +5,7 @@ public class Contributor
 	private boolean endGame = false;
 	private boolean shotHit = false;
 	private Board b = new Board();
-	private int[] shot = new int[2];
+	protected int[] shot = new int[2];
 	//maybe add another board to track the shots on the opponent's board??
 
 	public int[] getShot()
@@ -26,7 +26,7 @@ public class Contributor
 
 	public boolean HitOrMiss(int[] oppShot)
 	{
-		//Takes in computerâ€™s move and see if hitâ€™s player's game pieces
+		//Takes in computer’s move and see if hit’s player's game pieces
 		//uses coord from p1 and computer's board
 		//checks if p1 coords hit computer's board
 		//alters computer's board accordingly
