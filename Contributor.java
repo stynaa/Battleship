@@ -1,21 +1,15 @@
 
-public class Contributor {
+public class Contributor
+{
 	private boolean win = false;
 	private boolean endGame = false;
 	private boolean shotHit = false;
-	private Board b = new Board();
+	protected Board b = new Board();
 	protected int[] shot = new int[2];
-	public static int MAXROW = 10;
-	public static int MAXCOL = 10;
-	private char direction;
-	private String message="";
 	//maybe add another board to track the shots on the opponent's board??
 
-	public Contributor() {
-		b = new Board();
-	}
-
-	public int[] getShot() {
+	public int[] getShot()
+	{
 		//not pass by reference, can change this
 		int[] copyShot = new int[2];
 		copyShot[0] = shot[0];
@@ -24,20 +18,21 @@ public class Contributor {
 		return copyShot;
 	}
 
-	public void setShot(int[] shotCoordinate) {
+	public void setShot(int[] shotCoordinate)
+	{
 		shot[0] = shotCoordinate[0];
 		shot[1] = shotCoordinate[1];
 	}
 
-	public boolean HitOrMiss() {
-		//Takes in computerï¿½s move and see if hitï¿½s player's game pieces
+	public boolean HitOrMiss(int[] oppShot)
+	{
+		//Takes in computer’s move and see if hit’s player's game pieces
 		//uses coord from p1 and computer's board
 		//checks if p1 coords hit computer's board
 		//alters computer's board accordingly
-		int[] oppShot=getShot();
-
 		boolean oppHit = false;
-		if (b.getBoard()[oppShot[0]][oppShot[1]] == 1) {
+		if (b.getBoard()[oppShot[0]][oppShot[1]] == 1 )
+			{
 
 			b.getBoard()[oppShot[0]][oppShot[1]] = 3;
 			oppHit = true;
@@ -51,11 +46,12 @@ public class Contributor {
 		return oppHit;
 	}
 
-	public boolean winCheck() {
+	public boolean winCheck()
+	{
 		boolean oppwin = true;
 
-		for (int i = 0; i < MAXCOL; i++) {
-			for (int j = 0; j < MAXROW; j++) {
+		for (int i=0; i<Board.MAXCOL; i++) {
+			for (int j=0; j<Board.MAXROW; j++) {
 
 				if (b.getBoard()[j][i] == 1) {
 					oppwin = false;
@@ -66,40 +62,23 @@ public class Contributor {
 		return oppwin;
 	}
 
-	public boolean getWin() {
+	public boolean getWin()
+	{
 		return win;
 	}
 
-	public void setWin(boolean b) {
+	public void setWin(boolean b)
+	{
 		win = b;
 	}
 
-	public boolean getEndGame() {
+	public boolean getEndGame()
+	{
 		return endGame;
 	}
 
-	public void setEndGame(boolean end) {
+	public void setEndGame(boolean end)
+	{
 		endGame = end;
 	}
-
-	public Board getBoard() {
-		return b;
-	}
-
-	public void setDirection(char c){
-		direction=c;
-	}
-
-	public char getDirection(){
-		return direction;
-	}
-
-	public void setMessage(String s){
-		message=s;
-	}
-
-	public String getMessage(){
-		return message;
-	}
-
 }

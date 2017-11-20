@@ -4,8 +4,8 @@ public class Board
 {
 	public final static int MAXROW = 10;
 	public final static int MAXCOL = 10;
-	private final static int MISS = 2; //Fill in
-	private final static int HIT = 3; //Fill in
+	private final static int MISS = 0; //Fill in
+	private final static int HIT = 0; //Fill in
 	private final static int EMPTY = 0; //Fill in
 	private int[][] board = new int[MAXCOL][MAXROW];
 	private int[] coord = new int[2]; //0 = col, 1 = row;
@@ -13,11 +13,10 @@ public class Board
 	private boolean boardOK;
 	private int boardState;
 	private Ship Carrier = new Ship(5, 5);
-	private Ship Battleship = new Ship(4, 6);
-	private Ship Cruiser = new Ship(3, 7);
-	private Ship Submarine = new Ship(3, 8);
-	private Ship Destroyer = new Ship(2, 9);
-	private ArrayList<Ship> shipList = new ArrayList<Ship>();
+	private Ship Battleship = new Ship(6, 4);
+	private Ship Cruiser = new Ship(7, 3);
+	private Ship Submarine = new Ship(8, 3);
+	private Ship Destroyer = new Ship(9, 2);
 
 	public Board()
 	{
@@ -28,7 +27,6 @@ public class Board
 				board[row][column] = EMPTY;
 			}
 		}
-		addShipsToList();
 	}
 
 	//Copies a Board's board array.
@@ -67,15 +65,6 @@ public class Board
 		}
 		return num;
 	}
-	
-	public void addShipsToList()
-	{
-		shipList.add(Carrier);
-		shipList.add(Battleship);
-		shipList.add(Cruiser);
-		shipList.add(Submarine);
-		shipList.add(Destroyer);
-	}
 
 	//Creates an empty board array.
 	public void createBoard()
@@ -100,7 +89,6 @@ public class Board
 			}
 			System.out.println("");
 		}
-		System.out.println("***");
 	}
 
 	public int[][] getBoard()
@@ -157,6 +145,25 @@ public class Board
 			setComputerShip(boat);
 	}
 
+	public Ship getShip(int shipCode){
+		Ship s= new Ship(5,5);
+		if(shipCode==5){
+			s = Carrier;
+		}
+		else if(shipCode==6){
+			s = Battleship;
+		}
+		else if(shipCode==7){
+			s = Cruiser;
+		}
+		else if(shipCode==8){
+			s = Submarine;
+		}
+		else if(shipCode==9){
+			s = Destroyer;
+		}
+		return s;
+	}
 
 	//Checks if the space the piece is to be placed is empty.
 	public boolean checkComputerSetup(int[][] boardToCheck, int row,
@@ -344,12 +351,6 @@ public class Board
 	{
 		return coord;
 	}
-	
-	public ArrayList<Ship> getShipList()
-	{
-		return shipList;
-		
-	}
 
 	public void setCoord(int row, int col)
 	{
@@ -367,10 +368,22 @@ public class Board
 		coord[0] = col;
 	}
 
+
+
 	public static void main(String[] args)
 	{
 		Board test = new Board();
-		test.placeComputerShip();
-		test.printBoard();
+		int[] coordinates = new int[2];
+		coordinates[0] = 5;
+		coordinates[1] = 5;
+		System.out.println("Zero: " + coordinates[0] + " One! " + coordinates[1]);
+		test.convertCoordToPosition(coordinates, 1);
+
+		int[][] array = test.getBoard();
+		System.out.println(array[5][5]);
+		boolean same = (array[5][5] == 1);
+		System.out.println(same);
 	}
+
+
 }
