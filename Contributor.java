@@ -8,6 +8,7 @@ public class Contributor {
 	public static int MAXROW = 10;
 	public static int MAXCOL = 10;
 	private char direction;
+	private String message="";
 	//maybe add another board to track the shots on the opponent's board??
 
 	public Contributor() {
@@ -91,6 +92,14 @@ public class Contributor {
 
 	public char getDirection(){
 		return direction;
+	}
+
+	public void setMessage(String s){
+		message=s;
+	}
+
+	public String getMessage(){
+		return message;
 	}
 
 }
