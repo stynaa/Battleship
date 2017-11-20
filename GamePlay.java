@@ -1,93 +1,109 @@
-//package battleship;
-
-
 import java.util.Scanner;
 
-public class GamePlay extends Board {
-  int MAXROW = 10;
-  int MAXCOL = 10;
-  int shipSize;
-  // Carrier ï¿½ 5 squares - shipCode=5;
-  // Battleship ï¿½ 4 squares- shipCode=6;
-  // Cruiser ï¿½ 3 squares- shipCode=7;
-  // Submarine ï¿½ 3 squares- shipCode=8;
-  // Destroyer ï¿½ 2 squares- shipCode=9;
+public class GamePlay {
+	int MAXROW = 10;
+	int MAXCOL = 10;
+	int shipSize;
+	// Carrier – 5 squares - shipCode=5;
+	// Battleship – 4 squares- shipCode=6;
+	// Cruiser – 3 squares- shipCode=7;
+	// Submarine – 3 squares- shipCode=8;
+	// Destroyer – 2 squares- shipCode=9;
 
+	public Player setPlayer() {
+		//gets user input to pick positions on the board
+		//checks that none of the ships overlap
+		//return player
+		Player p = new Player();
+		int maxship = p.getBoard().getShipList().size();
+		int boardTotal=0;
 
-  public Player setPlayer() {
-    //gets user input to pick positions on the board
-    //checks that none of the ships overlap each other
-    //returns player
-    Player p = new Player();
-    int maxship = 5;
-    int boardTotal=25;
-    int shipCode=5;
+		for (int i = 0; i < maxship; i++) 
+		{
+			System.out.println("This is your " + (i+1) + " boat out of " + maxship + ".");
+			Ship boat = p.getBoard().getShipList().get(i);
+			int shipCode = boat.getShipCode();
+			int shipSize = boat.getShipSize();
+			boardTotal = boardTotal + (shipCode * shipSize);
+			p.getBoard().placeShips(boardTotal, boat, p.getBoard());
 
-    for (int i = 0; i < maxship; i++) {
-      System.out.println("This is your " + (i+1) + " boat out of " + maxship + ".");
-      p.board=p.placeShips(boardTotal,shipCode);
-      shipCode++;
-      boardTotal=boardTotal+(shipCode*p.getShipSize(shipCode));
+			System.out.println("***" + boardTotal);
+			System.out.println("BT: " + boardTotal + " SC " + shipCode + " SS " + shipSize);
+			
+			System.out.println("!!!" + boardTotal);
 
-    }
-    return p;
-  }
+			p.getBoard().printBoard();
+		}
+		return p;
+	}
 
-  public int getShipSize(int shipCode){
-    if(shipCode==5){
-      shipSize=5;
-    }
-    else if(shipCode==6){
-      shipSize=4;
-    }
-    else if(shipCode==7){
-      shipSize=3;
-    }
-    else if(shipCode==8){
-      shipSize=3;
-    }
-    else if(shipCode==9){
-      shipSize=2;
-    }
-    return shipSize;
-  }
-  public Computer setComputer()
-  {
-    //should return computer;
-    //setComputer method calls:
-    //Idea- it picks a starting spot for each ship, then directions randomly.
-    //o checkComputerSetup
-    //ï¿½ checks that none of the positions overlap, if so, resets smaller ship
+	public Computer setComputer()
+	{
+		Computer c = new Computer();
+		c.getBoard().placeComputerShip();
+		return c;
+	}
 
-    //return computer
-    //Computer temp;
-    //return temp;
+	public static void main(String args[]) {
+		GamePlay game = new GamePlay();
+		Display screen = new Display();
 
-    Computer c = new Computer();
-    // c.board = createBoard();
-      c.placeShips();
+		Player p1 = game.setPlayer();
+		Board playerBoard = p1.getBoard();
+		screen.showPlayerBoard(playerBoard.getBoard());
+		Computer c1 = game.setComputer();
+		Board computerBoard = c1.getBoard();
+		screen.showComputerBoard(computerBoard.getBoard());
 
-    return c;
-  }
+		boolean endGame = p1.getEndGame();
 
-  public boolean winCheck(Computer c1, Player p1) {
-      boolean temp = false;
-    //if c1.win or win (of player) is true
-      if(p1.computerHitCounter==17){
-        c1.win=true;
-      }
-      else if(c1.playerHitCounter==17){
-        p1.win=true;
-      }
-    if(p1.win||c1.win){
-      temp=true;
-    }
-      //return true --> p1.endgame = true
-    //else
-      //return false
+		while (!endGame) {
+			p1.setShot(p1.getShot());
 
-    return temp;
-  }
+			//Gets player’s move
+			boolean playerHit = (p1.HitOrMiss()); //Check if hit or a miss, updates c1 board and p1.win
+			if (playerHit)
+			{
+				System.out.println("You hit!");
+				p1.setWin(p1.winCheck());
+			}
+			else
+			{
+				System.out.println("You missed!");
+			}
+			//screen.showPlayerBoard(p1.board); //// COMMENT LATER
 
+			c1.setShot(true); //Gets computer’s move
+			boolean compHit = (c1.HitOrMiss()); //Check if hit or miss, updates p1 board and c1.win
+			if (compHit)
+			{
+				System.out.println("Computer hit!");
+				c1.setWin(c1.winCheck());
+			}
+			else
+			{
+				System.out.println("Computer missed!");
+			}
+			System.out.println("P1: ");
+			screen.showPlayerBoard(playerBoard.getBoard());
+			System.out.println("C1: ");
+			screen.showComputerBoard(computerBoard.getBoard());
+			//screen.showPlayerBoard(p1.board); Troubleshooting;
+			// System.out.println("COMP");
+			// c1.printBoard(c1.board);
+			//Screen.displayGameProgress(c1,p1); //Display turns, player’s health etc.
 
+			//endGame = game.winCheck(c1,p1); // Check if game is over
+		}
+
+		//display game result messages
+		if (p1.getWin() && !c1.getWin()) {
+			System.out.println("You win!");
+		} else if (!p1.getWin() && !c1.getWin()) {
+			System.out.println("Computer wins! You lose!");
+		} else if (p1.getWin() && c1.getWin()) {
+			System.out.println("It's a tie!");
+		}
+		System.out.println("GAME OVER");
+	}
 }
