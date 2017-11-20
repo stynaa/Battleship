@@ -145,6 +145,25 @@ public class Board
 			setComputerShip(boat);
 	}
 
+	public Ship getShip(int shipCode){
+		Ship s= new Ship(5,5);
+		if(shipCode==5){
+			s = Carrier.getShip();
+		}
+		else if(shipCode==6){
+			s = Battleship.getShip();
+		}
+		else if(shipCode==7){
+			s = Cruiser.getShip();
+		}
+		else if(shipCode==8){
+			s = Submarine.getShip();
+		}
+		else if(shipCode==8){
+			s = Destroyer.getShip();
+		}
+		return s;
+	}
 
 	//Checks if the space the piece is to be placed is empty.
 	public boolean checkComputerSetup(int[][] boardToCheck, int row,
@@ -349,6 +368,8 @@ public class Board
 		coord[0] = col;
 	}
 
+
+
 	public static void main(String[] args)
 	{
 		Board test = new Board();
@@ -363,4 +384,6 @@ public class Board
 		boolean same = (array[5][5] == 1);
 		System.out.println(same);
 	}
+
+
 }
