@@ -4,7 +4,7 @@ public class Contributor {
 	private boolean endGame = false;
 	private boolean shotHit = false;
 	private Board b = new Board();
-	protected int[] shot = new int[2];
+	int[] shot = new int[2];
 	public static int MAXROW = 10;
 	public static int MAXCOL = 10;
 	private char direction;
@@ -50,6 +50,22 @@ public class Contributor {
 		} else {
 			//make sure something else checks validity of shot
 			b.getBoard()[oppShot[0]][oppShot[1]] = 2;
+			oppHit = false;
+		}
+		return oppHit;
+	}
+
+	public boolean HitOrMiss(int[] shot, Contributor b){
+		boolean oppHit = false;
+		if (b.getBoard().getBoard()[shot[0]][shot[1]] == 1) {
+
+			b.getBoard().getBoard()[shot[0]][shot[1]] = 3;
+			oppHit = true;
+			//hitCounter();
+
+		} else {
+			//make sure something else checks validity of shot
+			b.getBoard().getBoard()[shot[0]][shot[1]] = 2;
 			oppHit = false;
 		}
 		return oppHit;
