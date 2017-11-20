@@ -19,13 +19,13 @@ public class Controller implements ActionListener {
     private boolean nextShipFlag = true; //Allows player to see ship set in multiple directions or places before finalizing placement
     private int boardTotal=25; //makes sure that all of the ships are on the board & not placed on top of each other
     private int numberOfGuesses=0;
+    private Player copyPlayer = new Player();
 
     //Constructor for the class, initializes the JFrame and starts the game
     public Controller(){
-        GamePlay game = new GamePlay();
+//        GamePlay game = new GamePlay();
         JFrame frame = new JFrame("Battleship");
-        game.setComputer(computer);
-        computer.board=computer.getBoard();
+        computer.getBoard().placeComputerShip();
         frame.setLayout(new BorderLayout());
         container.setLayout(cardLayout);
         container.add(start,"START");
@@ -52,17 +52,18 @@ public class Controller implements ActionListener {
         String buttonPressed= e.getActionCommand(); //initialized variable to increase readability
         if(buttonPressed.contains("Computer")){ //for during gamePlay
             int[] coord=convertButtons(buttonPressed);
-            player.setCoord(coord);
-            computer.HitorMiss(player);
-            computer.board=computer.getBoard();
+            player.setShot(coord);
+            boolean shipHit= computer.HitOrMiss();
+            computer.getBoard().setBoard(shipHit,player.getBoard());
+//            computer.board=computer.getBoard();
             gui.getComputerGrid().colorButtons(computer);
             numberOfGuesses++;
             gui.getInfoPanel().setNumberOfGuesses(numberOfGuesses);
             gui.getInfoPanel().setPlayerMessage(computer.getMessage());
-            computer.getMove(player);
-            player.HitorMiss(computer);
+            computer.getShot();
+            shipHit= player.HitOrMiss();
+            player.getBoard().setBoard(shipHit,computer.getBoard());
             gui.getInfoPanel().setComputerMessage(player.getMessage());
-            player.board=player.getBoard();
             gui.getPlayerGrid().colorButtons(player);
 
             /*
@@ -86,13 +87,13 @@ public class Controller implements ActionListener {
         }
         else if(buttonPressed.contains("Player") && !shipsAreSetUp){
             int[] coord= convertButtons(buttonPressed);
-            player.setCoord(coord);
+            player.setShot(coord);
         }
         else if(buttonPressed.equals("NEXT_SHIP")){
-            if(player.checkBoard(boardTotal)){
+            if(player.getBoard().checkBoard(boardTotal)){
                 nextShipFlag=true;
                 shipCode++;
-                boardTotal = boardTotal + (shipCode * player.getShipSize(shipCode));
+                boardTotal = boardTotal + (shipCode * player.getBoard().getShip(shipCode).getShipSize(shipCode));
                 if(shipCode==10){
                     String s= "You have placed all of your ships!";
                     start.updateDirectionMsg(s);
@@ -124,14 +125,14 @@ public class Controller implements ActionListener {
     //Functionality for the Done & Reset buttons in the GUI, toggles movement from Game set up to Game Play view
     public void useDoneResetSetShips(String buttonPressed){
         if(buttonPressed.equals("RESET")){
-            player.clearBoard();
+            player = new Player();
             shipCode=5;
         }
         else if(buttonPressed.equals("DONE")) {
             int sumBoard = 0;
             for (int i = 0; i < MAXROW; i++) {
                 for (int j = 0; j < MAXCOL; j++) {
-                    sumBoard += player.board[i][j];
+                    sumBoard += player.getBoard().getBoard()[i][j];
                 }
             }
             if (sumBoard == 112) {
@@ -167,7 +168,7 @@ public class Controller implements ActionListener {
             direction='E';
             player.setDirection(direction);
         }
-        if(player.checkDirection(player.getShipSize(shipCode)));{
+        if(player.getBoard().checkDirection(player.getBoard().getShip(shipCode).getShipSize(shipCode)));{
             placePlayerShips();
         }
         start.updateDirectionMsg(player.getMessage());
@@ -192,15 +193,15 @@ public class Controller implements ActionListener {
         if(shipCode<=9) {
             if(nextShipFlag){
                 nextShipFlag=false;
-                player.copyBoard();
-                player.board = player.placeShips(boardTotal, shipCode, player.getCoordCopy(), player.getDirection());
+                copyPlayer= new Player(player);
+                computer.getBoard().placeShips(boardTotal,player.getBoard().getShip(shipCode), player.getBoard());
             }
             else if(!nextShipFlag){
-                player.resetBoard();
-                player.board = player.placeShips(boardTotal, shipCode, player.getCoordCopy(), player.getDirection());
+                player= new Player(copyPlayer);
+                player.getBoard().placeShips(boardTotal,computer.getBoard().getShip(shipCode), computer.getBoard());
             }
-            if(!player.checkBoard(boardTotal)){
-                player.resetBoard();
+            if(!player.getBoard().checkBoard(boardTotal)){
+                player= new Player(copyPlayer);
                 start.updateDirectionMsg(player.getMessage());
             }
 
