@@ -10,19 +10,19 @@ public class Computer extends Contributor
 	 */
 	private boolean lastGood = false; //Boolean for checking around the shot location and which direction
 	//private boolean sweepShot = false; // Boolean for checking surrounding tiles, currently unused, lack of input
-	private boolean trueN = false;
-	private boolean trueS = false;
-	private boolean trueE = false;
-	private boolean trueW = false;
+	public boolean trueN = false;
+	public boolean trueS = false;
+	public boolean trueE = false;
+	public boolean trueW = false;
 	
 	 //Might have the button click this boolean
 	 //Might have it as an int and have the hard-medium-easy click it for a number
 	 //Will then have additional parameters for the if-statement in the logic
 	 //public boolean stupidAI = false;
 	public int aiDiff = 1;
-	private static final easy = 1;
-	private static final medium = 2;
-	private static final hard = 3;
+	private static final int easy = 1;
+	private static final int medium = 2;
+	private static final int hard = 3;
 	
 	/*
 	 *
@@ -30,8 +30,8 @@ public class Computer extends Contributor
 	
 	public ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
 	private int shotType = 0;
-	private int x = 0;
-	private int y = 0;
+	public int x = 0;
+	public int y = 0;
 	private static final int weighted = 0;
 	private static final int chooseDirection = -10;
 	private static final int shotRAND = -100;
@@ -73,7 +73,7 @@ public class Computer extends Contributor
 	 * The first block determines the nature and shot selection method, based on if the current previous shot(s) had landed.
 	 * The second block are the shot selection protocols. 
 	 */
-	@Override
+	//@Override
 	public void setShot(Boolean shotHit) {
 		Random rand = new Random();
 		if (!shotHit) {
@@ -83,6 +83,18 @@ public class Computer extends Contributor
 		else if (shotHit && !lastGood && aiDiff == hard) {
 		    int tempDir = rand.nextInt(4);
 		    shotType = -(tempDir + 2); //Can be re-implemented as a random number from an array, current chooses between -2 and -5
+		    if (shotType == shotNorth) {
+		    	trueN = true;
+		    }
+		    else if (shotType == shotEast) {
+		    	trueE = true;
+		    }
+		    else if (shotType == shotWest) {
+		    	trueW = true;
+		    }
+		    else if (shotType == shotSouth) {
+		    	trueS = true;
+		    }
 		}
 		else if (shotHit && lastGood) {
 			shotType = shotType;
@@ -96,13 +108,13 @@ public class Computer extends Contributor
 			int y = rand.nextInt(10);
 		}
 		
-		else if (shotType == weighted && aiDiff = medium) {
+		else if (shotType == weighted && aiDiff == medium) {
 		      int[] boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
-		      coord[1] = boardChoice[rand.nextInt(boardChoice.length)]; //X
-		      coord[0] = boardChoice[rand.nextInt(boardChoice.length)]; //Y
+		      x = boardChoice[rand.nextInt(boardChoice.length)]; //X
+		      y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
 		}
 		
-		else if (shotType == trueN) {
+		else if (shotType == shotNorth) {
 			x = getShot()[1];
 			y = getShot()[0]-1;
 			if (y<0) {
@@ -112,7 +124,7 @@ public class Computer extends Contributor
 			}
 		}
 		
-		else if (shotType == trueE) {
+		else if (shotType == shotEast) {
 			x = getShot()[1]+1;
 			y = getShot()[0];
 			// x>9 must be replaced
@@ -123,7 +135,7 @@ public class Computer extends Contributor
 			}
 		}
 		
-		else if (shotType == trueW) {
+		else if (shotType == shotWest) {
 			x = getShot()[1]-1;
 			y = getShot()[0];
 			if (x<0) {
@@ -133,7 +145,7 @@ public class Computer extends Contributor
 			}
 		}
 		
-		else if (shotType == trueS) {
+		else if (shotType == shotSouth) {
 			x = getShot()[1];
 			y = getShot()[0]+1;
 			// y>9 must be replaced
@@ -145,28 +157,41 @@ public class Computer extends Contributor
 		}
 		
 		Point temp = new Point(x,y);
-		if (storage.contains(temp)) {
+		if (shotStore.contains(temp)) {
 			//sweepShot = false;
 			//lastGood = false;
 			setShot(shotHit);
 		}
-		storage.add(new Point(x,y));
+		shotStore.add(new Point(x,y));
 		//
 		shot[1] = x;
 		shot[0] = y;
 	}
 	
-
+	/*
+	public void setX(int set) {
+		x = set;
+	}
+	public void setY(int set) {
+		y = set;
+	}
+	*/
+	
 	public void setComputer(int shipCode)
 	{
 		
 	}
+	
+	public boolean getGood() {
+		return lastGood;
+	}
 
-	public Computer getComputer()
-	{
+	//public Computer getComputer()
+	//{
 		/*
 		 * Will return a reference of computer
+		 * This makes no sense to me
 		 */
-		return Computer; //Desired(?) privacy leak
-	}
+		//return Computer; //Desired(?) privacy leak
+	//}
 }
