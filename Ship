@@ -1,0 +1,37 @@
+public class Ship {
+    private char Direction;
+    private int Coord;
+    private int shipSize;
+    private int SHIPCODE;
+    private int(5) CARRIER;
+    private int(6) BATTLESHIP;
+    private int(7) CRUISER;
+    private int(8) SUBMARINE;
+    private int(9) DESTROYER;
+
+    public Ship(int size, int code){
+        this.size = size;
+        this.code = code;
+    }
+
+    public void setShipSize(){
+
+    }
+
+    public int getShipSize(int shipCode){
+
+    }
+
+    public void setShip(){
+
+    }
+
+    public int getShip(){
+
+    }
+
+    public boolean isShipDestroyed(){
+        
+    }
+
+}
