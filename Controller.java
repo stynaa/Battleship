@@ -54,16 +54,15 @@ public class Controller implements ActionListener {
         if(buttonPressed.contains("Computer")){ //for during gamePlay
             int[] coord=convertButtons(buttonPressed);
             player.setShot(coord);
-//            boolean shipHit= computer.HitOrMiss();
-//            computer.getBoard().setBoard(shipHit,player.getBoard());
-//            computer.board=computer.getBoard();
+            boolean shipHit= computer.HitOrMiss();
+            computer.getBoard().setBoard(shipHit,player.getBoard());
             gui.getComputerGrid().colorButtons(computer);
             numberOfGuesses++;
             gui.getInfoPanel().setNumberOfGuesses(numberOfGuesses);
             gui.getInfoPanel().setPlayerMessage(computer.getMessage());
             computer.getShot();
-//            shipHit= player.HitOrMiss();
-//            player.getBoard().setBoard(shipHit,computer.getBoard());
+            shipHit= player.HitOrMiss();
+            player.getBoard().setBoard(shipHit,computer.getBoard());
             gui.getInfoPanel().setComputerMessage(player.getMessage());
             gui.getPlayerGrid().colorButtons(player);
 
