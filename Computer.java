@@ -66,7 +66,13 @@ public class Computer extends Contributor
 		}
 		return emptySpace;
 	}
-	
+
+	public void setShot(){
+		Random rand = new Random();
+		shot[0]=rand.nextInt(10);
+		shot[1]=rand.nextInt(10);
+	}
+
 	/*
 	 * An overridden setShot of Contributor
 	 * Two if-else blocks

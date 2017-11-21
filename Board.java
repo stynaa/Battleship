@@ -294,6 +294,7 @@ public class Board
 		Ship s= getShip(shipCode);
 		setCoord(coordCopy[0],coordCopy[1]);
 		direction=directionCopy;
+		setMessage("Let's place our ships!");
 //		int[][] copyBoard= copyBoard(gameBoard.getBoard());
 		if(checkDirection(s.getShipSize())){
 			setBoard(s);
@@ -337,25 +338,25 @@ public class Board
 	//Updates the board array to change if ship is hit or miss.
 	//shipHit: whether or not the ship was hit.
 	//gameBoard: which Board to update.
-	public void setBoard(boolean shipHit, Board gameBoard)
-	{
+	public void setBoard(boolean shipHit, Board gameBoard, int[] coordCopy)
+	{ setCoord(coordCopy[0],coordCopy[1]);
 		if (shipHit == true)
 		{
-			convertCoordToPosition(gameBoard.getCoord(), HIT);
+			convertCoordToPosition(HIT);
 		}
 		else if (shipHit == false)
 		{
-			convertCoordToPosition(gameBoard.getCoord(), MISS);
+			convertCoordToPosition(MISS);
 		}
 	}
 
 	//Converts coordinates into the board array itself
 	//gameBoard: which board to take the coordinates from.
 	//code: whether it is HIT, MISS, or EMPTY.
-	public void convertCoordToPosition(int[] coordinate, int code)
+	public void convertCoordToPosition(int code)
 	{
-		int row = coordinate[1];
-		int col = coordinate[0];
+		int row = coord[0];
+		int col = coord[1];
 		board[row][col] = code;
 	}
 

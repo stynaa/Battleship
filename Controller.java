@@ -19,11 +19,9 @@ public class Controller implements ActionListener {
     private boolean nextShipFlag = true; //Allows player to see ship set in multiple directions or places before finalizing placement
     private int boardTotal=25; //makes sure that all of the ships are on the board & not placed on top of each other
     private int numberOfGuesses=0;
-    private int[][] copyBoard= new int[MAXROW][MAXCOL];
 
     //Constructor for the class, initializes the JFrame and starts the game
     public Controller(){
-//        GamePlay game = new GamePlay();
         JFrame frame = new JFrame("Battleship");
         computer.getBoard().placeComputerShip();
         frame.setLayout(new BorderLayout());
@@ -54,16 +52,16 @@ public class Controller implements ActionListener {
         if(buttonPressed.contains("Computer")){ //for during gamePlay
             int[] coord=convertButtons(buttonPressed);
             player.setShot(coord);
-            boolean shipHit= computer.HitOrMiss();
-            computer.getBoard().setBoard(shipHit,player.getBoard());
+            boolean shipHit= computer.HitOrMiss(player.getShot(),computer);
+           computer.getBoard().setBoard(shipHit,player.getBoard(),player.getShot());
             gui.getComputerGrid().colorButtons(computer);
             numberOfGuesses++;
             gui.getInfoPanel().setNumberOfGuesses(numberOfGuesses);
-            gui.getInfoPanel().setPlayerMessage(computer.getMessage());
-            computer.getShot();
-            shipHit= player.HitOrMiss();
-            player.getBoard().setBoard(shipHit,computer.getBoard());
-            gui.getInfoPanel().setComputerMessage(player.getMessage());
+            gui.getInfoPanel().setPlayerMessage("Player: "+computer.getMessage());
+            computer.setShot();
+            shipHit= player.HitOrMiss(computer.getShot(),player);
+            player.getBoard().setBoard(shipHit,computer.getBoard(),computer.getShot());
+            gui.getInfoPanel().setComputerMessage("Computer: "+player.getMessage());
             gui.getPlayerGrid().colorButtons(player);
 
             /*
@@ -199,7 +197,6 @@ public class Controller implements ActionListener {
             if(!player.getBoard().checkBoard(boardTotal)){
                 player.getBoard().copyBoard(player.getBoard().getOldBoard());
             }
-            System.out.println(player.getBoard().getMessage());
             String temp = player.getBoard().getMessage();
             start.updateDirectionMsg(temp);
             start.getPlayerGrid().colorButtons(player);

@@ -46,6 +46,7 @@ public class Contributor {
 
 			b.getBoard()[oppShot[0]][oppShot[1]] = 3;
 			oppHit = true;
+
 			//hitCounter();
 
 		} else {
@@ -58,16 +59,20 @@ public class Contributor {
 
 	public boolean HitOrMiss(int[] shot, Contributor b){
 		boolean oppHit = false;
-		if (b.getBoard().getBoard()[shot[0]][shot[1]] == 1) {
+		if (b.getBoard().getBoard()[shot[0]][shot[1]] == 5||b.getBoard().getBoard()[shot[0]][shot[1]] == 6||
+				b.getBoard().getBoard()[shot[0]][shot[1]] == 7||b.getBoard().getBoard()[shot[0]][shot[1]] == 8||
+				b.getBoard().getBoard()[shot[0]][shot[1]] == 9) {
 
-			b.getBoard().getBoard()[shot[0]][shot[1]] = 3;
+//			b.getBoard().getBoard()[shot[0]][shot[1]] = 3;
 			oppHit = true;
+			setMessage("Hit!");
 			//hitCounter();
 
 		} else {
 			//make sure something else checks validity of shot
-			b.getBoard().getBoard()[shot[0]][shot[1]] = 2;
+//			b.getBoard().getBoard()[shot[0]][shot[1]] = 2;
 			oppHit = false;
+			setMessage("Miss!");
 		}
 		return oppHit;
 	}
