@@ -26,12 +26,6 @@ public class GamePlay {
 			p.setShot();
 			p.setDirection();
 			p.getBoard().placeShips(boardTotal,boat,p.getShot(),p.getDirection(),p);
-
-//			System.out.println("***" + boardTotal);
-//			System.out.println("BT: " + boardTotal + " SC " + shipCode + " SS " + shipSize);
-//
-//			System.out.println("!!!" + boardTotal);
-
 			p.getBoard().printBoard();
 		}
 		return p;
@@ -54,45 +48,36 @@ public class GamePlay {
 		Computer c1 = game.setComputer();
 		Board computerBoard = c1.getBoard();
 		screen.showComputerBoard(computerBoard.getBoard());
-
-		boolean endGame = p1.getEndGame();
-
-		while (!endGame) {
+		while (!p1.getWin()||!c1.getWin()) {
 			//Gets player�s move
 			p1.setShot();
-			boolean playerHit = (p1.HitOrMiss(p1.getShot(),c1)); //Check if hit or a miss, updates c1 board and p1.win
+			boolean playerHit = c1.HitOrMiss(p1.getShot(),c1); //Check if hit or a miss, updates c1 board and p1.win
 			if (playerHit)
 			{
 				System.out.println("You hit!");
-				p1.setWin(p1.lossCheck());
+				c1.setWin(p1.lossCheck());
 			}
 			else
 			{
 				System.out.println("You missed!");
 			}
-			//screen.showPlayerBoard(p1.board); //// COMMENT LATER
-
+			c1.getBoard().setBoard(playerHit,p1.getBoard(),p1.getShot());
 			c1.setShot(true); //Gets computer�s move
-			boolean compHit = (c1.HitOrMiss(c1.shot,p1)); //Check if hit or miss, updates p1 board and c1.win
+			boolean compHit =p1.HitOrMiss(c1.getShot(),p1);  //Check if hit or miss, updates p1 board and c1.win
 			if (compHit)
 			{
 				System.out.println("Computer hit!");
-				c1.setWin(c1.lossCheck());
+				p1.setWin(c1.lossCheck());
 			}
 			else
 			{
 				System.out.println("Computer missed!");
 			}
+			p1.getBoard().setBoard(compHit,c1.getBoard(),c1.getShot());
 			System.out.println("P1: ");
 			screen.showPlayerBoard(playerBoard.getBoard());
 			System.out.println("C1: ");
 			screen.showComputerBoard(computerBoard.getBoard());
-			//screen.showPlayerBoard(p1.board); Troubleshooting;
-			// System.out.println("COMP");
-			// c1.printBoard(c1.board);
-			//Screen.displayGameProgress(c1,p1); //Display turns, player�s health etc.
-
-			//endGame = game.lossCheck(c1,p1); // Check if game is over
 		}
 
 		//display game result messages
