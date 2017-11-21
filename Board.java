@@ -98,6 +98,28 @@ public class Board
 		return board;
 	}
 
+	public int[][] copyBoard(int[][] copyBoard){
+		for (int row = 0; row < MAXROW; row++)
+		{
+			for (int column = 0; column < MAXCOL; column++)
+			{
+				board[row][column] = copyBoard[row][column];
+			}
+		}
+		return board;
+	}
+
+	public int[][] clearBoard(){
+		for (int row = 0; row < MAXROW; row++)
+		{
+			for (int column = 0; column < MAXCOL; column++)
+			{
+				board[row][column] = EMPTY;
+			}
+		}
+		return board;
+	}
+
 	public void placeComputerShip()
 	{
 		setComputerShip(Carrier);
@@ -198,22 +220,22 @@ public class Board
 		//Checks if the ship would go out of bounds.
 		if (direction == 'N' || direction == 'n')
 		{
-			if ((coord[0] - shipSize) < 0)
+			if ((coord[0] - shipSize) <0)
 				validDirection = false;
 		}
 		else if (direction == 'S' || direction == 's')
 		{
-			if ((coord[0] + shipSize) > MAXCOL)
+			if ((coord[0] + shipSize)> MAXROW)
 				validDirection = false;
 		}
 		else if (direction == 'E' || direction == 'e')
 		{
-			if ((coord[1] + shipSize) > MAXROW)
+			if ((coord[1] - shipSize) <0)
 				validDirection = false;
 		}
 		else if (direction == 'W' || direction == 'w')
 		{
-			if ((coord[1] - shipSize) < 0)
+			if ((coord[1] + shipSize) >MAXCOL)
 				validDirection = false;
 		}
 		else
@@ -223,7 +245,6 @@ public class Board
 			System.out.println("Enter N, S, E, or W.");
 			validDirection = false;
 		}
-		printBoard();
 		return validDirection;
 	}
 
@@ -232,25 +253,30 @@ public class Board
 	public boolean checkDirection(int shipSize, char direction, int[] coord)
 	{
 		boolean validDirection = true;
+		int temp=0;
 		//Checks if the ship would go out of bounds.
 		if (direction == 'N' || direction == 'n')
-		{
-			if ((coord[0] - shipSize) < 0)
+		{ temp=coord[0] + shipSize;
+			System.out.println(temp);
+			if ((coord[0] + shipSize) > MAXROW)
 				validDirection = false;
 		}
 		else if (direction == 'S' || direction == 's')
-		{
-			if ((coord[0] + shipSize) > MAXCOL)
+		{temp=coord[0] - shipSize;
+			System.out.println(temp);
+			if ((coord[0] - shipSize) < 0)
 				validDirection = false;
 		}
 		else if (direction == 'E' || direction == 'e')
-		{
-			if ((coord[1] + shipSize) > MAXROW)
+		{temp=coord[1] - shipSize;
+			System.out.println(temp);
+			if ((coord[1] - shipSize) <0)
 				validDirection = false;
 		}
 		else if (direction == 'W' || direction == 'w')
-		{
-			if ((coord[1] - shipSize) < 0)
+		{temp=coord[1] + shipSize;
+			System.out.println(temp);
+			if ((coord[1] + shipSize) >MAXCOL)
 				validDirection = false;
 		}
 		else
@@ -294,13 +320,13 @@ public class Board
 		Ship s= getShip(shipCode);
 		setCoord(coordCopy[0],coordCopy[1]);
 		direction=directionCopy;
-		Board copyBoard = new Board(gameBoard);
+		int[][] copyBoard= copyBoard(gameBoard.getBoard());
 		if(checkDirection(s.getShipSize())){
-			System.out.println("Should fit");
 			setBoard(s);
 			boardOK = checkBoard(boardTotal);
 			if (!boardOK) {
-				gameBoard=new Board(copyBoard);
+				board=copyBoard(copyBoard);
+				setMessage("Please select a valid position on the board.");
 			}
 		}
 		else{
@@ -315,8 +341,9 @@ public class Board
 	public void setBoard(Ship boat){
 		int shipSize = boat.getShipSize();
 		int shipCode = boat.getShipCode();
+		System.out.println(direction);
 		for (int i = 0; i < shipSize; i++)
-		{    for (int j = 0; j < shipSize; j++) {
+		{
 			if (direction == 'N' || direction == 'n') {
 				board[coord[0] - i][coord[1]] = shipCode;
 			}
@@ -324,12 +351,11 @@ public class Board
 				board[coord[0] + i][coord[1]] = shipCode;
 			}
 			if (direction == 'E' || direction == 'e') {
-				board[coord[0]][coord[1] - j] = shipCode;
+				board[coord[0]][coord[1] - i] = shipCode;
 			}
 			if (direction == 'W' || direction == 'w') {
-				board[coord[0]][coord[1] + j] = shipCode;
+				board[coord[0]][coord[1] + i] = shipCode;
 			}
-		}
 		}
 
 
