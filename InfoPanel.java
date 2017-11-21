@@ -31,8 +31,9 @@ public class InfoPanel extends JPanel {
     public InfoPanel() {
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setPreferredSize(new Dimension(1000, 120));
-        guesses = new JLabel("Guesses: " + numberOfGuesses);
-        guesses.setForeground(Color.red);
+        guesses=new JLabel(" ");
+//        guesses = new JLabel("Guesses: " + numberOfGuesses);
+//        guesses.setForeground(Color.red);
         add(Box.createHorizontalGlue());
         add(guesses);
        add(Box.createHorizontalGlue());
@@ -48,7 +49,11 @@ public class InfoPanel extends JPanel {
     }
 
     public void setNumberOfGuesses(int num){
+        System.out.println(num);
         numberOfGuesses=num;
+    }
+    public int getNumberOfGuesses(){
+        return numberOfGuesses;
     }
 
     public void setPlayerMessage(String s){

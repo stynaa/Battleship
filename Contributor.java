@@ -77,13 +77,13 @@ public class Contributor {
 		return oppHit;
 	}
 
-	public boolean winCheck() {
+	public boolean lossCheck() {
 		boolean oppwin = true;
-
 		for (int i = 0; i < MAXCOL; i++) {
 			for (int j = 0; j < MAXROW; j++) {
 
-				if (b.getBoard()[j][i] == 1) {
+				if (b.getBoard()[j][i] == 5||b.getBoard()[j][i] == 6||b.getBoard()[j][i] == 7||
+						b.getBoard()[j][i] == 8||b.getBoard()[j][i] == 9) {
 					oppwin = false;
 				}
 
