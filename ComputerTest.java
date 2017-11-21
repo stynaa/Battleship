@@ -29,43 +29,53 @@ public class ComputerTest {
 		assertTrue("Shot is properly registered as a correct hit", c.getGood());
 	}
 	
-//	@Test
-//	public void easy_hit() {
-//		Computer c = new Computer();
-//		c.setShot(true);
-//		c.setShot(true);
-//		assertFalse("Default easy shot does cannot remember shots", c.getGood());	
-//		
-//	}
-//	
-//	@Test
-//	public void hitwithPreviousHit() {
-//		Computer c = new Computer(); 
-//		c.setShot(true);
-//		c.setShot(true);
-//		assertTrue ("Consecutive shots are remembered and recognized", c.getGood());
-//	}
-//	
-//	@Test 
-//	public void checkingDirection() {
-//		Computer c = new Computer();
-//		c.setShot(true);
-//		int a = c.getShot()[1];
-//		int b = c.getShot()[0];
-//		c.setShot(true);
-//		if (c.trueN) {
-//			b--;
-//		} 
-//		else if (c.trueE) {
-//			a++;
-//		}
-//		else if (c.trueW) {
-//			a--;
-//		}
-//		else if (c.trueS) {
-//			b++;
-//		}
-//		assertEquals("Directional firing increments proper x direction", a, c.x, 0.00001);
-//		assertEquals("Directional firing increments proper y direction", b, c.y, 0.00001);
-//	}
+	@Test
+	public void easy_hit() {
+		Computer c = new Computer();
+		c.setShot(true);
+		c.setShot(true);
+		assertTrue("Default easy shot does cannot remember shots", c.getGood());	
+		
+	}
+	
+	@Test
+	public void test_missed_middle_shot() {
+		Computer c = new Computer();
+		c.setShot(true);
+		c.setShot(false);
+		assertFalse("Missed shot will be recognized.", c.getGood());	
+		
+	}
+	
+	@Test
+	public void hitwithPreviousHits() {
+		Computer c = new Computer(); 
+		c.setShot(true);
+		c.setShot(true);
+		c.setShot(true);
+		assertTrue ("Consecutive shots are remembered and recognized", c.getGood());
+	}
+	
+	@Test 
+	public void checkingDirection() {
+		Computer c = new Computer();
+		c.setShot(true);
+		int a = c.getShot()[1];
+		int b = c.getShot()[0];
+		c.setShot(true);
+		if (c.trueN) {
+			b--;
+		} 
+		else if (c.trueE) {
+			a++;
+		}
+		else if (c.trueW) {
+			a--;
+		}
+		else if (c.trueS) {
+			b++;
+		}
+		assertEquals("Directional firing increments proper x direction", a, c.x, 0.00001);
+		assertEquals("Directional firing increments proper y direction", b, c.y, 0.00001);
+	}
 }
