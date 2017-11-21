@@ -211,6 +211,7 @@ public class Board
 		{
 			for (int j = 0; j < board[0].length; j++)
 			{
+				System.out.println(sumBoard);
 				sumBoard += board[i][j];
 			}
 		}
@@ -260,47 +261,53 @@ public class Board
 		return validDirection;
 	}
 
-
-	public int[][] placeShips(int boardTotal, Ship boat, Board gameBoard) {
-		//coord = getPlayerCoord();
-		int shipSize = boat.getShipSize();
+	//place ship method for working with the text based version
+	public int[][] placeShips(int boardTotal, Ship boat, int[] coordCopy, char directionCopy, Player player) {
 		int shipCode = boat.getShipCode();
+		setCoord(coordCopy[0],coordCopy[1]);
+		direction=directionCopy;
 		if (checkDirection(shipCode))
 		{
 			setBoard(boat);
 			boardOK = checkBoard(boardTotal);
+			System.out.println(boardTotal);
 			if (!boardOK)
 			{
+				copyBoard(oldBoard);
 				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
 				System.out.println();
-				Board copyBoard = new Board(gameBoard);
-				placeShips(boardTotal, boat, copyBoard);
+				player.setShot();
+				player.setDirection();
+				placeShips(boardTotal,boat,player.getShot(),player.getDirection(),player);
 			}
-			Board copyBoard = new Board(gameBoard);
+			else{
+				setOldBoard(board);
+			}
+//			Board copyBoard = new Board(gameBoard);
 		}
 		else
 		{
 			System.out.println("Direction is out of bounds.");
 			System.out.println("Please select again.");
-			Board copyBoard = new Board(gameBoard);
-			placeShips(boardTotal, boat, copyBoard);
+			copyBoard(oldBoard);
+			player.setShot();
+			player.setDirection();
+			placeShips(boardTotal,boat,player.getShot(),player.getDirection(),player);
 		}
 		return board;
 	}
 
 
 	//Method to handle ship placement for the GUI
-	public void placeShips(int boardTotal, int shipCode, int[] coordCopy, char directionCopy, Board gameBoard) {
-		Ship s= getShip(shipCode);
+	public void placeShips(int boardTotal, int shipCode, int[] coordCopy, char directionCopy) {
+		Ship boat= getShip(shipCode);
 		setCoord(coordCopy[0],coordCopy[1]);
 		direction=directionCopy;
 		setMessage("Let's place our ships!");
-//		int[][] copyBoard= copyBoard(gameBoard.getBoard());
-		if(checkDirection(s.getShipSize())){
-			setBoard(s);
+		if(checkDirection(boat.getShipSize())){
+			setBoard(boat);
 			boardOK = checkBoard(boardTotal);
 			if (!boardOK) {
-//				board=copyBoard(copyBoard);
 				setMessage("Please select a valid position on the board.");
 			}
 		}

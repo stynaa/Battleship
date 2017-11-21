@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class GamePlay {
 	int MAXROW = 10;
 	int MAXCOL = 10;
@@ -25,12 +23,14 @@ public class GamePlay {
 			int shipCode = boat.getShipCode();
 			int shipSize = boat.getShipSize();
 			boardTotal = boardTotal + (shipCode * shipSize);
-			p.getBoard().placeShips(boardTotal, boat, p.getBoard());
+			p.setShot();
+			p.setDirection();
+			p.getBoard().placeShips(boardTotal,boat,p.getShot(),p.getDirection(),p);
 
-			System.out.println("***" + boardTotal);
-			System.out.println("BT: " + boardTotal + " SC " + shipCode + " SS " + shipSize);
-			
-			System.out.println("!!!" + boardTotal);
+//			System.out.println("***" + boardTotal);
+//			System.out.println("BT: " + boardTotal + " SC " + shipCode + " SS " + shipSize);
+//
+//			System.out.println("!!!" + boardTotal);
 
 			p.getBoard().printBoard();
 		}
@@ -58,14 +58,13 @@ public class GamePlay {
 		boolean endGame = p1.getEndGame();
 
 		while (!endGame) {
-
 			//Gets player�s move
 			p1.setShot();
-			boolean playerHit = (p1.HitOrMiss(p1.shot,c1)); //Check if hit or a miss, updates c1 board and p1.win
+			boolean playerHit = (p1.HitOrMiss(p1.getShot(),c1)); //Check if hit or a miss, updates c1 board and p1.win
 			if (playerHit)
 			{
 				System.out.println("You hit!");
-				p1.setWin(p1.winCheck());
+				p1.setWin(p1.lossCheck());
 			}
 			else
 			{
@@ -78,7 +77,7 @@ public class GamePlay {
 			if (compHit)
 			{
 				System.out.println("Computer hit!");
-				c1.setWin(c1.winCheck());
+				c1.setWin(c1.lossCheck());
 			}
 			else
 			{
@@ -93,7 +92,7 @@ public class GamePlay {
 			// c1.printBoard(c1.board);
 			//Screen.displayGameProgress(c1,p1); //Display turns, player�s health etc.
 
-			//endGame = game.winCheck(c1,p1); // Check if game is over
+			//endGame = game.lossCheck(c1,p1); // Check if game is over
 		}
 
 		//display game result messages

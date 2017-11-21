@@ -203,11 +203,11 @@ public class Controller implements ActionListener {
             if(nextShipFlag){
                 nextShipFlag=false;
                 player.getBoard().setOldBoard(player.getBoard().getBoard());
-                player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection(),player.getBoard());
+                player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection());
             }
             else if(!nextShipFlag){
                 player.getBoard().copyBoard(player.getBoard().getOldBoard());
-                player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection(),player.getBoard());
+                player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection());
             }
             if(!player.getBoard().checkBoard(boardTotal)){
                 player.getBoard().copyBoard(player.getBoard().getOldBoard());
