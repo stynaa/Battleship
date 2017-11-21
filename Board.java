@@ -8,6 +8,7 @@ public class Board
 	private final static int HIT = 3; //Fill in
 	private final static int EMPTY = 0; //Fill in
 	private int[][] board = new int[MAXCOL][MAXROW];
+	private int[][] oldBoard = new int[MAXROW][MAXCOL];
 	private int[] coord = new int[2]; //0 = col, 1 = row;
 	private char direction;
 	private boolean boardOK;
@@ -98,7 +99,7 @@ public class Board
 		return board;
 	}
 
-	public int[][] copyBoard(int[][] copyBoard){
+	public void copyBoard(int[][] copyBoard){
 		for (int row = 0; row < MAXROW; row++)
 		{
 			for (int column = 0; column < MAXCOL; column++)
@@ -106,8 +107,19 @@ public class Board
 				board[row][column] = copyBoard[row][column];
 			}
 		}
-		return board;
 	}
+
+	public void setOldBoard(int[][] copyBoard){
+		for (int row = 0; row < MAXROW; row++)
+		{
+			for (int column = 0; column < MAXCOL; column++)
+			{
+				oldBoard[row][column] = copyBoard[row][column];
+			}
+		}
+	}
+
+	public int[][] getOldBoard(){return oldBoard;}
 
 	public int[][] clearBoard(){
 		for (int row = 0; row < MAXROW; row++)
@@ -249,52 +261,13 @@ public class Board
 	}
 
 
-
-	public boolean checkDirection(int shipSize, char direction, int[] coord)
-	{
-		boolean validDirection = true;
-		int temp=0;
-		//Checks if the ship would go out of bounds.
-		if (direction == 'N' || direction == 'n')
-		{ temp=coord[0] + shipSize;
-			System.out.println(temp);
-			if ((coord[0] + shipSize) > MAXROW)
-				validDirection = false;
-		}
-		else if (direction == 'S' || direction == 's')
-		{temp=coord[0] - shipSize;
-			System.out.println(temp);
-			if ((coord[0] - shipSize) < 0)
-				validDirection = false;
-		}
-		else if (direction == 'E' || direction == 'e')
-		{temp=coord[1] - shipSize;
-			System.out.println(temp);
-			if ((coord[1] - shipSize) <0)
-				validDirection = false;
-		}
-		else if (direction == 'W' || direction == 'w')
-		{temp=coord[1] + shipSize;
-			System.out.println(temp);
-			if ((coord[1] + shipSize) >MAXCOL)
-				validDirection = false;
-		}
-		else
-		{
-			//If N, S, E, or W is not entered as a direction.
-			System.out.println("Invalid direction selected.");
-			System.out.println("Enter N, S, E, or W.");
-			validDirection = false;
-		}
-		return validDirection;
-	}
 	public int[][] placeShips(int boardTotal, Ship boat, Board gameBoard) {
 		//coord = getPlayerCoord();
 		int shipSize = boat.getShipSize();
 		int shipCode = boat.getShipCode();
-//		if (checkDirection(shipCode))
-//		{
-			//setBoard(boat);
+		if (checkDirection(shipCode))
+		{
+			setBoard(boat);
 			boardOK = checkBoard(boardTotal);
 			if (!boardOK)
 			{
@@ -304,28 +277,29 @@ public class Board
 				placeShips(boardTotal, boat, copyBoard);
 			}
 			Board copyBoard = new Board(gameBoard);
-//		}
-//		else
-//		{
-//			System.out.println("Direction is out of bounds.");
-//			System.out.println("Please select again.");
-//			Board copyBoard = new Board(gameBoard);
-//			placeShips(boardTotal, boat, copyBoard);
-//		}
+		}
+		else
+		{
+			System.out.println("Direction is out of bounds.");
+			System.out.println("Please select again.");
+			Board copyBoard = new Board(gameBoard);
+			placeShips(boardTotal, boat, copyBoard);
+		}
 		return board;
 	}
 
 
+	//Method to handle ship placement for the GUI
 	public void placeShips(int boardTotal, int shipCode, int[] coordCopy, char directionCopy, Board gameBoard) {
 		Ship s= getShip(shipCode);
 		setCoord(coordCopy[0],coordCopy[1]);
 		direction=directionCopy;
-		int[][] copyBoard= copyBoard(gameBoard.getBoard());
+//		int[][] copyBoard= copyBoard(gameBoard.getBoard());
 		if(checkDirection(s.getShipSize())){
 			setBoard(s);
 			boardOK = checkBoard(boardTotal);
 			if (!boardOK) {
-				board=copyBoard(copyBoard);
+//				board=copyBoard(copyBoard);
 				setMessage("Please select a valid position on the board.");
 			}
 		}
@@ -341,7 +315,6 @@ public class Board
 	public void setBoard(Ship boat){
 		int shipSize = boat.getShipSize();
 		int shipCode = boat.getShipCode();
-		System.out.println(direction);
 		for (int i = 0; i < shipSize; i++)
 		{
 			if (direction == 'N' || direction == 'n') {
