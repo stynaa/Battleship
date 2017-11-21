@@ -93,7 +93,7 @@ public class Controller implements ActionListener {
                 nextShipFlag=true;
                 shipCode++;
                 boardTotal = boardTotal + (shipCode * player.getBoard().getShip(shipCode).getShipSize());
-                if(shipCode==10){
+                if(shipCode>=10){
                     String s= "You have placed all of your ships!";
                     start.updateDirectionMsg(s);
                 }
@@ -168,7 +168,6 @@ public class Controller implements ActionListener {
             player.setDirection(direction);
         }
         placePlayerShips();
-        start.updateDirectionMsg(player.getMessage());
     }
 
     //Sets the difficulty for the computer
@@ -199,8 +198,10 @@ public class Controller implements ActionListener {
             }
             if(!player.getBoard().checkBoard(boardTotal)){
                 player.getBoard().copyBoard(player.getBoard().getOldBoard());
-                start.updateDirectionMsg(player.getMessage());
             }
+            System.out.println(player.getBoard().getMessage());
+            String temp = player.getBoard().getMessage();
+            start.updateDirectionMsg(temp);
             start.getPlayerGrid().colorButtons(player);
         }
         else {
