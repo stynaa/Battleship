@@ -77,8 +77,9 @@ public class Controller implements ActionListener {
             gui.getInfoPanel().setPlayerMessage("Player Wins!");
             gui.getInfoPanel().setComputerMessage("");
         }
-        computer.setShot();
+        computer.setShot(computer.feedbackHit);
         shipHit= player.HitOrMiss(computer.getShot(),player);
+        computer.setFeedback(shipHit);
         player.getBoard().setBoard(shipHit,computer.getBoard(),computer.getShot());
         gui.getInfoPanel().setComputerMessage("Computer: "+player.getMessage());
         gui.getPlayerGrid().colorButtons(player);
