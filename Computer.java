@@ -80,6 +80,10 @@ public class Computer extends Contributor
 		//System.out.println(shotHit);
 		if (!shotHit) {
 			lastGood = false;
+			trueN = false;
+			trueE = false;
+			trueW = false;
+			trueS = false;
 			shotType = weighted;
 		}
 		else if (shotHit && lastGood==false) {
@@ -100,12 +104,12 @@ public class Computer extends Contributor
 		    }
 		}
 		else if (shotHit && lastGood==true) {
-			shotType = shotType;
-			lastGood = true;
+
 		}
 		else {
 			shotType = weighted; //If I messed anything up
 			lastGood = true;
+			System.out.println("1st loop else- BAD");
 		}
 		
 
