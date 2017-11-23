@@ -8,7 +8,7 @@ public class Computer extends Contributor
 	/*
 	 * The first set of booleans are used to determine shot direction and will direct the computer to fire across a line from their original shot.
 	 */
-	private boolean lastGood = false; //Boolean for checking around the shot location and which direction
+	boolean lastGood = false; //Boolean for checking around the shot location and which direction
 	//private boolean sweepShot = false; // Boolean for checking surrounding tiles, currently unused, lack of input
 	public boolean trueN = false;
 	public boolean trueS = false;
@@ -20,25 +20,26 @@ public class Computer extends Contributor
 	 //Will then have additional parameters for the if-statement in the logic
 	 //public boolean stupidAI = false;
 	public int aiDiff = 1;
-	private static final int easy = 1;
-	private static final int medium = 2;
-	private static final int hard = 3;
+	static final int easy = 1;
+	static final int medium = 2;
+	static final int hard = 3;
+	Random rand = new Random();
 	
 	/*
 	 *
 	 */
 	
 	public ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
-	private int shotType = 0;
+	int shotType = 0;
 	public int x = 0;
 	public int y = 0;
-	private static final int weighted = 0;
-	private static final int chooseDirection = -10;
-	private static final int shotRAND = -100;
-	private static final int shotNorth = -2;
-	private static final int shotEast = -3;
-	private static final int shotWest = -4;
-	private static final int shotSouth = -5;
+	static final int weighted = 0;
+	static final int chooseDirection = -10;
+	static final int shotRAND = -100;
+	static final int shotNorth = -2;
+	static final int shotEast = -3;
+	static final int shotWest = -4;
+	static final int shotSouth = -5;
 	
 
 	public Computer()
@@ -66,13 +67,7 @@ public class Computer extends Contributor
 		}
 		return emptySpace;
 	}
-
-	public void setShot(){
-		Random rand = new Random();
-		shot[0]=rand.nextInt(10);
-		shot[1]=rand.nextInt(10);
-	}
-
+	
 	/*
 	 * An overridden setShot of Contributor
 	 * Two if-else blocks
@@ -81,12 +76,12 @@ public class Computer extends Contributor
 	 */
 	//@Override
 	public void setShot(Boolean shotHit) {
-		Random rand = new Random();
 		if (!shotHit) {
 			lastGood = false;
 			shotType = weighted;
 		}
 		else if (shotHit && !lastGood && aiDiff == hard) {
+			lastGood = true;
 		    int tempDir = rand.nextInt(4);
 		    shotType = -(tempDir + 2); //Can be re-implemented as a random number from an array, current chooses between -2 and -5
 		    if (shotType == shotNorth) {
@@ -107,11 +102,12 @@ public class Computer extends Contributor
 		}
 		else {
 			shotType = weighted; //If I messed anything up
+			lastGood = true;
 		}
 		
 		if (aiDiff == easy) {
-			int x = rand.nextInt(10);
-			int y = rand.nextInt(10);
+			x = rand.nextInt(10);
+			y = rand.nextInt(10);
 		}
 		
 		else if (shotType == weighted && aiDiff == medium) {
@@ -124,8 +120,10 @@ public class Computer extends Contributor
 			x = getShot()[1];
 			y = getShot()[0]-1;
 			if (y<0) {
-				//sweepShot = false;
-				//lastGood = false;
+				trueN = false;
+				trueS = true;
+				x = getShot()[1];
+				y = getShot()[0]+1;
 				setShot(shotHit);
 			}
 		}
@@ -135,8 +133,10 @@ public class Computer extends Contributor
 			y = getShot()[0];
 			// x>9 must be replaced
 			if (x>9) {
-				//sweepShot = false;
-				//lastGood = false;
+				trueE = false;
+				trueW = true;
+				x = getShot()[1]-1;
+				y = getShot()[0];
 				setShot(shotHit);
 			}
 		}
@@ -145,8 +145,10 @@ public class Computer extends Contributor
 			x = getShot()[1]-1;
 			y = getShot()[0];
 			if (x<0) {
-				//sweepShot = false;
-				//lastGood = false;
+				trueW = false;
+				trueE = true;
+				x = getShot()[1]+1;
+				y = getShot()[0];
 				setShot(shotHit);
 			}
 		}
@@ -156,22 +158,31 @@ public class Computer extends Contributor
 			y = getShot()[0]+1;
 			// y>9 must be replaced
 			if (y>9) {
-				//sweepShot = false;
-				//lastGood = false;
+				trueS = false;
+				trueN = true;
+				x = getShot()[1];
+				y = getShot()[0]-1;
 				setShot(shotHit);
 			}
 		}
 		
-		Point temp = new Point(x,y);
+		int a = x;
+		int b = y;
+		Point temp = new Point(a,b);
 		if (shotStore.contains(temp)) {
 			//sweepShot = false;
 			//lastGood = false;
+			trueN = false;
+			trueE = false;
+			trueW = false;
+			trueS = false;
 			setShot(shotHit);
 		}
-		shotStore.add(new Point(x,y));
-		//
-		shot[1] = x;
-		shot[0] = y;
+		else {
+			shotStore.add(temp);
+			shot[1] = x;
+			shot[0] = y;
+		}
 	}
 	
 	/*

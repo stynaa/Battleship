@@ -2,7 +2,7 @@
 public class Contributor {
 	private boolean win = false;
 	private boolean endGame = false;
-	private boolean shotHit = false;
+	boolean shotHit = false;
 	private Board b;
 	int[] shot = new int[2];
 	public static int MAXROW = 10;
