@@ -1,323 +1,273 @@
-//package battleship;
-
 import java.util.Random;
-
-public class Computer extends Board{
-  //int MAXROW = 10;
-  //int MAXCOL = 10;
-  //int[][] board = new int[MAXCOL][MAXROW]; //initialized in setComputer, 5 by 5 board
-  //int[] coord = new int[2]; //used to store x,y coordinate for set up and game play
-  char direction; //for setPlayer and setComputer, for direction of ships
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 
-  //currently poorly implemented booleans
-  boolean lastGood = false; //Boolean for checking around the shot location and which direction
-  boolean trueN = false;
-  boolean trueS = false;
-  boolean trueE = false;
-  boolean trueW = false;
+public class Computer extends Contributor
+{
+	/*
+	 * The first set of booleans are used to determine shot direction and will direct the computer to fire across a line from their original shot.
+	 */
+	boolean lastGood = false; //Boolean for checking around the shot location and which direction
+	//private boolean sweepShot = false; // Boolean for checking surrounding tiles, currently unused, lack of input
+	public boolean trueN = false;
+	public boolean trueS = false;
+	public boolean trueE = false;
+	public boolean trueW = false;
+	boolean feedbackHit = false;
+
+	 //Might have the button click this boolean
+	 //Might have it as an int and have the hard-medium-easy click it for a number
+	 //Will then have additional parameters for the if-statement in the logic
+	 //public boolean stupidAI = false;
+	public int aiDiff = 3;
+	static final int easy = 1;
+	static final int medium = 2;
+	static final int hard = 3;
+	Random rand = new Random();
+
+	/*
+	 *
+	 */
+
+	public ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
+	int shotType = 0;
+	public int x = 0;
+	public int y = 0;
+	static final int weighted = 0;
+	static final int chooseDirection = -10;
+	static final int shotRAND = -100;
+	static final int shotNorth = -2;
+	static final int shotEast = -3;
+	static final int shotWest = -4;
+	static final int shotSouth = -5;
 
 
-  //Recent idea variables from TA feedback
-  //Instead of holding arbitrary numbers, there will be variable names that provide useful information
-  public static final int shotWEIGH = 0;
-  public static final int shotRAND = -100;
-  public static final int shotNorth = -2;
-  public static final int shotEast = -3;
-  public static final int shotWest = -4;
-  public static final int shotSouth = -5;
+	public Computer()
+	{
+		super();
+	}
 
-  //An array which will hold a copy of the original shot
-  int[] originalShot = new int[2];
+	public boolean checkComputerSetup(int[][] boardToCheck, int row,
+			int col, int shipLength, int vertOrHor)
+	{
+		boolean emptySpace = true;
+		//Cycles through the array for the length of shipLength
+		for (int sLength = 0; sLength < shipLength; sLength++)
+		{
+			//0 = space is empty
+			if (boardToCheck[col][row] != 0)
+				emptySpace = false;
+			else
+				emptySpace = emptySpace && true;
+			//Alters what spaces to check, depending on ship placement.
+			if (vertOrHor == 0) //Vertical checking
+				col++;
+			else //Horizontal checking
+				row++;
+		}
+		return emptySpace;
+	}
 
-  boolean win = false; //to determine winner in winCheck()
-  int playerHitCounter=0;
+	/*
+	 * An overridden setShot of Contributor
+	 * Two if-else blocks
+	 * The first block determines the nature and shot selection method, based on if the current previous shot(s) had landed.
+	 * The second block are the shot selection protocols.
+	 */
+	//@Override
+	public void setShot(Boolean shotHit) {
+		//System.out.println(shotHit);
+		if (!shotHit) {
+			lastGood = false;
+			trueN = false;
+			trueE = false;
+			trueW = false;
+			trueS = false;
+			shotType = weighted;
+		}
+		else if (shotHit && lastGood==false) {
+		    int tempDir = rand.nextInt(4);
+		    shotType = -(tempDir + 2); //Can be re-implemented as a random number from an array, current chooses between -2 and -5
 
-  public Computer(){
-   super();
-  }
+		    if (shotType == shotNorth) {
+		    	trueN = true;
+		    }
+		    else if (shotType == shotEast) {
+		    	trueE = true;
+		    }
+		    else if (shotType == shotWest) {
+		    	trueW = true;
+		    }
+		    else if (shotType == shotSouth) {
+		    	trueS = true;
+		    }
+		}
+		else if (shotHit && lastGood==true) {
 
-  //Gets move of Computer
-  //Stores move in coord
-  public void getMove(Player p1) {
-    Random rand = new Random(); // Initalize random 
-    
-    
-    if (p1.boardState == 0) { // Weight random
-      int[] boardChoice;
-      //boardChoice[] = {1,2,2,3,3,3,4,4,5}; //Currently non-dynamic for 5
-      //May implement a more sophisticated weight shot
-      //Central and odd lines are slightly favoured during targetting
-      //
-      boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
-      coord[1] = boardChoice[rand.nextInt(boardChoice.length)]; //X
-      coord[0] = boardChoice[rand.nextInt(boardChoice.length)]; //Y
-      //Troubleshooting messages
-      //
-      System.out.println("Computer fires at: " + coord[1] + ", " + coord[0] + ".");
-      System.out.println("RANDOM");
-    } 
-
-    else if (p1.boardState == -100) { //Normal random, previously used as basic firing, DO NOT USE
-      coord[1] = rand.nextInt(MAXROW); //X
-      coord[0] = rand.nextInt(MAXCOL); //Y
-      System.out.println("Computer fires at: " + coord[1] + ", " + coord[0] + ".");
-    }
-
-    else if (p1.boardState == -2) { // Hit, checking Y-North
-    //I am not sure if I need to do this "copy" correctly
-    //Temporary copy to ensure not out of bounds
-      int temp[] = new int[2];
-      temp[1] = p1.coordStored[1];      //X?
-      temp[0] = p1.coordStored[0] - 1;  //Y?
-      //Troubleshooting for the  temporary array
-      System.out.println(p1.board.length);
-      System.out.println(temp[1]);
-      System.out.println(temp[0]);
-      if (temp [0] >= 0) {
-        coord[1] = p1.coordStored[1];
-        coord[0] = p1.coordStored[0] - 1;
-        trueN = true;
-        //
-        System.out.println("Computer fires at: " + coord[1] + ", " + coord[0] + ".");
-        System.out.println("North");
-      }
-      //My poor attempt at recursion, just a temporary else
-      //Tracing through this, it's quite pointless
-      //Will require assistance for properly implementing it
-      else {
-        p1.boardState = -10;
-        getMove(p1);
-      }
-    }
-
-    else if (p1.boardState == -3) { // Hit, checking X-East
-      int temp[] = new int[2];
-      temp[1] = p1.coordStored[1] + 1;      //X
-      temp[0] = p1.coordStored[0];          //Y
-      System.out.println(p1.board.length);
-      System.out.println(temp[1]);
-      System.out.println(temp[0]);
-      if (temp [1] <= p1.board.length) {
-        coord[1] = p1.coordStored[1] + 1;
-        coord[0] = p1.coordStored[0];
-        trueE = true;
-        System.out.println("Computer fires at: " + coord[1] + ", " + coord[0] + ".");
-        System.out.println("East");
-      }
-            else {
-              p1.boardState = -10;
-        getMove(p1);
-      }
-    }
-
-    else if (p1.boardState == -4) { // Hit, checking X-West
-      int temp[] = new int[2];
-      temp[1] = p1.coordStored[1] - 1;      //X
-      temp[0] = p1.coordStored[0];          //Y
-      System.out.println(p1.board.length);
-      System.out.println(temp[1]);
-      System.out.println(temp[0]);
-//      if (temp [1] < p1.coord.getLength) { 
-      if (temp[1] >= 0) {
-        coord[1] = p1.coordStored[1] - 1;
-        coord[0] = p1.coordStored[0];
-        trueW = true;
-        System.out.println("Computer fires at: " + coord[1] + ", " + coord[0] + ".");
-        System.out.println("West");
-      }
-            else {
-              p1.boardState = -10;
-        getMove(p1);
-      }
-    }
-
-    else if (p1.boardState == -5) { // Hit, checking Y-South
-      int temp[] = new int[2];
-      temp[1] = p1.coordStored[1];          //X
-      temp[0] = p1.coordStored[0] + 1;      //Y
-      System.out.println(p1.coord.length);
-      System.out.println(temp[1]);
-      System.out.println(temp[0]);
-//      if (temp [1] < p1.coord.getLength) { 
-      if (temp[0] <= p1.board.length) {
-        coord[1] = p1.coordStored[1];
-        coord[0] = p1.coordStored[0] + 1;
-        trueS = true;
-        System.out.println("Computer fires at: " + coord[1] + ", " + coord[0] + ".");
-        System.out.println("South");
-      }
-      else {
-        p1.boardState = -10;
-        getMove(p1);
-      }
-
-    }
-    else if (p1.boardState == -10) {  //Barrage
-    	//Currently not implemented as desired
-    	/*
-    	Missing:
-    	Saved original shot
-    	Ship hit data (if possible)
-    	A counter for how long to 'barrage' for
-    	Implementation will be based on desired action
-    	*/
-      int tempDir = rand.nextInt(4);
-      p1.boardState = -(tempDir + 2);
-      System.out.println("Direction " + p1.boardState);
-      getMove(p1);
-      //System.out.println("practice recursive");
-
-    }
-
-    else {
-      p1.boardState = -10;
-      getMove(p1); //This is a really messy protocol
-    }    
-      
-  }
-
-  public boolean HitorMiss(Player p1) {
-    //Takes in computer’s move and see if hit’s player's game pieces
-    //uses coord from p1 and computer's board
-    //checks if p1 coords hit computer's board
-    //alters computer's board accordingly
-    //firing protocol is selected accordingly
-    if (board[p1.coord[0]][p1.coord[1]] == 1 )
-      {
-      board[p1.coord[0]][p1.coord[1]] = 3;
-      System.out.println("Hit Computer!");
-      hitCounter();
-      }
-    else if (board[p1.coord[0]][p1.coord[1]] != 1 )
-      {
-        board[p1.coord[0]][p1.coord[1]] = -1;
-      }
-    else {
-      board[p1.coord[0]][p1.coord[1]] = 2;
-      System.out.println("Missed Computer");
-    }
-    boolean oppwin = true;
-    for (int i=0; i<MAXCOL; i++) {
-      for (int j=0; j<MAXROW; j++) {
-        int cCheck = board[j][i]; // Less clutter
-        if (cCheck == 5 || cCheck == 6 || cCheck == 7 || cCheck == 8 || cCheck == 9) { //Adjusted
-          oppwin = false;
-        }
-      }
-    }
-    return oppwin;
-  }
-
-  public void hitCounter(){
-    playerHitCounter=playerHitCounter+1;
-  }
+		}
+		else {
+			shotType = weighted; //If I messed anything up
+			lastGood = true;
+			System.out.println("1st loop else- BAD");
+		}
 
 
-  //adds values to the computer's board
-  public int[][] createBoard()
-  {
-    int[][] board = new int[MAXROW][MAXCOL];
-    for(int row=0 ; row < MAXROW ; row++ )
-    {
-      for(int column=0 ; column < MAXCOL ; column++ )
-      {
-        board[row][column]= 0;
-        System.out.print(" " + board[row][column] + " ");
-      }
-      System.out.println("");
-    }
-    return board;
-  }
+		if (aiDiff == easy) {
+			x = rand.nextInt(10);
+			y = rand.nextInt(10);
+			System.out.println("easy");
+		}
 
-  //for testing purposes
-  public void printBoard(int[][] boarda)
-  {
-    for (int row = 0; row < MAXROW; row++)
-    {
-      for (int col = 0; col < MAXCOL; col++)
-      {
-        System.out.print(" " + boarda[row][col] + " ");
-      }
-      System.out.println("");
-    }
-  }
+		else if (shotType == weighted) {
+		      int[] boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
+		      x = boardChoice[rand.nextInt(boardChoice.length)]; //X
+		      y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
+		      System.out.println("Weighted");
+		}
 
-  public void placeShips()
-  {
-    //Carrier, Battleship, Crusier, Submarine, Destroyer
-    setShip(5, 5);
-    setShip(4, 6);
-    setShip(3, 7);
-    setShip(3, 8);
-    setShip(2, 9);
-  }
+		else if (shotType == shotNorth) {
+			x = getShot()[1];
+			y = getShot()[0]-1;
+			if (y<0) {
+				trueN = false;
+				System.out.println("north");
+				if (shotHistory(x,y)) {
+				shotType = weighted;
+				}
+				else { setShot(shotHit); }
+			}
 
-  //Symbol is for debugging
-  public void setShip(int shipLength, int symbol)
-  {
-    //Chooses a random point on the array to start off.
-    Random rand = new Random();
-    //Limits starting point based on the ship's length.
-    int startingRow = rand.nextInt(MAXROW - shipLength) + 1;
-    int startingCol = rand.nextInt(MAXCOL - shipLength) + 1;
-    //0 = Vertical, 1 = Horizontal
-    int vertOrHor = rand.nextInt(2);
+		}
 
-    //Testing
-    //System.out.println("StartCol: " + startingCol);
-    //System.out.println("StartRow: " + startingRow);
-    //System.out.println("Vert?: " + vertOrHor);
+		else if (shotType == shotEast) {
+			x = getShot()[1]+1;
+			y = getShot()[0];
+			// x>9 must be replaced
+			if (x>9) {
+				trueE = false;
+				System.out.println("east");
+				if (shotHistory(x,y)) {
+				shotType = weighted;
+				}
+				else { setShot(shotHit); }
+			}
+		}
 
-    //Checks if the ship will occupy any spaces.
-    if (checkComputerSetup(board, startingRow,
-    startingCol, shipLength, vertOrHor))
-    {
-      //Changes row/col of board w/o changing ship's row/col.
-      int shipCol = startingCol;
-      int shipRow = startingRow;
-      for (int sLength = 0; sLength < (shipLength); sLength++)
-      {
-        //replaces 0 with a number, indicating it is placed.
-        if (vertOrHor == 0)
-        {
-          board[shipCol][startingRow] = symbol;
-          shipCol++;
-        }
-        else
-        {
-          board[startingCol][shipRow] = symbol;
-          shipRow++;
-        }
-      }
-      //Testing
-      //printBoard(board);
-    }
-    else
-    //Finds a new startingRow and Col if the space is occupied.
-    //Recursive, so repeats until it finds an empty space.
-    setShip(shipLength, symbol);
-  }
+		else if (shotType == shotWest) {
+			x = getShot()[1]-1;
+			y = getShot()[0];
+			if (x<0) {
+				trueW = false;
+				System.out.println("west");
+				if (shotHistory(x,y)) {
+				shotType = weighted;
+				}
+				else { setShot(shotHit); }
+			}
+		}
 
-  //Checks if the space the piece is to be placed is empty.
-  public boolean checkComputerSetup(int[][] boardToCheck, int row,
-  int col, int shipLength, int vertOrHor)
-  {
-    boolean emptySpace = true;
-    //Cycles through the array for the length of shipLength
-    for (int sLength = 0; sLength < shipLength; sLength++)
-    {
-      //0 = space is empty
-      if (boardToCheck[col][row] != 0)
-      emptySpace = false;
-      else
-      emptySpace = emptySpace && true;
-      //Alters what spaces to check, depending on ship placement.
-      if (vertOrHor == 0) //Vertical checking
-      col++;
-      else //Horizontal checking
-      row++;
-    }
-    return emptySpace;
-  }
+		else if (shotType == shotSouth) {
+			x = getShot()[1];
+			y = getShot()[0]+1;
+			// y>9 must be replaced
+			if (y>9) {
+				trueS = false;
+				System.out.println("south");
+				if (shotHistory(x,y)) {
+				shotType = weighted;
+				}
+				else { setShot(shotHit); }
+			}
+		}
+
+		Point temp = new Point(x,y);
+		if (shotHistory(x,y)) {
+			trueN = false;
+			trueE = false;
+			trueW = false;
+			trueS = false;
+			lastGood = false;
+			System.out.println("storage");
+			shotHit = false;
+			shotType = weighted;
+			setShot(shotHit);
+			}
+		else {
+			shotStore.add(temp);
+			shot[1] = x;
+			shot[0] = y;
+		}
+	}
+
+	/*
+	public void setX(int set) {
+		x = set;
+	}
+	public void setY(int set) {
+		y = set;
+	}
+	*/
+
+	public void setFeedback(boolean shipHit) {
+		feedbackHit = shipHit;
+	}
+
+	public boolean shotHistory(int x, int y) {
+		Point temp1 = new Point(x,y);
+		boolean tempbool = false;
+		if (shotStore.contains(temp1)) {
+			trueN = false;
+			trueE = false;
+			trueW = false;
+			trueS = false;
+			tempbool = true;
+		}
+		return tempbool;
+		}
+
+	public void setComputer(int shipCode)
+	{
+
+	}
+
+	public boolean getGood() {
+		return lastGood;
+	}
+
+	public void setAI(int AI)
+	{
+		aiDiff = AI;
+	}
+
+	//Used only for the text version.
+	public void setAIText()
+	{
+		System.out.println("Select AI Difficulty:");
+		System.out.println("1. Easy");
+		System.out.println("2. Medium");
+		System.out.println("3. Hard");
+		Scanner kb = new Scanner(System.in);
+		int AI = kb.nextInt();
+		if (AI == 1 || AI == 2 || AI == 3)
+		{
+			setAI(AI);
+		}
+		else
+		{
+			System.out.println("Please only enter 1, 2, or 3.");
+			setAIText();
+		}
+	}
+
+
+	//public Computer getComputer()
+	//{
+		/*
+		 * Will return a reference of computer
+		 * This makes no sense to me
+		 */
+		//return Computer; //Desired(?) privacy leak
+	//}
 }
