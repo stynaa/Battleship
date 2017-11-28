@@ -9,11 +9,11 @@ public class BattleFrameGUI extends JPanel{
     private Buttons computerGrid; //Button array displaying the computer's board
 
     //initializes the game play views
-    public BattleFrameGUI(Player player, Computer computer, ActionListener listener) {
+    public BattleFrameGUI(Human human, Computer computer, ActionListener listener) {
         JPanel content = new JPanel();
         JPanel gameBoard = new JPanel();
         JPanel boardLabels = new JPanel();
-        playerGrid= new Buttons(player, listener);
+        playerGrid= new Buttons(human, listener);
         computerGrid= new Buttons(computer, listener);
         setPreferredSize(new Dimension(1000,800));
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
@@ -32,7 +32,7 @@ public class BattleFrameGUI extends JPanel{
 
     public JPanel createBoardLabels(JPanel boardLabels){
         boardLabels.setLayout(new BoxLayout(boardLabels,BoxLayout.X_AXIS));
-        JLabel playerLbl = new JLabel("Player");
+        JLabel playerLbl = new JLabel("Human");
         JLabel computerLbl = new JLabel("Computer");
         playerLbl.setFont(new Font("Serif", Font.BOLD, 18));
         computerLbl.setFont(new Font("Serif", Font.BOLD, 18));

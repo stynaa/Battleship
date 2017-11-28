@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Computer extends Contributor
+public class Computer extends Player
 {
 	/*
 	 * The first set of booleans are used to determine shot direction and will direct the computer to fire across a line from their original shot.
@@ -71,7 +71,7 @@ public class Computer extends Contributor
 	}
 
 	/*
-	 * An overridden setShot of Contributor
+	 * An overridden setShot of Player
 	 * Two if-else blocks
 	 * The first block determines the nature and shot selection method, based on if the current previous shot(s) had landed.
 	 * The second block are the shot selection protocols.

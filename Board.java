@@ -268,7 +268,7 @@ public class Board
 	}
 
 	//place ship method for working with the text based version
-	public int[][] placeShips(int boardTotal, Ship boat, int[] coordCopy, char directionCopy, Player player) {
+	public int[][] placeShips(int boardTotal, Ship boat, int[] coordCopy, char directionCopy, Human human) {
 		int shipCode = boat.getShipCode();
 		setCoord(coordCopy[0],coordCopy[1]);
 		direction=directionCopy;
@@ -282,9 +282,9 @@ public class Board
 				copyBoard(oldBoard);
 				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
 				System.out.println();
-				player.setShot();
-				player.setDirection();
-				placeShips(boardTotal,boat,player.getShot(),player.getDirection(),player);
+				human.setShot();
+				human.setDirection();
+				placeShips(boardTotal,boat, human.getShot(), human.getDirection(), human);
 			}
 			else{
 				setOldBoard(board);
@@ -296,9 +296,9 @@ public class Board
 			System.out.println("Direction is out of bounds.");
 			System.out.println("Please select again.");
 			copyBoard(oldBoard);
-			player.setShot();
-			player.setDirection();
-			placeShips(boardTotal,boat,player.getShot(),player.getDirection(),player);
+			human.setShot();
+			human.setDirection();
+			placeShips(boardTotal,boat, human.getShot(), human.getDirection(), human);
 		}
 		return board;
 	}

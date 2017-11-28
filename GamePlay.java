@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class GamePlay {
 	int MAXROW = 10;
 	int MAXCOL = 10;
@@ -10,11 +8,11 @@ public class GamePlay {
 	// Submarine  3 squares- shipCode=8;
 	// Destroyer  2 squares- shipCode=9;
 
-	public Player setPlayer() {
+	public Human setPlayer() {
 		//gets user input to pick positions on the board
 		//checks that none of the ships overlap
 		//return player
-		Player p = new Player();
+		Human p = new Human();
 		int maxship = p.getBoard().getShipList().size();
 		int boardTotal=0;
 
@@ -47,8 +45,8 @@ public class GamePlay {
 		GamePlay game = new GamePlay();
 		Display screen = new Display();
 
-		//Set up Player's board
-		Player p1 = game.setPlayer();
+		//Set up Human's board
+		Human p1 = game.setPlayer();
 		Board playerBoard = p1.getBoard();
 		screen.showPlayerBoard(playerBoard.getBoard());
 

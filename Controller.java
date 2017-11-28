@@ -8,15 +8,15 @@ import java.awt.event.ActionListener;
 public class Controller implements ActionListener {
     private JPanel container = new JPanel();
     private CardLayout cardLayout= new CardLayout();
-    private Player player = new Player();
+    private Human human = new Human();
     private Computer computer= new Computer();
-    private BoardSetUpGUI start= new BoardSetUpGUI(player,this); //ship placement view
+    private BoardSetUpGUI start= new BoardSetUpGUI(human,this); //ship placement view
     private BattleFrameGUI gui; //game play view
     public static int MAXROW=10;
     public static int MAXCOL=10;
     private int shipCode=5; //for ship placement
     private boolean shipsAreSetUp=false;
-    private boolean nextShipFlag = true; //Allows player to see ship set in multiple directions or places before finalizing placement
+    private boolean nextShipFlag = true; //Allows human to see ship set in multiple directions or places before finalizing placement
     private int boardTotal=25; //makes sure that all of the ships are on the board & not placed on top of each other
     private int numberOfGuesses;
     private boolean gameEndFlag=false;
@@ -65,25 +65,25 @@ public class Controller implements ActionListener {
 
     public void gamePlayActions(String buttonPressed){
         int[] coord=convertButtons(buttonPressed);
-        player.setShot(coord);
-        boolean shipHit= computer.HitOrMiss(player.getShot(),computer);
-        computer.getBoard().setBoard(shipHit,player.getBoard(),player.getShot());
+        human.setShot(coord);
+        boolean shipHit= computer.HitOrMiss(human.getShot(),computer);
+        computer.getBoard().setBoard(shipHit, human.getBoard(), human.getShot());
         gui.getComputerGrid().colorButtons(computer);
         numberOfGuesses++;
         gui.getInfoPanel().setNumberOfGuesses(numberOfGuesses);
-        gui.getInfoPanel().setPlayerMessage("Player: "+computer.getMessage());
+        gui.getInfoPanel().setPlayerMessage("Human: "+computer.getMessage());
         if(computer.lossCheck()){
             gameEndFlag=true;
-            gui.getInfoPanel().setPlayerMessage("Player Wins!");
+            gui.getInfoPanel().setPlayerMessage("Human Wins!");
             gui.getInfoPanel().setComputerMessage("");
         }
         computer.setShot(computer.feedbackHit);
-        shipHit= player.HitOrMiss(computer.getShot(),player);
+        shipHit= human.HitOrMiss(computer.getShot(), human);
         computer.setFeedback(shipHit);
-        player.getBoard().setBoard(shipHit,computer.getBoard(),computer.getShot());
-        gui.getInfoPanel().setComputerMessage("Computer: "+player.getMessage());
-        gui.getPlayerGrid().colorButtons(player);
-        if(player.lossCheck()){
+        human.getBoard().setBoard(shipHit,computer.getBoard(),computer.getShot());
+        gui.getInfoPanel().setComputerMessage("Computer: "+ human.getMessage());
+        gui.getPlayerGrid().colorButtons(human);
+        if(human.lossCheck()){
             gameEndFlag=true;
             gui.getInfoPanel().setPlayerMessage("Computer Wins!");
             gui.getInfoPanel().setComputerMessage("");
@@ -97,18 +97,18 @@ public class Controller implements ActionListener {
         }
         else if(buttonPressed.equals("NORTH")||buttonPressed.equals("WEST")||buttonPressed.equals("EAST")||buttonPressed.equals("SOUTH")){
             setDirection(buttonPressed);
-            start.getPlayerGrid().colorButtons(player);
+            start.getPlayerGrid().colorButtons(human);
         }
-        else if(buttonPressed.contains("Player") && !shipsAreSetUp){
+        else if(buttonPressed.contains("Human") && !shipsAreSetUp){
             int[] coord= convertButtons(buttonPressed);
-            player.setShot(coord);
-            start.getPlayerGrid().colorSingleButton(player, coord);
+            human.setShot(coord);
+            start.getPlayerGrid().colorSingleButton(human, coord);
         }
         else if(buttonPressed.equals("NEXT_SHIP")){
-            if(player.getBoard().checkBoard(boardTotal)){
+            if(human.getBoard().checkBoard(boardTotal)){
                 nextShipFlag=true;
                 shipCode++;
-                boardTotal = boardTotal + (shipCode * player.getBoard().getShip(shipCode).getShipSize());
+                boardTotal = boardTotal + (shipCode * human.getBoard().getShip(shipCode).getShipSize());
                 if(shipCode>=10){
                     String s= "You have placed all of your ships!";
                     start.updateDirectionMsg(s);
@@ -121,7 +121,7 @@ public class Controller implements ActionListener {
         else if(buttonPressed.equals("EASY")||buttonPressed.equals("MEDIUM")||buttonPressed.equals("HARD")){
             setDifficulty(buttonPressed);
         }
-        
+
     }
 
 
@@ -140,18 +140,18 @@ public class Controller implements ActionListener {
     //Functionality for the Done & Reset buttons in the GUI, toggles movement from Game set up to Game Play view
     public void useDoneResetSetShips(String buttonPressed){
         if(buttonPressed.equals("RESET")){
-            player.getBoard().clearBoard();
+            human.getBoard().clearBoard();
             shipCode=5;
         }
         else if(buttonPressed.equals("DONE")) {
             int sumBoard = 0;
             for (int i = 0; i < MAXROW; i++) {
                 for (int j = 0; j < MAXCOL; j++) {
-                    sumBoard += player.getBoard().getBoard()[i][j];
+                    sumBoard += human.getBoard().getBoard()[i][j];
                 }
             }
             if (sumBoard == 112) {
-                gui = new BattleFrameGUI(player, computer,this);
+                gui = new BattleFrameGUI(human, computer,this);
                 shipsAreSetUp=true;
                 container.setPreferredSize(new Dimension(1000, 600));
                 container.add(gui, "PLAY");
@@ -169,25 +169,25 @@ public class Controller implements ActionListener {
         char direction;
         if(buttonPressed.equals("NORTH")){
             direction='N';
-            player.setDirection(direction);
+            human.setDirection(direction);
         }
         else if(buttonPressed.equals("SOUTH")){
             direction='S';
-            player.setDirection(direction);
+            human.setDirection(direction);
         }
         else if(buttonPressed.equals("WEST")){
             direction='W';
-            player.setDirection(direction);
+            human.setDirection(direction);
         }
         else if(buttonPressed.equals("EAST")){
             direction='E';
-            player.setDirection(direction);
+            human.setDirection(direction);
         }
         placePlayerShips();
     }
 
     //Sets the difficulty for the computer
-    //Commented out body for now, hopefully works with changes - need a copy constructor in either Contributor or Computer
+    //Commented out body for now, hopefully works with changes - need a copy constructor in either Player or Computer
     public void setDifficulty(String buttonPressed){
 //        if(buttonPressed.equals("EASY")){
 //            computer=new Easy(computer);
@@ -200,24 +200,24 @@ public class Controller implements ActionListener {
 //        }
     }
 
-    //Interacts with the player class to display the current board in the GUI and update the player's board object
+    //Interacts with the human class to display the current board in the GUI and update the human's board object
     public void placePlayerShips(){
         if(shipCode<=9) {
             if(nextShipFlag){
                 nextShipFlag=false;
-                player.getBoard().setOldBoard(player.getBoard().getBoard());
-                player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection());
+                human.getBoard().setOldBoard(human.getBoard().getBoard());
+                human.getBoard().placeShips(boardTotal,shipCode, human.getShot(), human.getDirection());
             }
             else if(!nextShipFlag){
-                player.getBoard().copyBoard(player.getBoard().getOldBoard());
-                player.getBoard().placeShips(boardTotal,shipCode,player.getShot(),player.getDirection());
+                human.getBoard().copyBoard(human.getBoard().getOldBoard());
+                human.getBoard().placeShips(boardTotal,shipCode, human.getShot(), human.getDirection());
             }
-            if(!player.getBoard().checkBoard(boardTotal)){
-                player.getBoard().copyBoard(player.getBoard().getOldBoard());
+            if(!human.getBoard().checkBoard(boardTotal)){
+                human.getBoard().copyBoard(human.getBoard().getOldBoard());
             }
-            String temp = player.getBoard().getMessage();
+            String temp = human.getBoard().getMessage();
             start.updateDirectionMsg(temp);
-            start.getPlayerGrid().colorButtons(player);
+            start.getPlayerGrid().colorButtons(human);
         }
         else {
             start.updateDirectionMsg("You have placed all of your ships.");
