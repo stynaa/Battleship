@@ -37,7 +37,6 @@ public class Ship {
     }
 
     public void setShipSize(){
-
         if (shipCode == 5){
             shipSize = 5;
         }

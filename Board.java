@@ -321,6 +321,7 @@ public class Board
 			setMessage("Please select a valid position on the board.");
 		}
 
+
 	}
 
 	//Updates the board array by placing the ships.
