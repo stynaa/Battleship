@@ -1,5 +1,5 @@
 
-public class Contributor {
+public abstract class Contributor {
 	private boolean win = false;
 	private boolean endGame = false;
 	private boolean shotHit = false;
