@@ -7,6 +7,7 @@ public class Ship {
     private int CRUISER = 7;
     private int SUBMARINE = 8;
     private int DESTROYER = 9;
+    private boolean shipDestroyed=false;
 
     public Ship(int shipSize, int shipCode){
         this.shipSize = shipSize;
@@ -58,8 +59,10 @@ public class Ship {
         return shipSize;
     }
 
-    public boolean isShipDestroyed(boolean shipDestroyed){
-        return shipDestroyed;
+    public void setShipDestroyed(boolean temp){
+        shipDestroyed=temp;
     }
+
+    public boolean getShipDestroyed(){return shipDestroyed;}
 
 }
