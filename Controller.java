@@ -92,7 +92,7 @@ public class Controller implements ActionListener {
 
 
     public void startGUIActions(String buttonPressed){
-        if(buttonPressed.equals("RESET")||buttonPressed.equals("DONE")){
+        if(buttonPressed.equals("RESET")||buttonPressed.equals("DONE")||buttonPressed.equals("AUTO_SET_SHIPS")){
             useDoneResetSetShips(buttonPressed);
         }
         else if(buttonPressed.equals("NORTH")||buttonPressed.equals("WEST")||buttonPressed.equals("EAST")||buttonPressed.equals("SOUTH")){
@@ -142,6 +142,13 @@ public class Controller implements ActionListener {
         if(buttonPressed.equals("RESET")){
             human.getBoard().clearBoard();
             shipCode=5;
+            start.getPlayerGrid().colorButtons(human);
+        }
+        if(buttonPressed.equals("AUTO_SET_SHIPS")){
+            human.getBoard().clearBoard();
+            human.getBoard().placeComputerShip();
+            start.getPlayerGrid().colorButtons(human);
+
         }
         else if(buttonPressed.equals("DONE")) {
             int sumBoard = 0;
