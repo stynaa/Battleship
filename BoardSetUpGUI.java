@@ -13,11 +13,11 @@ public class BoardSetUpGUI extends JPanel {
     private JPanel shipSetUpPanel = new JPanel();
     private JPanel difficultyPanel=new JPanel();
 
-    //initializes the player set up view
-    public BoardSetUpGUI(Player player, ActionListener listener){
+    //initializes the human set up view
+    public BoardSetUpGUI(Human human, ActionListener listener){
         JPanel content = new JPanel();//holds the content of the GameStarting screen
         JLabel msg = new JLabel("Welcome to Battleship!");
-        playerGrid = new Buttons(player, listener);
+        playerGrid = new Buttons(human, listener);
         setPreferredSize(new Dimension(1000,800));
         setSize(550,550);
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
@@ -66,11 +66,16 @@ public class BoardSetUpGUI extends JPanel {
         JButton reset= new JButton("Reset");
         reset.addActionListener(listener);
         reset.setActionCommand("RESET");
+        JButton autoSetShips= new JButton("Set Ships For Me");
+        autoSetShips.addActionListener(listener);
+        autoSetShips.setActionCommand("AUTO_SET_SHIPS");
 
         doneResetPanel.add(Box.createHorizontalGlue());
         doneResetPanel.add(done);
         doneResetPanel.add(Box.createHorizontalGlue());
         doneResetPanel.add(reset);
+        doneResetPanel.add(Box.createHorizontalGlue());
+        doneResetPanel.add(autoSetShips);
         doneResetPanel.add(Box.createHorizontalGlue());
     }
 
