@@ -92,7 +92,7 @@ public abstract class Player {
 		}
 		return oppwin;
 	}
-
+	
 	public boolean getWin() {
 		return win;
 	}
