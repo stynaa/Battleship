@@ -28,6 +28,7 @@ public class BoardSetUpGUI extends JPanel {
         content.add(playerGrid);
         setDoneResetPanel(listener);
         content.add(doneResetPanel);
+        directionMsg.setFont(new Font("Serif", Font.BOLD,14));
         directionMsg.setAlignmentX(Component.CENTER_ALIGNMENT);
         content.add(directionMsg);
         setShipSetUpPanel(listener);
