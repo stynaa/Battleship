@@ -1,7 +1,5 @@
 public class Ship {
 
-    private char Direction;
-    private int Coord;
     private int shipSize;
     private int shipCode;
     private int CARRIER = 5; 
@@ -60,8 +58,8 @@ public class Ship {
         return shipSize;
     }
 
-    public boolean isShipDestroyed(){
-        return true;
+    public boolean isShipDestroyed(boolean shipDestroyed){
+        return shipDestroyed;
     }
 
 }
