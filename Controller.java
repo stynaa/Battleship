@@ -97,10 +97,12 @@ public class Controller implements ActionListener {
         }
         else if(buttonPressed.equals("NORTH")||buttonPressed.equals("WEST")||buttonPressed.equals("EAST")||buttonPressed.equals("SOUTH")){
             setDirection(buttonPressed);
+            start.getPlayerGrid().colorButtons(player);
         }
         else if(buttonPressed.contains("Player") && !shipsAreSetUp){
             int[] coord= convertButtons(buttonPressed);
             player.setShot(coord);
+            start.getPlayerGrid().colorSingleButton(player, coord);
         }
         else if(buttonPressed.equals("NEXT_SHIP")){
             if(player.getBoard().checkBoard(boardTotal)){
@@ -119,7 +121,7 @@ public class Controller implements ActionListener {
         else if(buttonPressed.equals("EASY")||buttonPressed.equals("MEDIUM")||buttonPressed.equals("HARD")){
             setDifficulty(buttonPressed);
         }
-        start.getPlayerGrid().colorButtons(player);
+        
     }
 
 

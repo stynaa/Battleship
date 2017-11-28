@@ -9,14 +9,16 @@ public class Buttons extends  JPanel{
     public JPanel contributorGrid= new JPanel();
 
     //board value constants
-    public static int EMPTY=0;
-    public static int HIT=3;
-    public static int MISS=2;
-    public static int CARRIER=5;
-    public static int BATTLESHIP=6;
-    public static int CRUISER=7;
-    public static int SUBMARINE=8;
-    public static int DESTROYER=9;
+    public static final int EMPTY=0;
+    public static final int HIT=3;
+    public static final int MISS=2;
+    public static final int CARRIER=5;
+    public static final int BATTLESHIP=6;
+    public static final int CRUISER=7;
+    public static final int SUBMARINE=8;
+    public static final int DESTROYER=9;
+    public static final int BUTTON_CLICKED=1;
+
 
 
     public Buttons(Contributor aContributor, ActionListener listener) {
@@ -63,5 +65,13 @@ public class Buttons extends  JPanel{
             }
         }
     }
+
+    //To show the user where they have clicked while they are setting up their ships
+    public void colorSingleButton(Contributor aContributor, int[] coord){
+        colorButtons(aContributor);
+        int row= coord[0];
+        int col= coord[1];
+        button[row][col].setBackground(Color.green);
+            }
 
 }
