@@ -15,7 +15,7 @@ public class Buttons extends  JPanel{
     private JButton[][] button = new JButton[MAXROW][MAXCOL];
     public JPanel contributorGrid= new JPanel();
     public ImageIcon fire = new ImageIcon(getFire()); //initialized as an instance variable to increase application speed
-    public ImageIcon water = new ImageIcon(getWater());
+    public ImageIcon water = new ImageIcon(getWater());//initialized as an instance variable to increase application speed
 
     //board value constants
     public static final int EMPTY=0;
