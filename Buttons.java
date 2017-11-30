@@ -111,6 +111,7 @@ public class Buttons extends  JPanel{
     }
 
 
+
     //updates the colors of the buttons to show the user where their ships are placed
     //Also shows if the user has hit or missed during the gamePlay
     public void colorButtons(Player aPlayer)  {
@@ -119,10 +120,10 @@ public class Buttons extends  JPanel{
                 if (aPlayer.getBoard().getBoard()[r][c] == EMPTY) { //empty
                     button[r][c].setIcon(water);
                     button[r][c].setBackground(Color.blue);
-                } else if (aPlayer.getBoard().getBoard()[r][c] == MISS) { //Carrier
+                } else if (aPlayer.getBoard().getBoard()[r][c] == MISS) {
                     button[r][c].setIcon(null);
                     button[r][c].setBackground(Color.green);
-                } else if (aPlayer.getBoard().getBoard()[r][c] == HIT) { //Carrier
+                } else if (aPlayer.getBoard().getBoard()[r][c] == HIT) {
                    button[r][c].setIcon(fire);
                     button[r][c].setBackground(Color.red);
                 }
