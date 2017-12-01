@@ -1,3 +1,5 @@
+package gui;
+
 //Taken from
 //https://www.cs.montana.edu/courses/spring2006/221/programs/program2.html
 
@@ -32,11 +34,11 @@ public class InfoPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setPreferredSize(new Dimension(1000, 120));
         guesses=new JLabel(" ");
-//        guesses = new JLabel("Guesses: " + numberOfGuesses);
-//        guesses.setForeground(Color.red);
+        guesses = new JLabel("Guesses: " + numberOfGuesses);
+        guesses.setForeground(Color.red);
         add(Box.createHorizontalGlue());
         add(guesses);
-       add(Box.createHorizontalGlue());
+        add(Box.createHorizontalGlue());
 
         playerMessage = new JLabel("Hello!");
         playerMessage.setForeground(Color.green);
@@ -46,6 +48,7 @@ public class InfoPanel extends JPanel {
         add(Box.createHorizontalGlue());
         add(computerMessage);
         add(Box.createHorizontalGlue());
+        
     }
 
     public void setNumberOfGuesses(int num){
@@ -54,6 +57,11 @@ public class InfoPanel extends JPanel {
     }
     public int getNumberOfGuesses(){
         return numberOfGuesses;
+    }
+    
+    public void setGuesses (String s)
+    {
+    	guesses.setText(s);
     }
 
     public void setPlayerMessage(String s){
