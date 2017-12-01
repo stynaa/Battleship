@@ -1,8 +1,6 @@
 
 public abstract class Player {
 	private boolean win = false;
-	private boolean endGame = false;
-	private boolean shotHit = false;
 	private Board b;
 	int[] shot = new int[2];
 	public static int MAXROW = 10;
@@ -21,7 +19,7 @@ public abstract class Player {
 	}
 
 	public int[] getShot() {
-		//not pass by reference, can change this
+		//not pass by reference
 		int[] copyShot = new int[2];
 		copyShot[0] = shot[0];
 		copyShot[1] = shot[1];
@@ -99,14 +97,6 @@ public abstract class Player {
 
 	public void setWin(boolean b) {
 		win = b;
-	}
-
-	public boolean getEndGame() {
-		return endGame;
-	}
-
-	public void setEndGame(boolean end) {
-		endGame = end;
 	}
 
 	public Board getBoard() {
