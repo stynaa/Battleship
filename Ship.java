@@ -1,42 +1,36 @@
-public class Ship {
 
+/** Ship class contains the ship specific attributes of shipSize and shipCode
+* Ship Code 5 = Carrier Ship
+* Ship Code 6 = Battleship
+* Ship Code 7 = Cruiser
+* Ship Code 8 = Submarine
+* Ship Code 9 = Destroyer
+**/
+public class Ship {
     private int shipSize;
     private int shipCode;
-    private int CARRIER = 5; 
-    private int BATTLESHIP = 6;
-    private int CRUISER = 7;
-    private int SUBMARINE = 8;
-    private int DESTROYER = 9;
-    private boolean shipDestroyed=false;
 
-    public Ship(int shipSize, int shipCode){
-        this.shipSize = shipSize;
-        this.shipCode = shipCode;
+    /** Constructor for the Ship class
+    * @param shipCode the code for type of ship
+    * shipCode effects the length of the ship
+    **/
+    public Ship(int shipCode){
+        this.shipCode=shipCode;
+        setShipSize(shipCode);
     }
 
-    public void setShipCode(){
-        if (shipCode == 5){
-             shipCode = CARRIER;
-        }
-        else if (shipCode == 6){
-            shipCode = BATTLESHIP;
-        }
-        else if (shipCode == 7){
-            shipCode = CRUISER;
-        }
-        else if (shipCode == 8){
-            shipCode = SUBMARINE;
-        }
-        else if (shipCode == 9){
-            shipCode = DESTROYER;
-        }
-    }
 
+    /** accessor for the shipCode variable
+    * @return shipCode the code for type of ship
+    **/
     public int getShipCode(){
         return shipCode;
     }
 
-    public void setShipSize(){
+    /** mutator for the shipSize variable
+    * @param shipCode the code for type of ship
+    **/
+    public void setShipSize(int shipCode){
         if (shipCode == 5){
             shipSize = 5;
         }
@@ -54,14 +48,11 @@ public class Ship {
         }
     }
 
+    /** accessor for the shipSize variable
+    * @return shipSize
+    **/
     public int getShipSize(){
         return shipSize;
     }
-
-    public void setShipDestroyed(boolean temp){
-        shipDestroyed=temp;
-    }
-
-    public boolean getShipDestroyed(){return shipDestroyed;}
 
 }

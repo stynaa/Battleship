@@ -13,11 +13,11 @@ public class Board
 	private char direction;
 	private boolean boardOK;
 	private int boardState;
-	private Ship Carrier = new Ship(5, 5);
-	private Ship Battleship = new Ship(4, 6);
-	private Ship Cruiser = new Ship(3, 7);
-	private Ship Submarine = new Ship(3, 8);
-	private Ship Destroyer = new Ship(2, 9);
+	private Ship Carrier = new Ship(5);
+	private Ship Battleship = new Ship(6);
+	private Ship Cruiser = new Ship(7);
+	private Ship Submarine = new Ship(8);
+	private Ship Destroyer = new Ship(9);
 	private ArrayList<Ship> shipList = new ArrayList<Ship>();
 	private  String message=" ";
 
@@ -394,7 +394,7 @@ public class Board
 
 
 	public Ship getShip(int shipCode){
-		Ship s= new Ship(5,5);
+		Ship s= new Ship(5);
 		if(shipCode==5){
 			s = Carrier;
 		}
