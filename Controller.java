@@ -1,7 +1,9 @@
 package control;
 
+/* For packages
 import gui.*;
 import logic.*;
+*/
 
 import javax.swing.*;
 
