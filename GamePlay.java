@@ -1,7 +1,12 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class GamePlay {
 	int MAXROW = 10;
 	int MAXCOL = 10;
 	int shipSize;
+	char direction;
+
 	// Carrier  5 squares - shipCode=5;
 	// Battleship  4 squares- shipCode=6;
 	// Cruiser  3 squares- shipCode=7;
@@ -14,23 +19,48 @@ public class GamePlay {
 		//return player
 		Human p = new Human();
 		int maxship = p.getBoard().getShipList().size();
-		int boardTotal=0;
+		int boardTotal = 0;
 
-		for (int i = 0; i < maxship; i++)
-		{
-			System.out.println("This is your " + (i+1) + " boat out of " + maxship + ".");
+		for (int i = 0; i < maxship; i++) {
+			System.out.println("This is your " + (i + 1) + " boat out of " + maxship + ".");
 			Ship boat = p.getBoard().getShipList().get(i);
 			int shipCode = boat.getShipCode();
 			int shipSize = boat.getShipSize();
 
 			boardTotal = boardTotal + (shipCode * shipSize);
-			p.setShot();
-			p.setDirection();
-			p.getBoard().placeShips(boardTotal,boat,p.getShot(),p.getDirection(),p);
-			p.getBoard().printBoard();
+			p.setShot(getInputForShot());
+			p.setDirection(getInputForDirection());
+			setPlayerShips(p, shipCode, boat, boardTotal);
 		}
 		return p;
 	}
+
+	public void setPlayerShips(Human p, int shipCode, Ship boat, int boardTotal) {
+		if (p.getBoard().checkDirection(shipCode, p.getDirection())) {
+			p.getBoard().setBoard(boat, p.getShot());
+			p.getBoard().checkBoard(boardTotal);
+//			System.out.println(boardTotal);
+			if (!p.getBoard().getBoardOK()) {
+				p.getBoard().copyBoard(p.getBoard().getOldBoard());
+				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
+				System.out.println();
+				p.setShot(getInputForShot());
+				p.setDirection(getInputForDirection());
+				setPlayerShips(p, shipCode, boat, boardTotal);
+			} else {
+				p.getBoard().setOldBoard(p.getBoard().getBoard());
+			}
+		} else {
+			System.out.println("Direction is out of bounds.");
+			System.out.println("Please select again.");
+			p.getBoard().copyBoard(p.getBoard().getOldBoard());
+			p.setShot(getInputForShot());
+			p.setDirection(getInputForDirection());
+			setPlayerShips(p, shipCode, boat, boardTotal);
+		}
+		p.getBoard().printBoard();
+	}
+
 
 	//Creates Computer's board and sets up AI.
 	public Computer setComputer()
@@ -39,6 +69,68 @@ public class GamePlay {
 		c.getBoard().placeComputerShip();
 		c.setAIText();
 		return c;
+	}
+
+	public int[] getInputForShot(){
+		int[] shot= new int[2];
+		System.out.println("Enter your coordinates...");
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println(" Horizontal (A-J):");
+		shot[1] = Char2Int(keyboard.next().charAt(0));
+
+		//Exception for if Vertical is not a number,
+		//or if Direction is not a letter.
+		try {
+			System.out.println(" Vertical (1-10):");
+			shot[0] = keyboard.nextInt() - 1;
+
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input - try again.");
+			shot=getInputForShot();
+		}
+		return shot;
+	}
+
+	//Converts the letters for row of ship placement into int.
+	public int Char2Int(char row)
+	{
+		int num = 0;
+		if (row == 'A' || row == 'a') {
+			num = 0;
+		} else if (row == 'B' || row == 'b') {
+			num = 1;
+		} else if (row == 'C' || row == 'c') {
+			num = 2;
+		} else if (row == 'D' || row == 'd') {
+			num = 3;
+		} else if (row == 'E' || row == 'e') {
+			num = 4;
+		} else if (row == 'F' || row == 'f') {
+			num = 5;
+		} else if (row == 'G' || row == 'g') {
+			num = 6;
+		} else if (row == 'H' || row == 'h') {
+			num = 7;
+		} else if (row == 'I' || row == 'i') {
+			num = 8;
+		} else if (row == 'J' || row == 'j') {
+			num = 9;
+		}
+		return num;
+	}
+
+	public char getInputForDirection(){ ;
+		try {
+			Scanner keyboard = new Scanner(System.in);
+			System.out.println(" Direction of ship (N,S,E,W):");
+			direction= (keyboard.next().charAt(0));
+		}
+		//Calls method again to try again if input is wrong.
+		catch (InputMismatchException e) {
+			System.out.println("Invalid input - try again.");
+			getInputForDirection();
+		}
+		return direction;
 	}
 
 	public static void main(String args[]) {
@@ -60,7 +152,7 @@ public class GamePlay {
 		{
 			//Gets players move
 			p1.setWin(c1.lossCheck());
-			p1.setShot();
+			p1.setShot(game.getInputForShot());
 			boolean playerHit = c1.HitOrMiss(p1.getShot(),c1); //Check if hit or a miss, updates c1 board and p1.win
 			if (playerHit)
 			{

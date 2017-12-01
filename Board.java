@@ -42,33 +42,7 @@ public class Board
 				board[row][col] = copyBoard[row][col];
 	}
 
-	//Converts the letters for row of ship placement into int.
-	public int Char2Int(char row)
-	{
-		int num = 0;
-		if (row == 'A' || row == 'a') {
-			num = 0;
-		} else if (row == 'B' || row == 'b') {
-			num = 1;
-		} else if (row == 'C' || row == 'c') {
-			num = 2;
-		} else if (row == 'D' || row == 'd') {
-			num = 3;
-		} else if (row == 'E' || row == 'e') {
-			num = 4;
-		} else if (row == 'F' || row == 'f') {
-			num = 5;
-		} else if (row == 'G' || row == 'g') {
-			num = 6;
-		} else if (row == 'H' || row == 'h') {
-			num = 7;
-		} else if (row == 'I' || row == 'i') {
-			num = 8;
-		} else if (row == 'J' || row == 'j') {
-			num = 9;
-		}
-		return num;
-	}
+
 
 	//Adds the ships to an array list.
 	public void addShipsToList()
@@ -210,31 +184,33 @@ public class Board
 
 	//Used to check victory conditions.
 	//BoardSum: shipcode * shiplength
-	public boolean checkBoard(int currentBoardSum)
+	public void checkBoard(int currentBoardSum)
 	{
 		int sumBoard = 0;
 		for (int i = 0; i < board[0].length; i++)
 		{
 			for (int j = 0; j < board[0].length; j++)
 			{
-				//System.out.println(sumBoard);
+
 				sumBoard += board[i][j];
 			}
 		}
+//		System.out.println(sumBoard);
+//		System.out.println(currentBoardSum);
 		if (sumBoard == currentBoardSum)
 		{
-			boardOK = true;
+			setBoardOK(true);
 		}
 		else
 		{
-			boardOK = false;
+			setBoardOK(false);
 		}
-		return boardOK;
 	}
 
 	//Checks the direction of the ship placement.
-	public boolean checkDirection(int shipSize)
+	public boolean checkDirection(int shipSize, char directionCopy)
 	{
+		direction=directionCopy;
 		boolean validDirection = true;
 		//Checks if the ship would go out of bounds.
 		if (direction == 'N' || direction == 'n')
@@ -267,53 +243,23 @@ public class Board
 		return validDirection;
 	}
 
-	//place ship method for working with the text based version
-	public int[][] placeShips(int boardTotal, Ship boat, int[] coordCopy, char directionCopy, Human human) {
-		int shipCode = boat.getShipCode();
-		setCoord(coordCopy[0],coordCopy[1]);
-		direction=directionCopy;
-		if (checkDirection(shipCode))
-		{
-			setBoard(boat);
-			boardOK = checkBoard(boardTotal);
-			//System.out.println(boardTotal);
-			if (!boardOK)
-			{
-				copyBoard(oldBoard);
-				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
-				System.out.println();
-				human.setShot();
-				human.setDirection();
-				placeShips(boardTotal,boat, human.getShot(), human.getDirection(), human);
-			}
-			else{
-				setOldBoard(board);
-			}
-//			Board copyBoard = new Board(gameBoard);
-		}
-		else
-		{
-			System.out.println("Direction is out of bounds.");
-			System.out.println("Please select again.");
-			copyBoard(oldBoard);
-			human.setShot();
-			human.setDirection();
-			placeShips(boardTotal,boat, human.getShot(), human.getDirection(), human);
-		}
-		return board;
+
+	public void setBoardOK(boolean boardOKCopy){
+		boardOK=boardOKCopy;
+	}
+	public boolean getBoardOK(){
+		return boardOK;
 	}
 
 
 	//Method to handle ship placement for the GUI
 	public void placeShips(int boardTotal, int shipCode, int[] coordCopy, char directionCopy) {
 		Ship boat= getShip(shipCode);
-		setCoord(coordCopy[0],coordCopy[1]);
-		direction=directionCopy;
 		setMessage("Let's place our ships!");
-		if(checkDirection(boat.getShipSize())){
-			setBoard(boat);
-			boardOK = checkBoard(boardTotal);
-			if (!boardOK) {
+		if(checkDirection(boat.getShipSize(),directionCopy)){
+			setBoard(boat, coordCopy);
+			checkBoard(boardTotal);
+			if (!getBoardOK()) {
 				setMessage("Please select a valid position on the board.");
 			}
 		}
@@ -327,7 +273,8 @@ public class Board
 	//Updates the board array by placing the ships.
 	//direction: which direction the ships are placed.
 	//boat: which ship is being placed on the board.
-	public void setBoard(Ship boat){
+	public void setBoard(Ship boat, int[] coordCopy){
+		setCoord(coordCopy[0],coordCopy[1]);
 		int shipSize = boat.getShipSize();
 		int shipCode = boat.getShipCode();
 		for (int i = 0; i < shipSize; i++)
