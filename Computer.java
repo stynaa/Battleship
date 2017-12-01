@@ -20,10 +20,10 @@ public class Computer extends Contributor
 	 //Might have it as an int and have the hard-medium-easy click it for a number
 	 //Will then have additional parameters for the if-statement in the logic
 	 //public boolean stupidAI = false;
-	public int aiDiff = 3;
-	static final int easy = 1;
-	static final int medium = 2;
-	static final int hard = 3;
+	// public int aiDiff = 3;
+	// static final int easy = 1;
+	// static final int medium = 2;
+	// static final int hard = 3;
 	Random rand = new Random();
 	
 	/*
@@ -36,7 +36,6 @@ public class Computer extends Contributor
 	public int y = 0;
 	static final int weighted = 0;
 	static final int chooseDirection = -10;
-	static final int shotRAND = -100;
 	static final int shotNorth = -2;
 	static final int shotEast = -3;
 	static final int shotWest = -4;
@@ -76,9 +75,100 @@ public class Computer extends Contributor
 	 * The second block are the shot selection protocols. 
 	 */
 	//@Override
-	public void setShot(Boolean shotHit) {
-		//System.out.println(shotHit);
-		if (!shotHit) {
+	public void setShot(Boolean shotFeedback) {
+		shotChoice(shotFeedback);
+		boolean oldMove = false;
+		int[] boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
+		while (shotStore.contains(new Point(x,y))) {
+			if (shotType == weighted) {
+		      x = boardChoice[rand.nextInt(boardChoice.length)]; //X
+		      y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
+		      oldMove = false;
+			}
+
+			else if (shotType == shotNorth) {
+				y--;
+				if (y<0) {
+					y = y + 2;
+					trueN = false;
+					trueS = true;
+					shotType = shotSouth;
+				}
+
+				else if (oldMove = true) {
+					shotType = weighted;
+ 					System.out.println("NorthOld");
+
+				}
+				oldMove = true;
+			}
+
+			else if (shotType == shotSouth) {
+				y++;
+				if (y>9) {
+					y = y - 2;
+					trueS = false;
+					trueN = true;
+					shotType = shotNorth;
+				}
+				else if (oldMove = true) {
+					shotType = weighted;
+					System.out.println("SouthOld");
+				oldMove = true;
+				}
+			}
+
+			else if (shotType == shotEast) {
+				x++;
+				if (x>9) {
+					x = x - 2;
+					trueE = false;
+					trueW = true;
+					shotType = shotWest;
+				}
+				else if (oldMove = true) {
+					shotType = weighted;
+					System.out.println("EastOld");
+				oldMove = true;
+				}
+			}
+
+			else if (shotType == shotWest) {
+				x--;
+				if (x>0) {
+					x = x + 2;
+					trueW = false;
+					trueE = true;
+					shotType = shotEast;
+				}
+				else if (oldMove = true) {
+					shotType = weighted;
+					System.out.println("WestOld");
+				oldMove = true;
+				}
+			}
+			System.out.println("WhileLoop");
+		}
+			shotStore.add(new Point(x,y));
+			shot[1] = x;
+			shot[0] = y;
+			System.out.println(x +" "+ y);
+			System.out.println(shotType);
+			System.out.println("shotFeedback: " +shotFeedback);
+			System.out.println("lastGood: " + lastGood);
+
+	}
+	public void randomShot() {
+		while (shotStore.contains(new Point(x,y))) {
+			x = rand.nextInt(10);
+			y = rand.nextInt(10);
+		}
+		shot[1] = x;
+		shot[0] = y;
+	}
+
+	private void shotChoice(Boolean shotFeedback) {
+		if (!shotFeedback) {
 			lastGood = false;
 			trueN = false;
 			trueE = false;
@@ -86,11 +176,11 @@ public class Computer extends Contributor
 			trueS = false;
 			shotType = weighted;
 		}
-		else if (shotHit && lastGood==false) {
-		    int tempDir = rand.nextInt(4);
-		    shotType = -(tempDir + 2); //Can be re-implemented as a random number from an array, current chooses between -2 and -5
-		    
-		    if (shotType == shotNorth) {
+
+		else if (shotFeedback && lastGood == false) {
+			int tempDir = rand.nextInt(4);
+			shotType = -(tempDir + 2);
+			if (shotType == shotNorth) {
 		    	trueN = true;
 		    }
 		    else if (shotType == shotEast) {
@@ -102,129 +192,41 @@ public class Computer extends Contributor
 		    else if (shotType == shotSouth) {
 		    	trueS = true;
 		    }
+		    lastGood = true;
 		}
-		else if (shotHit && lastGood==true) {
 
+		else if (shotFeedback && lastGood == true) {
+			//Shot-type should not change
+		if (trueN) {
+		    shotType = shotNorth;
+		    }
+		else if (trueS) {
+		    shotType = shotSouth;
+		    }
+		else if (trueW) {
+		    shotType = shotWest;
+		    }
+		else if (trueE) {
+		    shotType = shotEast;
+		    }
 		}
 		else {
-			shotType = weighted; //If I messed anything up
-			lastGood = true;
-			System.out.println("1st loop else- BAD");
-		}
-		
-
-		if (aiDiff == easy) {
-			x = rand.nextInt(10);
-			y = rand.nextInt(10);
-			System.out.println("easy");
-		}
-		
-		else if (shotType == weighted) {
-		      int[] boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
-		      x = boardChoice[rand.nextInt(boardChoice.length)]; //X
-		      y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
-		      System.out.println("Weighted");
-		}
-		
-		else if (shotType == shotNorth) {
-			x = getShot()[1];
-			y = getShot()[0]-1;
-			if (y<0) {
-				trueN = false;
-				System.out.println("north");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-
-		}
-		
-		else if (shotType == shotEast) {
-			x = getShot()[1]+1;
-			y = getShot()[0];
-			// x>9 must be replaced
-			if (x>9) {
-				trueE = false;
-				System.out.println("east");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-		}
-		
-		else if (shotType == shotWest) {
-			x = getShot()[1]-1;
-			y = getShot()[0];
-			if (x<0) {
-				trueW = false;
-				System.out.println("west");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-		}
-		
-		else if (shotType == shotSouth) {
-			x = getShot()[1];
-			y = getShot()[0]+1;
-			// y>9 must be replaced
-			if (y>9) {
-				trueS = false;
-				System.out.println("south");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-		}
-		
-		Point temp = new Point(x,y);
-		if (shotHistory(x,y)) {
+			lastGood = false;
 			trueN = false;
 			trueE = false;
 			trueW = false;
 			trueS = false;
-			lastGood = false;
-			System.out.println("storage");
-			shotHit = false;
 			shotType = weighted;
-			setShot(shotHit);
-			}
-		else {
-			shotStore.add(temp);
-			shot[1] = x;
-			shot[0] = y;
+			System.out.println("Else shotChoice");
 		}
+
+
 	}
 	
-	/*
-	public void setX(int set) {
-		x = set;
-	}
-	public void setY(int set) {
-		y = set;
-	}
-	*/
 	
 	public void setFeedback(boolean shipHit) {
 		feedbackHit = shipHit;
 	}
-	
-	public boolean shotHistory(int x, int y) {
-		Point temp1 = new Point(x,y);
-		boolean tempbool = false;
-		if (shotStore.contains(temp1)) {
-			trueN = false;
-			trueE = false;
-			trueW = false;
-			trueS = false;
-			tempbool = true;
-		}
-		return tempbool;
-		}
 	
 	public void setComputer(int shipCode)
 	{
