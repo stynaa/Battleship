@@ -13,11 +13,11 @@ public class Board
 	private char direction;
 	private boolean boardOK;
 	private int boardState;
-	private Ship Carrier = new Ship(5);
-	private Ship Battleship = new Ship(6);
-	private Ship Cruiser = new Ship(7);
-	private Ship Submarine = new Ship(8);
-	private Ship Destroyer = new Ship(9);
+	private Ship CARRIER = new Ship(5);
+	private Ship BATTLESHIP = new Ship(6);
+	private Ship CRUISER = new Ship(7);
+	private Ship SUBMARINE = new Ship(8);
+	private Ship DESTROYER = new Ship(9);
 	private ArrayList<Ship> shipList = new ArrayList<Ship>();
 	private  String message=" ";
 
@@ -47,11 +47,11 @@ public class Board
 	//Adds the ships to an array list.
 	public void addShipsToList()
 	{
-		shipList.add(Carrier);
-		shipList.add(Battleship);
-		shipList.add(Cruiser);
-		shipList.add(Submarine);
-		shipList.add(Destroyer);
+		shipList.add(CARRIER);
+		shipList.add(BATTLESHIP);
+		shipList.add(CRUISER);
+		shipList.add(SUBMARINE);
+		shipList.add(DESTROYER);
 	}
 
 
@@ -110,15 +110,15 @@ public class Board
 	//The actual placing of the ships
 	public void placeComputerShip()
 	{
-		setComputerShip(Carrier);
-		setComputerShip(Cruiser);
-		setComputerShip(Battleship);
-		setComputerShip(Submarine);
-		setComputerShip(Destroyer);
+		setComputerShip(CARRIER);
+		setComputerShip(CRUISER);
+		setComputerShip(BATTLESHIP);
+		setComputerShip(SUBMARINE);
+		setComputerShip(DESTROYER);
 	}
 
-	//Placing the ship onto the computer's board.
-	//Boat: which ship to place.
+	//Placing the ships onto the computer's board.
+	//Boat is which ship to place.
 	public void setComputerShip(Ship boat)
 	{
 		int shipLength = boat.getShipSize();
@@ -212,7 +212,7 @@ public class Board
 	{
 		direction=directionCopy;
 		boolean validDirection = true;
-		//Checks if the ship would go out of bounds.
+		//Checks if the ship would be placed out of bounds.
 		if (direction == 'N' || direction == 'n')
 		{
 			if ((coord[0] - shipSize) <0)
@@ -255,7 +255,7 @@ public class Board
 	//Method to handle ship placement for the GUI
 	public void placeShips(int boardTotal, int shipCode, int[] coordCopy, char directionCopy) {
 		Ship boat= getShip(shipCode);
-		setMessage("Let's place our ships!");
+		setMessage("Let's place the ships!");
 		if(checkDirection(boat.getShipSize(),directionCopy)){
 			setBoard(boat, coordCopy);
 			checkBoard(boardTotal);
@@ -343,19 +343,19 @@ public class Board
 	public Ship getShip(int shipCode){
 		Ship s= new Ship(5);
 		if(shipCode==5){
-			s = Carrier;
+			s = CARRIER;
 		}
 		else if(shipCode==6){
-			s = Battleship;
+			s = BATTLESHIP;
 		}
 		else if(shipCode==7){
-			s = Cruiser;
+			s = CRUISER;
 		}
 		else if(shipCode==8){
-			s = Submarine;
+			s = SUBMARINE;
 		}
 		else if(shipCode==9){
-			s = Destroyer;
+			s = DESTROYER;
 		}
 		return s;
 	}
