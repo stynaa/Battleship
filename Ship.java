@@ -1,4 +1,3 @@
-
 /** Ship class contains the ship specific attributes of shipSize and shipCode
 * Ship Code 5 = Carrier Ship
 * Ship Code 6 = Battleship
@@ -6,7 +5,9 @@
 * Ship Code 8 = Submarine
 * Ship Code 9 = Destroyer
 **/
+
 public class Ship {
+    
     private int shipSize;
     private int shipCode;
 
@@ -14,11 +15,11 @@ public class Ship {
     * @param shipCode the code for type of ship
     * shipCode effects the length of the ship
     **/
+    
     public Ship(int shipCode){
-        this.shipCode=shipCode;
+        this.shipCode = shipCode;
         setShipSize(shipCode);
     }
-
 
     /** accessor for the shipCode variable
     * @return shipCode the code for type of ship
@@ -31,6 +32,7 @@ public class Ship {
     * @param shipCode the code for type of ship
     **/
     public void setShipSize(int shipCode){
+        
         if (shipCode == 5){
             shipSize = 5;
         }
