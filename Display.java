@@ -5,6 +5,7 @@ package gui;
 import java.util.Scanner;
 
 public class Display {
+	
 	private int[] coord = new int[2];
 	private final static int MAXROW = 10;
 	private final static int MAXCOL = 10;
@@ -16,20 +17,20 @@ public class Display {
 	// Destroyer 2 squares- shipCode=9;
 
 	public void showPlayerBoard(int[][] board) {
-		// Show the tracking view of where the player has tried,
+		//shows the tracking view of where the player has tried,
 		//symbolizing hits and misses
 		System.out.println();
 		System.out.println("\tA \tB \tC \tD \tE \tF \tG \tH \tI \tJ");
 
-		for(int row=0 ; row < MAXROW ; row++ ){
+		for(int row = 0 ; row < MAXROW ; row++ ){
 			System.out.print((row+1)+"   ");
-			for(int column=0 ; column < MAXCOL ; column++ ){
-				if(board[row][column]==-1){
+			for(int column = 0 ; column < MAXCOL ; column++ ){
+				if(board[row][column]== -1){
 					//for off the board
 					System.out.print("\t"+"0");
-				}else if(board[row][column]==0){
+				}else if(board[row][column] == 0){
 					//not hit yet
-					if(row==9){
+					if(row == 9){
 						System.out.print("|"+"     "+"| ");
 					}
 					else{
@@ -37,11 +38,11 @@ public class Display {
 					}
 
 				}
-				else if(board[row][column]==2){
+				else if(board[row][column] == 2){
 					System.out.print(" "+"|"+"  O  "+"|");
 					//miss
 				}
-				else if(board[row][column]==3){
+				else if(board[row][column] == 3){
 					System.out.print(" "+"|"+"  X  "+"|");
 										//for if it hits the ship
 				}
@@ -55,20 +56,21 @@ public class Display {
 	}
 
 	public void showComputerBoard(int[][] board) {
-		// Show the tracking view of where the computer has tried,
+		//shows the tracking view of where the computer has tried,
 		//symbolizing hits and misses
+		
 		System.out.println();
 		System.out.println("\tA \tB \tC \tD \tE \tF \tG \tH \tI \tJ");
 
-		for(int row=0 ; row < MAXROW ; row++ ){
+		for(int row = 0 ; row < MAXROW ; row++ ){
 			System.out.print((row+1)+"   ");
-			for(int column=0 ; column < MAXCOL ; column++ ){
-				if(board[row][column]==-1){
+			for(int column = 0 ; column < MAXCOL ; column++){
+				if(board[row][column] == -1){
 					//for off the board?/not hit yet
 					System.out.print("\t"+"0");
 				}
-				else if(board[row][column]==0){
-					if(row==9){
+				else if(board[row][column] == 0){
+					if(row == 9){
 						System.out.print("|"+"     "+"| ");
 					}
 					else{
@@ -76,11 +78,11 @@ public class Display {
 					}
 
 				}
-				else if(board[row][column]==2){
+				else if(board[row][column] == 2){
 					System.out.print(" "+"|"+"  O  "+"|");
 					//for miss
 				}
-				else if(board[row][column]==3){
+				else if(board[row][column] == 3){
 					System.out.print(" "+"|"+"  X  "+"|");
 						//for if it hits the ship
 				}
