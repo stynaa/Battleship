@@ -14,6 +14,7 @@ public class Human extends Player
 
 	/**
 	 * Copy constructor, calls the copy constructor in the Player Class
+	 * @param toCopy a Human object, that will be copied.
 	 */
 	public Human(Human toCopy){
 		super(toCopy);
