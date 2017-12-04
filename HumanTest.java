@@ -18,7 +18,6 @@ public class HumanTest{
     @Test
     public void testCopyConstructor(){
           Human h = new Human();
-          h.setDirection('n');
           h.setMessage("hello");
           h.setWin(true);
           int[] hShot= {9,1};
