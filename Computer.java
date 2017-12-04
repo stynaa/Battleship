@@ -9,35 +9,27 @@ public class Computer extends Player
 	/*
 	 * The first set of booleans are used to determine shot direction and will direct the computer to fire across a line from their original shot.
 	 */
-	boolean lastGood = false; //Boolean for checking around the shot location and which direction
-	//private boolean sweepShot = false; // Boolean for checking surrounding tiles, currently unused, lack of input
+	private boolean lastGood = false; //Boolean for checking around the shot location and which direction
 	public boolean trueN = false;
 	public boolean trueS = false;
 	public boolean trueE = false;
 	public boolean trueW = false;
 	boolean feedbackHit = false;
+	private boolean oldMove;
 
-	 //Might have the button click this boolean
-	 //Might have it as an int and have the hard-medium-easy click it for a number
-	 //Will then have additional parameters for the if-statement in the logic
-	 //public boolean stupidAI = false;
 	public int aiDiff = 3;
 	static final int easy = 1;
 	static final int medium = 2;
 	static final int hard = 3;
 	Random rand = new Random();
-
-	/*
-	 *
-	 */
+	private int[] boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
 
 	public ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
 	int shotType = 0;
-	public int x = 0;
-	public int y = 0;
+	private int x = 0;
+	private int y = 0;
 	static final int weighted = 0;
 	static final int chooseDirection = -10;
-	static final int shotRAND = -100;
 	static final int shotNorth = -2;
 	static final int shotEast = -3;
 	static final int shotWest = -4;
@@ -72,14 +64,92 @@ public class Computer extends Player
 
 	/*
 	 * An overridden setShot of Player
-	 * Two if-else blocks
-	 * The first block determines the nature and shot selection method, based on if the current previous shot(s) had landed.
-	 * The second block are the shot selection protocols.
+	 * While-loop
+	 * Will adjust x and y based on boolean input
 	 */
 	//@Override
-	public void setShot(Boolean shotHit) {
-		//System.out.println(shotHit);
-		if (!shotHit) {
+	public void setShot(Boolean shotFeedback) {
+		shotChoice(shotFeedback);
+		oldMove = false;
+		while (shotStore.contains(new Point(x,y))) {
+			if (shotType == weighted) {
+		      x = boardChoice[rand.nextInt(boardChoice.length)]; //X
+		      y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
+			}
+
+			else if (shotType == shotNorth) {
+				y--;
+				if (y<0) {
+					y = y + 2;
+					trueN = false;
+					trueS = true;
+					shotType = shotSouth;
+				}
+				oldMoveCheck();
+				oldMove = true;
+			}
+
+				else if (shotType == shotSouth) {
+					y++;
+					if (y>9) {
+						y = y - 2;
+						trueS = false;
+						trueN = true;
+						shotType = shotNorth;
+				}
+				oldMoveCheck();
+				oldMove = true;
+			}
+
+			else if (shotType == shotEast) {
+				x++;
+				if (x>9) {
+					x = x - 2;
+					trueE = false;
+					trueW = true;
+					shotType = shotWest;
+				}
+				oldMoveCheck();
+				oldMove = true;
+			}
+
+			else if (shotType == shotWest) {
+				x--;
+				if (x>0) {
+					x = x + 2;
+					trueW = false;
+					trueE = true;
+					shotType = shotEast;
+				}
+				oldMoveCheck();
+				oldMove = true;
+			}
+			System.out.println("WhileLoop");
+			System.out.println("x: " + x + " y: " + y);
+
+		}
+			outofBounds();
+			shotStore.add(new Point(x,y));
+			shot[1] = x;
+			shot[0] = y;
+			oldMove = false;
+			System.out.println(x +" "+ y);
+			System.out.println(shotType);
+			System.out.println("shotFeedback: " +shotFeedback);
+			System.out.println("lastGood: " + lastGood);
+
+	}
+	public void randomShot() {
+		while (shotStore.contains(new Point(x,y))) {
+			x = rand.nextInt(10);
+			y = rand.nextInt(10);
+		}
+		shot[1] = x;
+		shot[0] = y;
+	}
+
+	private void shotChoice(Boolean shotFeedback) {
+		if (!shotFeedback) {
 			lastGood = false;
 			trueN = false;
 			trueE = false;
@@ -87,11 +157,11 @@ public class Computer extends Player
 			trueS = false;
 			shotType = weighted;
 		}
-		else if (shotHit && lastGood==false) {
-		    int tempDir = rand.nextInt(4);
-		    shotType = -(tempDir + 2); //Can be re-implemented as a random number from an array, current chooses between -2 and -5
 
-		    if (shotType == shotNorth) {
+		else if (shotFeedback && lastGood == false) {
+			int tempDir = rand.nextInt(4);
+			shotType = -(tempDir + 2);
+			if (shotType == shotNorth) {
 		    	trueN = true;
 		    }
 		    else if (shotType == shotEast) {
@@ -103,129 +173,59 @@ public class Computer extends Player
 		    else if (shotType == shotSouth) {
 		    	trueS = true;
 		    }
+		    lastGood = true;
 		}
-		else if (shotHit && lastGood==true) {
 
+		else if (shotFeedback && lastGood == true) {
+			//Shot-type should not change
+		if (trueN) {
+		    shotType = shotNorth;
+		    }
+		else if (trueS) {
+		    shotType = shotSouth;
+		    }
+		else if (trueW) {
+		    shotType = shotWest;
+		    }
+		else if (trueE) {
+		    shotType = shotEast;
+		    }
 		}
 		else {
-			shotType = weighted; //If I messed anything up
-			lastGood = true;
-			System.out.println("1st loop else- BAD");
-		}
-
-
-		if (aiDiff == easy) {
-			x = rand.nextInt(10);
-			y = rand.nextInt(10);
-			System.out.println("easy");
-		}
-
-		else if (shotType == weighted) {
-		      int[] boardChoice = new int[] {0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9};
-		      x = boardChoice[rand.nextInt(boardChoice.length)]; //X
-		      y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
-		      System.out.println("Weighted");
-		}
-
-		else if (shotType == shotNorth) {
-			x = getShot()[1];
-			y = getShot()[0]-1;
-			if (y<0) {
-				trueN = false;
-				System.out.println("north");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-
-		}
-
-		else if (shotType == shotEast) {
-			x = getShot()[1]+1;
-			y = getShot()[0];
-			// x>9 must be replaced
-			if (x>9) {
-				trueE = false;
-				System.out.println("east");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-		}
-
-		else if (shotType == shotWest) {
-			x = getShot()[1]-1;
-			y = getShot()[0];
-			if (x<0) {
-				trueW = false;
-				System.out.println("west");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-		}
-
-		else if (shotType == shotSouth) {
-			x = getShot()[1];
-			y = getShot()[0]+1;
-			// y>9 must be replaced
-			if (y>9) {
-				trueS = false;
-				System.out.println("south");
-				if (shotHistory(x,y)) {
-				shotType = weighted;
-				}
-				else { setShot(shotHit); }
-			}
-		}
-
-		Point temp = new Point(x,y);
-		if (shotHistory(x,y)) {
+			lastGood = false;
 			trueN = false;
 			trueE = false;
 			trueW = false;
 			trueS = false;
-			lastGood = false;
-			System.out.println("storage");
-			shotHit = false;
 			shotType = weighted;
-			setShot(shotHit);
-			}
-		else {
-			shotStore.add(temp);
-			shot[1] = x;
-			shot[0] = y;
+			System.out.println("Else shotChoice");
 		}
 	}
 
-	/*
-	public void setX(int set) {
-		x = set;
+	private void outofBounds() {
+		shotStore.add(new Point(x,y));
+		if (x > 9 || x < 0) {
+			x = 5;
+		}
+		if (y > 9 || y < 0) {
+			y = 5; 
+		}
+		shotType = weighted;
 	}
-	public void setY(int set) {
-		y = set;
+
+	private void oldMoveCheck() {
+		if (oldMove) {
+			shotType = weighted;
+			trueN = false;
+			trueS = false;
+			trueE = false;
+			trueW = false;
+		}
 	}
-	*/
 
 	public void setFeedback(boolean shipHit) {
 		feedbackHit = shipHit;
 	}
-
-	public boolean shotHistory(int x, int y) {
-		Point temp1 = new Point(x,y);
-		boolean tempbool = false;
-		if (shotStore.contains(temp1)) {
-			trueN = false;
-			trueE = false;
-			trueW = false;
-			trueS = false;
-			tempbool = true;
-		}
-		return tempbool;
-		}
 
 	public void setComputer(int shipCode)
 	{
@@ -259,15 +259,4 @@ public class Computer extends Player
 			System.out.println("Please only enter 1, 2, or 3.");
 			setAIText();
 		}
-	}
-
-
-	//public Computer getComputer()
-	//{
-		/*
-		 * Will return a reference of computer
-		 * This makes no sense to me
-		 */
-		//return Computer; //Desired(?) privacy leak
-	//}
-}
+	}}
