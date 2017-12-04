@@ -3,7 +3,6 @@
 //Taken from
 //https://www.cs.montana.edu/courses/spring2006/221/programs/program2.html
 
-
 import javax.swing.*;
 
 import java.awt.*;
@@ -31,9 +30,10 @@ public class InfoPanel extends JPanel {
      */
 
     public InfoPanel() {
+        
         setLayout(new FlowLayout(FlowLayout.CENTER));
         setPreferredSize(new Dimension(1000, 120));
-        guesses=new JLabel(" ");
+        guesses = new JLabel(" ");
         guesses = new JLabel("Guesses: " + numberOfGuesses);
         guesses.setForeground(Color.red);
         add(Box.createHorizontalGlue());
@@ -67,6 +67,7 @@ public class InfoPanel extends JPanel {
     public void setPlayerMessage(String s){
         playerMessage.setText(s);
     }
+    
     public void setComputerMessage(String s){
         computerMessage.setText(s);
     }
@@ -78,6 +79,7 @@ public class InfoPanel extends JPanel {
      */
 
     public void paintComponent(Graphics g) {
+        
         super.paintComponent(g);
         setBackground(Color.white);
         g.setColor(Color.black);
