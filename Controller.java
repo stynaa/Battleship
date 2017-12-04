@@ -218,11 +218,12 @@ public class Controller implements ActionListener {
 			} else if (buttonPressed.equals("SOUTH")) {
 				direction = 'S';
 				human.setDirection(direction);
-			} else if (buttonPressed.equals("WEST")) {
-				direction = 'W';
+			} //The GUI behaves backwards for East & West
+			else if (buttonPressed.equals("WEST")) {
+				direction = 'E';
 				human.setDirection(direction);
 			} else if (buttonPressed.equals("EAST")) {
-				direction = 'E';
+				direction = 'W';
 				human.setDirection(direction);
 			}
 			placePlayerShips();
