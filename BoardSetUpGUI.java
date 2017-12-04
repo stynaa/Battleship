@@ -101,18 +101,18 @@ public class BoardSetUpGUI extends JPanel {
         north.setActionCommand("NORTH");
 
         directionPanel.add(north);
-        directionPanel.add(new JLabel()); 
-
-        JButton east = new JButton("East");
-        east.addActionListener(listener);
-        east.setActionCommand("EAST");
-        directionPanel.add(east);
-        directionPanel.add(new JLabel()); 
+        directionPanel.add(new JLabel());
 
         JButton west = new JButton("West");
         west.addActionListener(listener);
         west.setActionCommand("WEST");
         directionPanel.add(west);
+        directionPanel.add(new JLabel());
+
+        JButton east = new JButton("East");
+        east.addActionListener(listener);
+        east.setActionCommand("EAST");
+        directionPanel.add(east);
 
         JButton south = new JButton("South");
         south.addActionListener(listener);
