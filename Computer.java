@@ -30,7 +30,6 @@ public class Computer extends Player
 
 	static final int easy = 1;
 	static final int medium = 2;
-	static final int hard = 3;
 	static final int weighted = 0;
 	static final int chooseDirection = -10;
 	static final int shotNorth = -2;
@@ -279,10 +278,6 @@ public class Computer extends Player
 		feedbackHit = shipHit;
 	}
 
-	public void setComputer(int shipCode)
-	{
-
-	}
 
 	public boolean getGood() {
 		return lastGood;
@@ -293,22 +288,4 @@ public class Computer extends Player
 		aiDiff = AI;
 	}
 
-	//Used only for the text version.
-	public void setAIText()
-	{
-		System.out.println("Select AI Difficulty:");
-		System.out.println("1. Easy");
-		System.out.println("2. Medium");
-		System.out.println("3. Hard");
-		Scanner kb = new Scanner(System.in);
-		int AI = kb.nextInt();
-		if (AI == 1 || AI == 2 || AI == 3)
-		{
-			setAI(AI);
-		}
-		else
-		{
-			System.out.println("Please only enter 1, 2, or 3.");
-			setAIText();
-		}
-	}}
+}

@@ -73,7 +73,7 @@ public class GamePlay {
 	public Computer setComputer(){
 		Computer c = new Computer();
 		c.getBoard().placeComputerShip();
-		c.setAIText();
+		c.setAI(getInputForAI());
 		return c;
 	}
 
@@ -96,6 +96,26 @@ public class GamePlay {
 		}
 		return shot;
 	}
+
+
+	public int getInputForAI(){
+		System.out.println("Select AI Difficulty:");
+		System.out.println("1. Easy");
+		System.out.println("2. Harder");
+		Scanner kb = new Scanner(System.in);
+		int AI = kb.nextInt();
+		if (AI == 1 || AI == 2 )
+		{
+			return AI;
+		}
+		else
+		{
+			System.out.println("Please only enter 1 or 2.");
+			getInputForAI();
+		}
+		return AI;
+	}
+
 
 	//Converts the letters for row of ship placement into int.
 	public int Char2Int(char row){
