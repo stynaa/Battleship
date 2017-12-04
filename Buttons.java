@@ -15,28 +15,31 @@ import javax.imageio.*;
 
 
 public class Buttons extends  JPanel{
+    
     public static int MAXROW = 10;
     public static int MAXCOL = 10;
     private JButton[][] button = new JButton[MAXROW][MAXCOL];
-    public JPanel contributorGrid= new JPanel();
+    public JPanel contributorGrid = new JPanel();
     public ImageIcon fire = new ImageIcon(getFire()); //initialized as an instance variable to increase application speed
     public ImageIcon water = new ImageIcon(getWater());//initialized as an instance variable to increase application speed
 
     //board value constants
-    public static final int EMPTY=0;
-    public static final int HIT=3;
-    public static final int MISS=2;
-    public static final int CARRIER=5;
-    public static final int BATTLESHIP=6;
-    public static final int CRUISER=7;
-    public static final int SUBMARINE=8;
-    public static final int DESTROYER=9;
+    public static final int EMPTY = 0;
+    public static final int HIT = 3;
+    public static final int MISS = 2;
+    public static final int CARRIER = 5;
+    public static final int BATTLESHIP = 6;
+    public static final int CRUISER = 7;
+    public static final int SUBMARINE = 8;
+    public static final int DESTROYER = 9;
 
 
 
     public Buttons(Player aPlayer, ActionListener listener) {
+        
         contributorGrid.setVisible(true);
         contributorGrid.setLayout(new GridLayout(MAXROW,MAXCOL));
+        
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
                 button[r][c] = new JButton();
@@ -52,11 +55,12 @@ public class Buttons extends  JPanel{
         add(contributorGrid);
     }
 
-    //method to grab the water background from an image file.
-    // IO Exception is handled through creation of a new image that is red
-    //If the new image creation fails a stack trace is printed to the console.
+    //method to grab the water background from an image file
+    //IO Exception is handled through creation of a new image that is red
+    //If the new image creation fails a stack trace is printed to the console
         public Image getFire() {
-        BufferedImage fireImage= null;
+        BufferedImage fireImage = null;
+            
         try {
             fireImage = ImageIO.read(new File("lit.jpg"));
         }
@@ -82,13 +86,12 @@ public class Buttons extends  JPanel{
         return fireImage;
     }
 
-
-
     //method to grab the water background from an image file.
     //IO Exception is handled through creation of a new image that is blue
     //If the new image creation fails a stack trace is printed to the console.
     public Image getWater() {
         BufferedImage waterImage = null;
+        
         try {
             waterImage = ImageIO.read(new File("wave.jpg"));
         }
@@ -115,11 +118,10 @@ public class Buttons extends  JPanel{
         return waterImage;
     }
 
-
-
     //updates the colors of the buttons to show the user where their ships are placed
     //Also shows if the user has hit or missed during the gamePlay
     public void colorButtons(Player aPlayer)  {
+        
         for (int r = 0; r < MAXROW; r++) {
             for (int c = 0; c < MAXCOL; c++) {
                 if (aPlayer.getBoard().getBoard()[r][c] == EMPTY) { //empty
@@ -156,8 +158,8 @@ public class Buttons extends  JPanel{
     //To show the user where they have clicked while they are setting up their ships
     public void colorSingleButton(Player aPlayer, int[] coord) {
         colorButtons(aPlayer);
-        int row= coord[0];
-        int col= coord[1];
+        int row = coord[0];
+        int col = coord[1];
         button[row][col].setIcon(null);
         button[row][col].setBackground(Color.green);
             }
