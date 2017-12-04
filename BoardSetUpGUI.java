@@ -133,19 +133,14 @@ public class BoardSetUpGUI extends JPanel {
         easy.addActionListener(listener);
         easy.setActionCommand("EASY");
         easy.setSelected(true);
-        JRadioButton medium =new JRadioButton("Medium");
+        JRadioButton medium =new JRadioButton("Harder");
         medium.addActionListener(listener);
-        medium.setActionCommand("MEDIUM");
-        JRadioButton hard =new JRadioButton("Hard");
-        hard.addActionListener(listener);
-        hard.setActionCommand("HARD");
+        medium.setActionCommand("HARDER");
         group.add(easy);
         group.add(medium);
-        group.add(hard);
         difficultyPanel.add(difficultyMessage);
         difficultyPanel.add(easy);
         difficultyPanel.add(medium);
-        difficultyPanel.add(hard);
     }
 
     //mutator for the JLabel directionMsg that sits below the board.
