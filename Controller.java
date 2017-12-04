@@ -129,27 +129,29 @@ public class Controller implements ActionListener {
 		else if(buttonPressed.contains("Human") && !shipsAreSetUp){
 			int[] coord= convertButtons(buttonPressed);
 			human.setShot(coord);
-			start.getPlayerGrid().colorSingleButton(human, coord);
+			if(shipCode<10) {
+				start.getPlayerGrid().colorSingleButton(human, coord);
+			}
 		}
 		
-		else if(buttonPressed.equals("NEXT_SHIP")){
-			human.getBoard().checkBoard(boardTotal);
-			if(human.getBoard().getBoardOK()){
-				nextShipFlag=true;
-				shipCode++;
-				boardTotal = boardTotal + (shipCode * human.getBoard().getShip(shipCode).getShipSize());
-				if(shipCode>=10){
-					String s= "You have placed all of your ships!";
+		else if(buttonPressed.equals("NEXT_SHIP")) {
+			if (shipCode < 10) {
+				human.getBoard().checkBoard(boardTotal);
+				if (human.getBoard().getBoardOK()) {
+					nextShipFlag = true;
+					shipCode++;
+					boardTotal = boardTotal + (shipCode * human.getBoard().getShip(shipCode).getShipSize());
+					if (shipCode >= 10) {
+						String s = "You have placed all of your ships!";
+						start.updateDirectionMsg(s);
+					}
+				} else {
+					String s = "Place your ship first.";
 					start.updateDirectionMsg(s);
 				}
 			}
-			
-			else{
-				String s= "Place your ship first.";
-				start.updateDirectionMsg(s);
-			}}
-		
-		else if(buttonPressed.equals("EASY")||buttonPressed.equals("MEDIUM")||buttonPressed.equals("HARD")){
+		}
+		else if(buttonPressed.equals("EASY")||buttonPressed.equals("HARDER")){
 			setDifficulty(buttonPressed);
 		}
 
@@ -180,6 +182,7 @@ public class Controller implements ActionListener {
 			human.getBoard().clearBoard();
 			human.getBoard().placeComputerShip();
 			start.getPlayerGrid().colorButtons(human);
+			shipCode=10;
 
 		}
 		
@@ -208,27 +211,22 @@ public class Controller implements ActionListener {
 	//Converts the button the user presses into a direction for ship placement
 	public void setDirection(String buttonPressed){
 		char direction;
-		
-		if(buttonPressed.equals("NORTH")){
-			direction ='N';
-			human.setDirection(direction);
+		if(shipCode<10) {
+			if (buttonPressed.equals("NORTH")) {
+				direction = 'N';
+				human.setDirection(direction);
+			} else if (buttonPressed.equals("SOUTH")) {
+				direction = 'S';
+				human.setDirection(direction);
+			} else if (buttonPressed.equals("WEST")) {
+				direction = 'W';
+				human.setDirection(direction);
+			} else if (buttonPressed.equals("EAST")) {
+				direction = 'E';
+				human.setDirection(direction);
+			}
+			placePlayerShips();
 		}
-		
-		else if(buttonPressed.equals("SOUTH")){
-			direction ='S';
-			human.setDirection(direction);
-		}
-		
-		else if(buttonPressed.equals("WEST")){
-			direction ='W';
-			human.setDirection(direction);
-		}
-		
-		else if(buttonPressed.equals("EAST")){
-			direction ='E';
-			human.setDirection(direction);
-		}
-		placePlayerShips();
 	}
 
 	//Sets the difficulty for the computer
