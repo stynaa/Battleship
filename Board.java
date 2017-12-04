@@ -1,3 +1,5 @@
+//package logic;
+
 import java.util.*;
 
 public class Board
@@ -162,7 +164,7 @@ public class Board
 
 	//Checks if the space the piece is to be placed is empty.
 	public boolean checkComputerSetup(int[][] boardToCheck, int row,
-									  int col, int shipLength, int vertOrHor)
+	int col, int shipLength, int vertOrHor)
 	{
 		boolean emptySpace = true;
 		//Cycles through the array for the length of shipLength
@@ -170,14 +172,14 @@ public class Board
 		{
 			//0 = space is empty
 			if (boardToCheck[col][row] != 0)
-				emptySpace = false;
+			emptySpace = false;
 			else
-				emptySpace = true;
+			emptySpace = emptySpace && true;
 			//Alters what spaces to check, depending on ship placement.
 			if (vertOrHor == 0) //Vertical checking
-				col++;
+			col++;
 			else //Horizontal checking
-				row++;
+			row++;
 		}
 		return emptySpace;
 	}
@@ -363,4 +365,11 @@ public class Board
 	public void setMessage(String s){message=s;}
 
 	public String getMessage(){return message;}
+	
+	public static void main (String args[])
+	{
+		Board test = new Board();
+		test.placeComputerShip();
+		test.printBoard();
+	}
 }
