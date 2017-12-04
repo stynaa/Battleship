@@ -232,17 +232,13 @@ public class Controller implements ActionListener {
 	}
 
 	//Sets the difficulty for the computer
-	//Commented out body for now, hopefully works with changes - need a copy constructor in either Player or Computer
 	public void setDifficulty(String buttonPressed){
-		//        if(buttonPressed.equals("EASY")){
-		//            computer=new Easy(computer);
-		//        }
-		//        else if(buttonPressed.equals("MEDIUM")){
-		//            computer=new Medium(computer);
-		//        }
-		//        else if(buttonPressed.equals("HARD")){
-		//            computer=new Hard(computer);
-		//        }
+		        if(buttonPressed.equals("EASY")){
+		            computer.setAI(1);
+		        }
+		        else if(buttonPressed.equals("HARDER")) {
+					computer.setAI(2);
+				}
 	}
 
 	//Interacts with the human class to display the current board in the GUI and update the human's board object
