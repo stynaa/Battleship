@@ -1,6 +1,5 @@
-package control;
-
 /* For packages
+package control;
 import gui.*;
 import logic.*;
 */
