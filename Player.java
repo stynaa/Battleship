@@ -1,12 +1,13 @@
 
 public abstract class Player {
+	
 	private boolean win = false;
 	private Board b;
 	int[] shot = new int[2];
 	public static int MAXROW = 10;
 	public static int MAXCOL = 10;
 	private char direction;
-	private String message="";
+	private String message = "";
 	//maybe add another board to track the shots on the opponent's board??
 
 	public Player() {
@@ -19,7 +20,7 @@ public abstract class Player {
 	}
 
 	public int[] getShot() {
-		//not pass by reference
+		//not passed by reference
 		int[] copyShot = new int[2];
 		copyShot[0] = shot[0];
 		copyShot[1] = shot[1];
@@ -33,18 +34,20 @@ public abstract class Player {
 	}
 
 	public boolean HitOrMiss() {
+		
 		//Takes in computers move and see if hits player's game pieces
 		//uses coord from p1 and computer's board
 		//checks if p1 coords hit computer's board
 		//alters computer's board accordingly
+
 		int[] oppShot=getShot();
 
 		boolean oppHit = false;
 		if (b.getBoard()[oppShot[0]][oppShot[1]] == 1) {
-
+			
 			b.getBoard()[oppShot[0]][oppShot[1]] = 3;
 			oppHit = true;
-
+			
 			//hitCounter();
 
 		} else {
@@ -56,7 +59,9 @@ public abstract class Player {
 	}
 
 	public boolean HitOrMiss(int[] shot, Player b){
+		
 		boolean oppHit = false;
+		
 		if (b.getBoard().getBoard()[shot[0]][shot[1]] == 5||b.getBoard().getBoard()[shot[0]][shot[1]] == 6||
 				b.getBoard().getBoard()[shot[0]][shot[1]] == 7||b.getBoard().getBoard()[shot[0]][shot[1]] == 8||
 				b.getBoard().getBoard()[shot[0]][shot[1]] == 9) {
@@ -76,9 +81,11 @@ public abstract class Player {
 	}
 
 	public boolean lossCheck() {
+		
 		boolean oppwin = true;
 		int[][] gameBoard = b.getBoard();
 		//System.out.println("CHECKING!!!!!");
+		
 		for (int j = 0; j < MAXCOL; j++) {
 			for (int i = 0; i < MAXROW; i++)
 			{
