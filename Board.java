@@ -227,12 +227,13 @@ public class Board
 		}
 		else if (direction == 'E' || direction == 'e')
 		{
-			if ((coord[1] - shipSize) <0)
+			if ((coord[1] - shipSize)<0)
 				validDirection = false;
+
 		}
 		else if (direction == 'W' || direction == 'w')
 		{
-			if ((coord[1] + shipSize) >MAXCOL)
+			if ((coord[1] + shipSize)>MAXCOL)
 				validDirection = false;
 		}
 		else
