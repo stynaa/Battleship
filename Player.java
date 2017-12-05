@@ -110,6 +110,20 @@ returns false (opponent has not won) if there are still unhit ships within the p
 		return oppwin;
 	}
 
+
+	/*
+	checkShot - takes in opponent's shot and current player
+	Checks current state of current player board at the coordinate of the opponent's shot
+	Returns false if the player board at opponent's shot coordinate is equal to a hit or miss value
+	*/
+	public boolean isShotOK(int[] oppShot, Player curPlayer){
+		boolean shotOK=true;
+		if (curPlayer.getBoard().getBoard()[oppShot[0]][oppShot[1]] == 2||curPlayer.getBoard().getBoard()[oppShot[0]][oppShot[1]] == 3){
+			shotOK=false;
+		}
+		return shotOK;
+	}
+
 /*
 getWin
 returns whether or not player has won
