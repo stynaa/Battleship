@@ -86,33 +86,39 @@ public class Controller implements ActionListener {
 
 		int[] coord = convertButtons(buttonPressed);
 		human.setShot(coord);
-		boolean shipHit = computer.HitOrMiss(human.getShot(), computer);
-		computer.getBoard().setBoard(shipHit, human.getBoard(), human.getShot());
-		gui.getComputerGrid().colorButtons(computer);
-		numberOfGuesses++;
-		gui.getInfoPanel().setNumberOfGuesses(numberOfGuesses);
+		if(computer.isShotOK(human.getShot(),computer)) {
+			boolean shipHit = computer.HitOrMiss(human.getShot(), computer);
+			computer.getBoard().setBoard(shipHit, human.getBoard(), human.getShot());
+			gui.getComputerGrid().colorButtons(computer);
+			numberOfGuesses++;
+			gui.getInfoPanel().setNumberOfGuesses(numberOfGuesses);
 
-		gui.getInfoPanel().setGuesses("Guesses: " + numberOfGuesses);
+			gui.getInfoPanel().setGuesses("Guesses: " + numberOfGuesses);
 
-		gui.getInfoPanel().setPlayerMessage("Human: " + computer.getMessage());
-		if (computer.lossCheck()) {
-			updateHighScore();
-			gameEndFlag = true;
-			gui.getInfoPanel().setPlayerMessage("Human Wins!");
-			gui.getInfoPanel().setComputerMessage("");
+			gui.getInfoPanel().setPlayerMessage("Human: " + computer.getMessage());
+			if (computer.lossCheck()) {
+				updateHighScore();
+				gameEndFlag = true;
+				gui.getInfoPanel().setPlayerMessage("Human Wins!");
+				gui.getInfoPanel().setComputerMessage("");
+			}
+
+			computer.setShot(computer.feedbackHit);
+			shipHit = human.HitOrMiss(computer.getShot(), human);
+			computer.setFeedback(shipHit);
+			human.getBoard().setBoard(shipHit, computer.getBoard(), computer.getShot());
+			gui.getInfoPanel().setComputerMessage("Computer: " + human.getMessage());
+			gui.getPlayerGrid().colorButtons(human);
+
+			if (human.lossCheck()) {
+				updateHighScore();
+				gameEndFlag = true;
+				gui.getInfoPanel().setPlayerMessage("Computer Wins!");
+				gui.getInfoPanel().setComputerMessage("");
+			}
 		}
-
-		computer.setShot(computer.feedbackHit);
-		shipHit = human.HitOrMiss(computer.getShot(), human);
-		computer.setFeedback(shipHit);
-		human.getBoard().setBoard(shipHit, computer.getBoard(), computer.getShot());
-		gui.getInfoPanel().setComputerMessage("Computer: " + human.getMessage());
-		gui.getPlayerGrid().colorButtons(human);
-
-		if (human.lossCheck()) {
-			updateHighScore();
-			gameEndFlag = true;
-			gui.getInfoPanel().setPlayerMessage("Computer Wins!");
+		else{
+			gui.getInfoPanel().setPlayerMessage("Please pick a shot where you have not fired already");
 			gui.getInfoPanel().setComputerMessage("");
 		}
 	}
@@ -191,7 +197,7 @@ public class Controller implements ActionListener {
 			if (sumBoard == 112) {
 				gui = new BattleFrameGUI(human, computer, this);
 				shipsAreSetUp = true;
-				userName = start.getUserName(this);
+				userName = start.getUserName();
 				if (userName.isEmpty() || userName == null) {
 					userName = getRandomName();
 				}

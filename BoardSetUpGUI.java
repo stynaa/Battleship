@@ -143,10 +143,9 @@ public class BoardSetUpGUI extends JPanel {
         difficultyPanel.add(medium);
     }
 
-    public String getUserName(ActionListener listener){
+    public String getUserName(){
         JOptionPane getName = new JOptionPane();
-        JDialog dialog = getName.createDialog(getName, "Setting Up Your Ships.");
-        String name = getName.showInputDialog("What is your name?");
+        String name = getName.showInputDialog(getName,"What is your name?","What is your name?",JOptionPane.PLAIN_MESSAGE);
         return name;
 
     }
