@@ -32,6 +32,7 @@ public class Controller implements ActionListener {
 
 	private String filename = "BattleshipHighScores.txt";
 	private int humanNumber = 1;
+	private String userName = "";
 
 	//Constructor for the class, initializes the JFrame and starts the game
 	public Controller(){
@@ -197,6 +198,7 @@ public class Controller implements ActionListener {
 			if (sumBoard == 112) {
 				gui = new BattleFrameGUI(human, computer,this);
 				shipsAreSetUp = true;
+				userName= start.getUserName(this);
 				container.setPreferredSize(new Dimension(1000, 600));
 				container.add(gui, "PLAY");
 				cardLayout.show(container, "PLAY");
