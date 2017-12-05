@@ -10,16 +10,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Comparator;
+import java.util.Collections;
 
 //Controller class implements the model view controller design
 //Connected with both the game logic and the GUI's to run Battleship.
 public class Controller implements ActionListener {
-	
+
 	private JPanel container = new JPanel();
-	private CardLayout cardLayout= new CardLayout();
+	private CardLayout cardLayout = new CardLayout();
 	private Human human = new Human();
 	private Computer computer = new Computer();
-	private BoardSetUpGUI start = new BoardSetUpGUI(human,this); //ship placement view
+	private BoardSetUpGUI start = new BoardSetUpGUI(human, this); //ship placement view
 	private BattleFrameGUI gui; //gameplay view
 	public static int MAXROW = 10;
 	public static int MAXCOL = 10;
@@ -33,32 +37,31 @@ public class Controller implements ActionListener {
 	private String filename = "BattleshipHighScores.txt";
 	private int humanNumber = 1;
 	private String userName = "";
+	ArrayList<Score> sortedScores = new ArrayList<Score>();
 
 	//Constructor for the class, initializes the JFrame and starts the game
-	public Controller(){
-		
+	public Controller() {
+
 		JFrame frame = new JFrame("Battleship");
 		computer.getBoard().placeComputerShip();
 		frame.setLayout(new BorderLayout());
 		container.setLayout(cardLayout);
-		container.add(start,"START");
+		container.add(start, "START");
 		cardLayout.show(container, "START");
 		frame.add(container, BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
-		
+
 		readHighScore();
 
 	}
 
-	public static void main(String args[]){
-		
-		try
-		{
+	public static void main(String args[]) {
+
+		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 		}
 		new Controller();
 	}
@@ -68,24 +71,22 @@ public class Controller implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String buttonPressed = e.getActionCommand(); //initialized variable to increase readability
 		//System.out.println(buttonPressed); //for debugging
-		if(buttonPressed.contains("Computer")&& !gameEndFlag){ //for during gamePlay
+		if (buttonPressed.contains("Computer") && !gameEndFlag) { //for during gamePlay
 			gamePlayActions(buttonPressed); //for during the game play
-		}
-		else if(!gameEndFlag){
+		} else if (!gameEndFlag) {
 			startGUIActions(buttonPressed); //for during game set up
-		}
-		else {
+		} else {
 			gui.getInfoPanel().setPlayerMessage("Game Over!");
 			gui.getInfoPanel().setComputerMessage("");
 		}
 
 	}
 
-	public void gamePlayActions(String buttonPressed){
-		
+	public void gamePlayActions(String buttonPressed) {
+
 		int[] coord = convertButtons(buttonPressed);
 		human.setShot(coord);
-		boolean shipHit = computer.HitOrMiss(human.getShot(),computer);
+		boolean shipHit = computer.HitOrMiss(human.getShot(), computer);
 		computer.getBoard().setBoard(shipHit, human.getBoard(), human.getShot());
 		gui.getComputerGrid().colorButtons(computer);
 		numberOfGuesses++;
@@ -93,49 +94,44 @@ public class Controller implements ActionListener {
 
 		gui.getInfoPanel().setGuesses("Guesses: " + numberOfGuesses);
 
-		gui.getInfoPanel().setPlayerMessage("Human: "+computer.getMessage());
-		if(computer.lossCheck()){
+		gui.getInfoPanel().setPlayerMessage("Human: " + computer.getMessage());
+		if (computer.lossCheck()) {
 			updateHighScore();
-			gameEndFlag=true;
+			gameEndFlag = true;
 			gui.getInfoPanel().setPlayerMessage("Human Wins!");
 			gui.getInfoPanel().setComputerMessage("");
 		}
-		
+
 		computer.setShot(computer.feedbackHit);
 		shipHit = human.HitOrMiss(computer.getShot(), human);
 		computer.setFeedback(shipHit);
-		human.getBoard().setBoard(shipHit,computer.getBoard(),computer.getShot());
-		gui.getInfoPanel().setComputerMessage("Computer: "+ human.getMessage());
+		human.getBoard().setBoard(shipHit, computer.getBoard(), computer.getShot());
+		gui.getInfoPanel().setComputerMessage("Computer: " + human.getMessage());
 		gui.getPlayerGrid().colorButtons(human);
-		
-		if(human.lossCheck()){
+
+		if (human.lossCheck()) {
 			updateHighScore();
-			gameEndFlag=true;
+			gameEndFlag = true;
 			gui.getInfoPanel().setPlayerMessage("Computer Wins!");
 			gui.getInfoPanel().setComputerMessage("");
 		}
 	}
 
-	public void startGUIActions(String buttonPressed){
-		
-		if(buttonPressed.equals("RESET")||buttonPressed.equals("DONE")||buttonPressed.equals("AUTO_SET_SHIPS")){
+
+	public void startGUIActions(String buttonPressed) {
+
+		if (buttonPressed.equals("RESET") || buttonPressed.equals("DONE") || buttonPressed.equals("AUTO_SET_SHIPS")) {
 			useDoneResetSetShips(buttonPressed);
-		}
-		
-		else if(buttonPressed.equals("NORTH")||buttonPressed.equals("WEST")||buttonPressed.equals("EAST")||buttonPressed.equals("SOUTH")){
+		} else if (buttonPressed.equals("NORTH") || buttonPressed.equals("WEST") || buttonPressed.equals("EAST") || buttonPressed.equals("SOUTH")) {
 			setDirection(buttonPressed);
 			start.getPlayerGrid().colorButtons(human);
-		}
-		
-		else if(buttonPressed.contains("Human") && !shipsAreSetUp){
-			int[] coord= convertButtons(buttonPressed);
+		} else if (buttonPressed.contains("Human") && !shipsAreSetUp) {
+			int[] coord = convertButtons(buttonPressed);
 			human.setShot(coord);
-			if(shipCode<10) {
+			if (shipCode < 10) {
 				start.getPlayerGrid().colorSingleButton(human, coord);
 			}
-		}
-		
-		else if(buttonPressed.equals("NEXT_SHIP")) {
+		} else if (buttonPressed.equals("NEXT_SHIP")) {
 			if (shipCode < 10) {
 				human.getBoard().checkBoard(boardTotal);
 				if (human.getBoard().getBoardOK()) {
@@ -151,16 +147,15 @@ public class Controller implements ActionListener {
 					start.updateDirectionMsg(s);
 				}
 			}
-		}
-		else if(buttonPressed.equals("EASY")||buttonPressed.equals("HARDER")){
+		} else if (buttonPressed.equals("EASY") || buttonPressed.equals("HARDER")) {
 			setDifficulty(buttonPressed);
 		}
 
 	}
 
 	//converts the button the user pressed to coordinates on the board
-	public int[] convertButtons(String buttonPressed){
-		String sentenceArray[]= buttonPressed.split(" ");
+	public int[] convertButtons(String buttonPressed) {
+		String sentenceArray[] = buttonPressed.split(" ");
 		int row = Integer.parseInt(sentenceArray[1]);
 		int column = Integer.parseInt(sentenceArray[2]);
 		int[] coord = new int[2];
@@ -171,34 +166,35 @@ public class Controller implements ActionListener {
 
 
 	//Functionality for the Done & Reset buttons in the GUI, toggles movement from Game set up to Game Play view
-	public void useDoneResetSetShips(String buttonPressed){
+	public void useDoneResetSetShips(String buttonPressed) {
 
-		if(buttonPressed.equals("RESET")){
+		if (buttonPressed.equals("RESET")) {
 			human.getBoard().clearBoard();
 			shipCode = 5;
 			start.getPlayerGrid().colorButtons(human);
 		}
-		
-		if(buttonPressed.equals("AUTO_SET_SHIPS")){
+
+		if (buttonPressed.equals("AUTO_SET_SHIPS")) {
 			human.getBoard().clearBoard();
 			human.getBoard().placeComputerShip();
 			start.getPlayerGrid().colorButtons(human);
-			shipCode=10;
+			shipCode = 10;
 
-		}
-		
-		else if(buttonPressed.equals("DONE")) {
+		} else if (buttonPressed.equals("DONE")) {
 			int sumBoard = 0;
 			for (int i = 0; i < MAXROW; i++) {
 				for (int j = 0; j < MAXCOL; j++) {
 					sumBoard += human.getBoard().getBoard()[i][j];
 				}
 			}
-			
+
 			if (sumBoard == 112) {
-				gui = new BattleFrameGUI(human, computer,this);
+				gui = new BattleFrameGUI(human, computer, this);
 				shipsAreSetUp = true;
-				userName= start.getUserName(this);
+				userName = start.getUserName(this);
+				if (userName.isEmpty() || userName == null) {
+					userName = getRandomName();
+				}
 				container.setPreferredSize(new Dimension(1000, 600));
 				container.add(gui, "PLAY");
 				cardLayout.show(container, "PLAY");
@@ -211,9 +207,9 @@ public class Controller implements ActionListener {
 	}
 
 	//Converts the button the user presses into a direction for ship placement
-	public void setDirection(String buttonPressed){
+	public void setDirection(String buttonPressed) {
 		char direction;
-		if(shipCode<10) {
+		if (shipCode < 10) {
 			if (buttonPressed.equals("NORTH")) {
 				direction = 'N';
 				human.setDirection(direction);
@@ -233,85 +229,124 @@ public class Controller implements ActionListener {
 	}
 
 	//Sets the difficulty for the computer
-	public void setDifficulty(String buttonPressed){
-		        if(buttonPressed.equals("EASY")){
-		            computer.setAI(1);
-		        }
-		        else if(buttonPressed.equals("HARDER")) {
-					computer.setAI(2);
-				}
+	public void setDifficulty(String buttonPressed) {
+		if (buttonPressed.equals("EASY")) {
+			computer.setAI(1);
+		} else if (buttonPressed.equals("HARDER")) {
+			computer.setAI(2);
+		}
 	}
 
 	//Interacts with the human class to display the current board in the GUI and update the human's board object
-	public void placePlayerShips(){
-		
-		if(shipCode <= 9) {
-			if(nextShipFlag){
+	public void placePlayerShips() {
+
+		if (shipCode <= 9) {
+			if (nextShipFlag) {
 				nextShipFlag = false;
 				human.getBoard().setOldBoard(human.getBoard().getBoard());
-				human.getBoard().placeShips(boardTotal,shipCode, human.getShot(), human.getDirection());
-			}
-			
-			else if(!nextShipFlag){
+				human.getBoard().placeShips(boardTotal, shipCode, human.getShot(), human.getDirection());
+			} else if (!nextShipFlag) {
 				human.getBoard().copyBoard(human.getBoard().getOldBoard());
-				human.getBoard().placeShips(boardTotal,shipCode, human.getShot(), human.getDirection());
+				human.getBoard().placeShips(boardTotal, shipCode, human.getShot(), human.getDirection());
 			}
-			
+
 			human.getBoard().checkBoard(boardTotal);
-			if(!human.getBoard().getBoardOK()){
+			if (!human.getBoard().getBoardOK()) {
 				human.getBoard().copyBoard(human.getBoard().getOldBoard());
 			}
-			
+
 			String temp = human.getBoard().getMessage();
 			start.updateDirectionMsg(temp);
 			start.getPlayerGrid().colorButtons(human);
-		}
-		
-		else {
+		} else {
 			start.updateDirectionMsg("You have placed all of your ships.");
 		}
 	}
 
-	public void updateHighScore()
-	{
-		try 
-		{
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)));
-			writer.println("*" + humanNumber + "*");
-			writer.println("Guesses: " + numberOfGuesses);
-			writer.println("-----------");
+	public void updateHighScore() {
+
+		sortedScores.add(new Score(numberOfGuesses,userName));
+		Collections.sort(sortedScores,new ScoreComparator());
+		try {
+			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
+			for(Score score: sortedScores){
+				writer.println("*" + score.getName() + "*");
+				writer.println("Guesses: " + score.getGuesses());
+				writer.println("-----------");
+			}
+
 			writer.close();
-		} 
-		catch (IOException e) 
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void readHighScore()
-	{
-		try
-		{
+	public void readHighScore() {
+		try {
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			String line = reader.readLine();
-			while (line != null)
-			{
-				if (line.charAt(0) == '*' && line != null)
-				{
-					humanNumber = ((line.charAt(1)) - '0') + 1;
-					System.out.println("CHAR " + line.charAt(1));
-					System.out.println("HUMM " + humanNumber);
-					if (line.charAt(2) != '*')
-					{
-						humanNumber = humanNumber + (int)(line.charAt(2));
-					}
+
+			while (line != null) {
+				if (line.charAt(0) == '*' && line != null) {
+					String name = line.substring(1);
+					name = name.substring(0, name.length() - 1);
+					System.out.println("HUM " + name);
+					String guesses = reader.readLine();
+					guesses = guesses.substring(9);
+					int score = Integer.parseInt(guesses);
+					System.out.println(score);
+					Score highScore = new Score(score,name);
+					sortedScores.add(highScore);
 				}
 				line = reader.readLine();
 			}
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			humanNumber = 1;
+		}
+	}
+
+
+	public String getRandomName() {
+		String name = "";
+		for (int i = 0; i <= 5; i++) {
+			Random random = new Random();
+			char letter = (char) (random.nextInt(26) + 'a');
+			name = name + letter;
+		}
+		return name;
+	}
+
+	class Score implements Comparator<Score>{
+		private int guesses;
+		private String name;
+
+		public Score(int guesses, String name) {
+			this.guesses = guesses;
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public int getGuesses() {
+			return guesses;
+		}
+
+
+		@Override
+		public int compare(Score o1, Score o2) {
+			return o1.name.compareTo(o2.name);
+		}
+	}
+	class ScoreComparator implements Comparator<Score>{
+		public int compare(Score firstScore,Score secondScore){
+			if(firstScore.guesses==secondScore.guesses)
+				return 0;
+			else if(firstScore.guesses>secondScore.guesses)
+				return 1;
+			else
+				return -1;
 		}
 	}
 }
