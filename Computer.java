@@ -11,25 +11,33 @@ public class Computer extends Player
 	/*
 	* Direction booleans, used as switches to determine the nature and direction of the Computer's shots
 	*/
-	private boolean lastGood = false;
-	public boolean trueN = false;
-	public boolean trueS = false;
-	public boolean trueE = false;
-	public boolean trueW = false;
+	protected boolean lastGood = false;
+	protected boolean trueN = false;
+	protected boolean trueS = false;
+	protected boolean trueE = false;
+	protected boolean trueW = false;
 	private boolean oldMove;
-
 	public boolean feedbackHit = false;
-	public int aiDiff = 3;
-
+	
+	/*
+	 * Instances used within the class
+	 * An instance of random, an archaic implementation of weighted random selection, and an array for shot storage
+	 */
 	private Random rand = new Random();
 	private int[] boardChoice = new int[] {0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 8, 9};
-	private ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
-	private int shotType = 0;
-	private int x = 0;
-	private int y = 0;
+	protected ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
+	
+	/*
+	 * Integers to be used as shot storage and switches
+	 */
 
+	public int x = 0;
+	public int y = 0;
+	public int aiDiff = 3;
+	protected int shotType = 0;
 	static final int easy = 1;
 	static final int medium = 2;
+	static final int hard = 3;
 	static final int weighted = 0;
 	static final int chooseDirection = -10;
 	static final int shotNorth = -2;
@@ -264,6 +272,7 @@ public class Computer extends Player
 	 * Private method to improve readability of setShot method
 	 * Will adjust horizontal coordinate to represent a left-direction
 	 */
+	
 	private void checkWest() {
 		x--;
 		if (x>0) {
@@ -274,18 +283,49 @@ public class Computer extends Player
 		}
 	}
 
+	/*
+	 * Used in controller class to receive boolean input
+	 */
 	public void setFeedback(boolean shipHit) {
 		feedbackHit = shipHit;
 	}
 
 
+	/*
+	 * Returns the boolean of remembering the previous shot
+	 * Used for testing purposes
+	 */
 	public boolean getGood() {
 		return lastGood;
 	}
 
+	/*
+	 * Will set the difficulty of the computer through an int switch
+	 */
+	
+	//currently unused for 3 numbers, only 2 exist
+	//should probably be protected or something
 	public void setAI(int AI)
 	{
 		aiDiff = AI;
 	}
 
-}
+	//Used only for the text version.
+	public void setAIText()
+	{
+		System.out.println("Select AI Difficulty:");
+		System.out.println("1. Easy");
+		System.out.println("2. Medium");
+		System.out.println("3. Hard");
+		Scanner kb = new Scanner(System.in);
+		int AI = kb.nextInt();
+		if (AI == 1 || AI == 2 || AI == 3)
+		{
+			setAI(AI);
+		}
+		else
+		{
+			System.out.println("Please only enter 1, 2, or 3.");
+			setAIText();
+		}
+	}}
