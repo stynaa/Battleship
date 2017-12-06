@@ -40,7 +40,7 @@ public class GamePlay {
 
 	public void setPlayerShips(Human p, int shipCode, Ship boat, int boardTotal) {
 		
-		if (p.getBoard().checkDirection(shipCode, p.getDirection())) {
+		if (p.getBoard().checkDirection(shipCode, p.getDirection(),p.getShot())) {
 			p.getBoard().setBoard(boat, p.getShot());
 			p.getBoard().checkBoard(boardTotal);
 //			System.out.println(boardTotal);

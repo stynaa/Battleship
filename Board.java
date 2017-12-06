@@ -93,7 +93,7 @@ public class Board
 		return board;
 	}
 
-	
+
 	/**
 	 * Copies another board array and sets the board array to the copy's values
 	 * @param copyBoard the board array variable to be copied
@@ -269,10 +269,12 @@ public class Board
 	 * Checks that the ship is placed inside the board based on the direction
 	 * @param shipSize the size of the ship
 	 * @param directionCopy the direction to be copied
+	 * @param coordCopy the coordinate to be copied
 	 * @return validDirection boolean, returns true if the ship will be placed within the board
 	 */
-	public boolean checkDirection(int shipSize, char directionCopy)
+	public boolean checkDirection(int shipSize, char directionCopy, int[] coordCopy)
 	{
+		setCoord(coordCopy[0],coordCopy[1]);
 		direction=directionCopy;
 		boolean validDirection = true;
 		//Checks if the ship would be placed out of bounds.
@@ -336,7 +338,7 @@ public class Board
 	public void placeShips(int boardTotal, int shipCode, int[] coordCopy, char directionCopy) {
 		Ship boat= getShip(shipCode);
 		setMessage("Let's place the ships!");
-		if(checkDirection(boat.getShipSize(),directionCopy)){
+		if(checkDirection(boat.getShipSize(),directionCopy,coordCopy)){
 			setBoard(boat, coordCopy);
 			checkBoard(boardTotal);
 			if (!getBoardOK()) {
