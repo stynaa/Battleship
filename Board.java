@@ -2,26 +2,43 @@
 
 import java.util.*;
 
+/**
+ * Board object is used to represent each player's gameboard.
+ * Each board has five ships
+ * Class controls ship placement
+ */
+
 public class Board
 {
-	public final static int MAXROW = 10;
-	public final static int MAXCOL = 10;
-	private final static int MISS = 2; //Fill in
-	private final static int HIT = 3; //Fill in
-	private final static int EMPTY = 0; //Fill in
+	private final static int MAXROW = 10;
+	private final static int MAXCOL = 10;
+	private final static int MISS = 2;
+	private final static int HIT = 3;
+	private final static int EMPTY = 0;
+
 	private int[][] board = new int[MAXCOL][MAXROW];
-	private int[][] oldBoard = new int[MAXROW][MAXCOL];
-	private int[] coord = new int[2]; //0 = col, 1 = row;
+	private int[][] oldBoard = new int[MAXROW][MAXCOL]; //Retains a copy of the board before making changes
+
+	private int[] coord = new int[2]; //0 = row, 1 = col;
 	private char direction;
 	private boolean boardOK;
-	private int boardState;
+
+	//Initializes the ship objects for the board
 	private Ship CARRIER = new Ship(5);
 	private Ship BATTLESHIP = new Ship(6);
 	private Ship CRUISER = new Ship(7);
 	private Ship SUBMARINE = new Ship(8);
 	private Ship DESTROYER = new Ship(9);
 	private ArrayList<Ship> shipList = new ArrayList<Ship>();
+
+	//Used to update and pass messages to the GUI
 	private  String message=" ";
+
+
+	/**
+	 * Default Constructor
+	 * Creates the board array and initializes to empty values
+	 */
 
 	public Board()
 	{
@@ -35,7 +52,12 @@ public class Board
 		addShipsToList();
 	}
 
-	//Copies a Board's board array.
+
+	/**
+	 * Copy Constructor
+	 * Copies the values of the board object array
+	 * @param toCopy board object to be copied
+	 */
 	public Board(Board toCopy)
 	{
 		int[][] copyBoard = toCopy.getBoard();
@@ -46,7 +68,10 @@ public class Board
 
 
 
-	//Adds the ships to an array list.
+	/**
+	 * Adds the ships to an array list
+	 */
+
 	public void addShipsToList()
 	{
 		shipList.add(CARRIER);
@@ -57,24 +82,22 @@ public class Board
 	}
 
 
-	//Prints out board array to terminal.
-	public void printBoard()
-	{
-		for (int row = 0; row < MAXROW; row++)
-		{
-			for (int col = 0; col < MAXCOL; col++)
-			{
-				System.out.print(" " + board[row][col] + " ");
-			}
-			System.out.println("");
-		}
-		System.out.println("***");
-	}
+	/**
+	 * Accessor for the board array
+	 * Necessary privacy leak to allow display and mutation of the board during the game
+	 * @return board board array values
+	 */
 
 	public int[][] getBoard()
 	{
 		return board;
 	}
+
+	
+	/**
+	 * Copies another board array and sets the board array to the copy's values
+	 * @param copyBoard the board array variable to be copied
+	 */
 
 	public void copyBoard(int[][] copyBoard){
 		for (int row = 0; row < MAXROW; row++)
@@ -86,6 +109,10 @@ public class Board
 		}
 	}
 
+	/**
+	 * Sets the oldBoard array variable to the copy's values
+	 * @param copyBoard board array variable to be copied
+	 */
 	public void setOldBoard(int[][] copyBoard){
 		for (int row = 0; row < MAXROW; row++)
 		{
@@ -96,8 +123,18 @@ public class Board
 		}
 	}
 
+
+	/**
+	 * Accessor for the board array variable
+	 * @return oldBoard the board array
+	 */
 	public int[][] getOldBoard(){return oldBoard;}
 
+
+	/**
+	 * Resets the board array variables values to zero
+	 * @return board the board array variable
+	 */
 	public int[][] clearBoard(){
 		for (int row = 0; row < MAXROW; row++)
 		{
@@ -109,7 +146,11 @@ public class Board
 		return board;
 	}
 
-	//The actual placing of the ships
+
+	/**
+	 * Places ships systematically from largest to smallest
+	 * Also used in the GUI to set ships automatically for the player
+	 */
 	public void placeComputerShip()
 	{
 		setComputerShip(CARRIER);
@@ -119,8 +160,13 @@ public class Board
 		setComputerShip(DESTROYER);
 	}
 
-	//Placing the ships onto the computer's board.
-	//Boat is which ship to place.
+
+	/**
+	 * Placing the ships onto the computer's board.
+	 * Also used in the GUI to place ships automatically on the Player's board
+	 * Recursive function to ensure ships are not placed on top of each other
+	 * @param boat which ship to place
+	 */
 	public void setComputerShip(Ship boat)
 	{
 		int shipLength = boat.getShipSize();
@@ -162,7 +208,15 @@ public class Board
 	}
 
 
-	//Checks if the space the piece is to be placed is empty.
+	/**
+	 * Checks if the space is empty for the ship to be placed in
+	 * @param boardToCheck board array variable to check values against
+	 * @param row the row the ship is to be placed in
+	 * @param col the column the ship is to be placed in
+	 * @param shipLength the length of the ship being placed
+	 * @param vertOrHor whether the ship is being placed vertical or horizontally, 0 = Vertical, 1 = Horizontal
+	 * @return emptySpace boolean that returns true if the board value is empty(zero).
+	 */
 	public boolean checkComputerSetup(int[][] boardToCheck, int row,
 	int col, int shipLength, int vertOrHor)
 	{
@@ -184,8 +238,11 @@ public class Board
 		return emptySpace;
 	}
 
-	//Used to check victory conditions.
-	//BoardSum: shipcode * shiplength
+
+	/**
+	 * Used to check that the ship placement is not on top of another when the user is manually placing ships
+	 * @param currentBoardSum the sum based on ships that have been placed. shipcode * shiplength
+	 */
 	public void checkBoard(int currentBoardSum)
 	{
 		int sumBoard = 0;
@@ -197,8 +254,6 @@ public class Board
 				sumBoard += board[i][j];
 			}
 		}
-//		System.out.println(sumBoard);
-//		System.out.println(currentBoardSum);
 		if (sumBoard == currentBoardSum)
 		{
 			setBoardOK(true);
@@ -209,7 +264,13 @@ public class Board
 		}
 	}
 
-	//Checks the direction of the ship placement.
+
+	/**
+	 * Checks that the ship is placed inside the board based on the direction
+	 * @param shipSize the size of the ship
+	 * @param directionCopy the direction to be copied
+	 * @return validDirection boolean, returns true if the ship will be placed within the board
+	 */
 	public boolean checkDirection(int shipSize, char directionCopy)
 	{
 		direction=directionCopy;
@@ -247,15 +308,31 @@ public class Board
 	}
 
 
+	/**
+	 * Mutator for the boardOK instance variable (whether or not the ship placement is correct)
+	 * @param boardOKCopy boolean to be copied
+	 */
 	public void setBoardOK(boolean boardOKCopy){
 		boardOK=boardOKCopy;
 	}
+
+
+	/**
+	 * Accessor for the boardOK instance variable
+	 * @return boardOK boolean, whether or not the ship placement is correct
+	 */
 	public boolean getBoardOK(){
 		return boardOK;
 	}
 
 
-	//Method to handle ship placement for the GUI
+	/**
+	 * Method to handle ship placement in the GUI
+	 * @param boardTotal the current board array's sum
+	 * @param shipCode  the current ship being placed
+	 * @param coordCopy the position the user has selected to place the ship
+	 * @param directionCopy the direction the user has selected to place the ship
+	 */
 	public void placeShips(int boardTotal, int shipCode, int[] coordCopy, char directionCopy) {
 		Ship boat= getShip(shipCode);
 		setMessage("Let's place the ships!");
@@ -273,9 +350,13 @@ public class Board
 
 	}
 
-	//Updates the board array by placing the ships.
-	//direction: which direction the ships are placed.
-	//boat: which ship is being placed on the board.
+
+	/**
+	 * Updates the board array by placing the ships
+	 * direction - which direction the ships are being placed
+	 * @param boat which ship is currently being placed
+	 * @param coordCopy the position on the board the ship is being placed
+	 */
 	public void setBoard(Ship boat, int[] coordCopy){
 		setCoord(coordCopy[0],coordCopy[1]);
 		int shipSize = boat.getShipSize();
@@ -295,13 +376,15 @@ public class Board
 				board[coord[0]][coord[1] + i] = shipCode;
 			}
 		}
-
-
 	}
 
-	//Updates the board array to change if ship is hit or miss.
-	//shipHit: whether or not the ship was hit.
-	//gameBoard: which Board to update.
+
+	/**
+	 * Updates the board array to change if ship is hit or miss.
+	 * @param shipHit boolean (true means the ship was hit)
+	 * @param gameBoard the board array to be updated
+	 * @param coordCopy the position on the board array to update
+	 */
 	public void setBoard(boolean shipHit, Board gameBoard, int[] coordCopy)
 	{ setCoord(coordCopy[0],coordCopy[1]);
 		if (shipHit == true)
@@ -314,9 +397,11 @@ public class Board
 		}
 	}
 
-	//Converts coordinates into the board array itself
-	//gameBoard: which board to take the coordinates from.
-	//code: whether it is HIT, MISS, or EMPTY.
+
+	/**
+	 * Updates the values of the coordinates in the board array during game play
+	 * @param code whether the position value should be HIT, MISS or EMPTY
+	 */
 	public void convertCoordToPosition(int code)
 	{
 		int row = coord[0];
@@ -324,18 +409,22 @@ public class Board
 		board[row][col] = code;
 	}
 
-
-	public int[] getCoord()
-	{
-		return coord;
-	}
-
+	/**
+	 * Accessor for the shipList variable
+	 * @return shipList
+	 */
 	public ArrayList<Ship> getShipList()
 	{
 		return shipList;
 
 	}
 
+
+	/**
+	 * Mutator for the coord variable
+	 * @param row the row value
+	 * @param col the column value
+	 */
 	public void setCoord(int row, int col)
 	{
 		coord[0]=row;
@@ -343,34 +432,43 @@ public class Board
 	}
 
 
+	/**
+	 * Accessor for the ship objects based upon the shipCode
+	 * @param shipCode the value of the shipCode related to the ship
+	 * @return boat the ship object that was requested
+	 */
 	public Ship getShip(int shipCode){
-		Ship s= new Ship(5);
+		Ship boat= new Ship(5);
 		if(shipCode==5){
-			s = CARRIER;
+			boat = CARRIER;
 		}
 		else if(shipCode==6){
-			s = BATTLESHIP;
+			boat = BATTLESHIP;
 		}
 		else if(shipCode==7){
-			s = CRUISER;
+			boat = CRUISER;
 		}
 		else if(shipCode==8){
-			s = SUBMARINE;
+			boat = SUBMARINE;
 		}
 		else if(shipCode==9){
-			s = DESTROYER;
+			boat = DESTROYER;
 		}
-		return s;
+		return boat;
 	}
 
-	public void setMessage(String s){message=s;}
 
+	/**
+	 * Mutator for the message variable, used to display messages to the user in the GUI
+	 * @param messageCopy
+	 */
+	public void setMessage(String messageCopy){message=messageCopy;}
+
+
+	/**
+	 * Accessor for the message variable to display message to the user in the GUI
+	 * @return message the current value of the message variable
+	 */
 	public String getMessage(){return message;}
-	
-	public static void main (String args[])
-	{
-		Board test = new Board();
-		test.placeComputerShip();
-		test.printBoard();
-	}
+
 }
