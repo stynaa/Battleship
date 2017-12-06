@@ -41,15 +41,37 @@ public class Display {
 
 				}
 				else if(board[row][column] == 2){
-					System.out.print(" "+"|"+"  O  "+"|");
 					//miss
+
+					//to account for the extra spacing needed in the column displayed as 10
+					if(row == 9){
+						System.out.print("|"+"  0  "+"| ");
+					}
+					else{
+						System.out.print(" "+"|"+"  0  "+"|");
+					}
+
 				}
 				else if(board[row][column] == 3){
-					System.out.print(" "+"|"+"  X  "+"|");
-										//for if it hits the ship
+					//for if it hits the ship
+
+					//to account for the extra spacing needed in the column displayed as 10
+					if(row == 9){
+						System.out.print("|"+"  X  "+"| ");
+					}
+					else{
+						System.out.print(" "+"|"+"  X  "+"|");
+					}
+
 				}
 				else{
-					System.out.print(" "+"|"+"  S  "+"|");
+					//to account for the extra spacing needed in the column displayed as 10
+					if(row == 9){
+						System.out.print("|"+"  S  "+"| ");
+					}
+					else{
+						System.out.print(" "+"|"+"  S  "+"|");
+					}
 					//to show ship placement
 				}
 			}
@@ -89,17 +111,41 @@ public class Display {
 
 				}
 				else if(board[row][column] == 2){
-					System.out.print(" "+"|"+"  O  "+"|");
+					//to account for the extra spacing needed in the column displayed as 10
+					if(row == 9){
+						System.out.print("|"+"  0  "+"| ");
+					}
+					else{
+						System.out.print(" "+"|"+"  0  "+"|");
+					}
 					//for miss
 				}
 				else if(board[row][column] == 3){
-					System.out.print(" "+"|"+"  X  "+"|");
-						//for if it hits the ship
+					//for if it hits the ship
+
+					//to account for the extra spacing needed in the column displayed as 10
+					if(row == 9){
+						System.out.print("|"+"  X  "+"| ");
+					}
+					else{
+						System.out.print(" "+"|"+"  X  "+"|");
+					}
+
 				}
-//				else{
-//					System.out.print(" "+"|"+"  S  "+"|");
-//					//to show ship placement (for debugging)
-//				}
+				else{
+					//to account for the extra spacing required in the column displayed as 10
+					if(row == 9){
+						System.out.print("|"+"     "+"| ");
+					//	System.out.print("|"+"  S  "+"| ");
+
+					}
+					else{
+						System.out.print(" "+"|"+"     "+"|");
+					//	System.out.print(" "+"|"+"  S  "+"|");
+					}
+
+					//to show ship placement (for debugging)
+				}
 			}
 			System.out.println();
 		}
