@@ -7,6 +7,7 @@ public class GamePlay {
 	int MAXCOL = 10;
 	int shipSize;
 	char direction;
+	Display screen = new Display();
 
 	// Carrier  5 squares - shipCode=5;
 	// Battleship  4 squares- shipCode=6;
@@ -65,7 +66,7 @@ public class GamePlay {
 			p.setDirection(getInputForDirection());
 			setPlayerShips(p, shipCode, boat, boardTotal);
 		}
-		p.getBoard().printBoard();
+		screen.showPlayerBoard(p.getBoard().getBoard());
 	}
 
 
