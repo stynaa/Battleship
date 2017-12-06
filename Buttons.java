@@ -47,18 +47,18 @@ public class Buttons extends  JPanel{
         playerGrid.setVisible(true);
         playerGrid.setLayout(new GridLayout(MAXROW,MAXCOL));
         
-        for (int r = 0; r < MAXROW; r++) {
-            for (int c = 0; c < MAXCOL; c++) {
-                button[r][c] = new JButton();
-                button[r][c].setPreferredSize(new Dimension(48, 48));
+        for (int row = 0; row < MAXROW; row++) {
+            for (int col = 0; col < MAXCOL; col++) {
+                button[row][col] = new JButton();
+                button[row][col].setPreferredSize(new Dimension(48, 48));
 
-                button[r][c].addActionListener(listener);
-                button[r][c].setActionCommand(aPlayer.getClass().getName()+" "+Integer.toString(r)+ " "+Integer.toString(c));
+                button[row][col].addActionListener(listener);
+                button[row][col].setActionCommand(aPlayer.getClass().getName()+" "+Integer.toString(row)+ " "+Integer.toString(col));
 
-                button[r][c].setBackground(Color.blue);
-                button[r][c].setIcon(water);
+                button[row][col].setBackground(Color.blue);
+                button[row][col].setIcon(water);
 
-                playerGrid.add(button[r][c]);
+                playerGrid.add(button[row][col]);
             }
         }
         colorButtons(aPlayer);
@@ -82,17 +82,17 @@ public class Buttons extends  JPanel{
             try {
                 //Creates a red file if image cannot be found
                 fireImage = new BufferedImage(48, 48, BufferedImage.TYPE_INT_RGB);
-                File f = new File("Fire.png");
-                int r = 255;
-                int g = 0;
-                int b = 0;
-                int col = r | g | b;
+                File fire = new File("Fire.png");
+                int red = 255;
+                int green = 0;
+                int blue = 0;
+                int col = red | green | blue;
                 for (int x = 0; x < 48; x++) {
                     for (int y = 0; y < 48; y++) {
                         fireImage.setRGB(x, y, col);
                     }
                 }
-                ImageIO.write(fireImage, "PNG", f);
+                ImageIO.write(fireImage, "PNG", fire);
 
             } catch (IOException e) {
                 //Set the image to null if there is another error
@@ -120,17 +120,17 @@ public class Buttons extends  JPanel{
                 //Creates a blue file if image cannot be found
                 waterImage = new BufferedImage(45, 45, BufferedImage.TYPE_INT_RGB);
 
-                File f = new File("Water.png");
-                int r = 0;
-                int g = 0;
-                int b = 255;
-                int col = r | g | b;
+                File water = new File("Water.png");
+                int red = 0;
+                int green = 0;
+                int blue = 255;
+                int col = red | green | blue;
                 for (int x = 0; x < 45; x++) {
                     for (int y = 0; y < 45; y++) {
                         waterImage.setRGB(x, y, col);
                     }
                 }
-                ImageIO.write(waterImage, "PNG", f);
+                ImageIO.write(waterImage, "PNG", water);
 
             } catch (IOException e) {
                 //Set the image to null if there is another error
@@ -148,40 +148,40 @@ public class Buttons extends  JPanel{
      */
     public void colorButtons(Player aPlayer)  {
         
-        for (int r = 0; r < MAXROW; r++) {
-            for (int c = 0; c < MAXCOL; c++) {
-                if (aPlayer.getBoard().getBoard()[r][c] == EMPTY) { //empty
-                    button[r][c].setIcon(water);
-                    button[r][c].setBackground(Color.blue);
+        for (int row = 0; row < MAXROW; row++) {
+            for (int col = 0; col < MAXCOL; col++) {
+                if (aPlayer.getBoard().getBoard()[row][col] == EMPTY) { //empty
+                    button[row][col].setIcon(water);
+                    button[row][col].setBackground(Color.blue);
 
-                } else if (aPlayer.getBoard().getBoard()[r][c] == MISS) {
-                    button[r][c].setIcon(null);
-                    button[r][c].setBackground(Color.green);
+                } else if (aPlayer.getBoard().getBoard()[row][col] == MISS) {
+                    button[row][col].setIcon(null);
+                    button[row][col].setBackground(Color.green);
 
-                } else if (aPlayer.getBoard().getBoard()[r][c] == HIT) {
-                   button[r][c].setIcon(fire);
-                    button[r][c].setBackground(Color.red);
+                } else if (aPlayer.getBoard().getBoard()[row][col] == HIT) {
+                   button[row][col].setIcon(fire);
+                    button[row][col].setBackground(Color.red);
                 }
                 if(aPlayer.getClass().getName().equals("Human")) {
-                    if (aPlayer.getBoard().getBoard()[r][c] == CARRIER) {
-                        button[r][c].setIcon(null);
-                        button[r][c].setBackground(Color.yellow);
+                    if (aPlayer.getBoard().getBoard()[row][col] == CARRIER) {
+                        button[row][col].setIcon(null);
+                        button[row][col].setBackground(Color.yellow);
 
-                    } else if (aPlayer.getBoard().getBoard()[r][c] == BATTLESHIP) {
-                        button[r][c].setIcon(null);
-                        button[r][c].setBackground(Color.cyan);
+                    } else if (aPlayer.getBoard().getBoard()[row][col] == BATTLESHIP) {
+                        button[row][col].setIcon(null);
+                        button[row][col].setBackground(Color.cyan);
 
-                    } else if (aPlayer.getBoard().getBoard()[r][c] == CRUISER) {
-                        button[r][c].setIcon(null);
-                        button[r][c].setBackground(Color.orange);
+                    } else if (aPlayer.getBoard().getBoard()[row][col] == CRUISER) {
+                        button[row][col].setIcon(null);
+                        button[row][col].setBackground(Color.orange);
 
-                    } else if (aPlayer.getBoard().getBoard()[r][c] == SUBMARINE) {
-                        button[r][c].setIcon(null);
-                        button[r][c].setBackground(Color.pink);
+                    } else if (aPlayer.getBoard().getBoard()[row][col] == SUBMARINE) {
+                        button[row][col].setIcon(null);
+                        button[row][col].setBackground(Color.pink);
 
-                    } else if (aPlayer.getBoard().getBoard()[r][c] == DESTROYER) {
-                        button[r][c].setIcon(null);
-                        button[r][c].setBackground(Color.magenta);
+                    } else if (aPlayer.getBoard().getBoard()[row][col] == DESTROYER) {
+                        button[row][col].setIcon(null);
+                        button[row][col].setBackground(Color.magenta);
                     }
                 }
             }
