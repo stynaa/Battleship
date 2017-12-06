@@ -85,11 +85,23 @@ public class GamePlay {
 		System.out.println(" Horizontal (A-J):");
 		shot[1] = Char2Int(keyboard.next().charAt(0));
 
+		//Handles if the horizontal value is not between A-J
+		if(shot[1]==-1){
+			System.out.println("Please select a letter from A to J");
+			getInputForShot();
+		}
+
 		//Exception for if Vertical is not a number,
 		//or if Direction is not a letter.
 		try {
 			System.out.println(" Vertical (1-10):");
 			shot[0] = keyboard.nextInt() - 1;
+
+			//Handles if shot value is not within the array
+			if(shot[0]<0 ||shot[0]>9){
+				System.out.println("Please select a value from 1-10");
+				getInputForShot();
+			}
 
 		} catch (InputMismatchException e) {
 			System.out.println("Invalid input - try again.");
@@ -120,7 +132,7 @@ public class GamePlay {
 
 	//Converts the letters for row of ship placement into int.
 	public int Char2Int(char row){
-		int num = 0;
+		int num = -1;
 		
 		if (row == 'A' || row == 'a') {
 			num = 0;
@@ -182,41 +194,44 @@ public class GamePlay {
 			//gets player's move
 			p1.setWin(c1.lossCheck());
 			p1.setShot(game.getInputForShot());
-			boolean playerHit = c1.HitOrMiss(p1.getShot(),c1); //checks if hit or miss, updates c1 board and p1.win
-			
-			if (playerHit){
+			if(c1.isShotOK(p1.getShot(),c1)) {
+
+			boolean playerHit = c1.HitOrMiss(p1.getShot(), c1); //checks if hit or miss, updates c1 board and p1.win
+
+			if (playerHit) {
 				System.out.println("You hit!");
 				//c1.setWin(c1.lossCheck());
-			}
-			
-			else{
+			} else {
 				System.out.println("You missed!");
 			}
-			
+
 			//updates the computer's board based on the user's input.
-			c1.getBoard().setBoard(playerHit,p1.getBoard(),p1.getShot());
+			c1.getBoard().setBoard(playerHit, p1.getBoard(), p1.getShot());
 			c1.setWin(p1.lossCheck());
 			c1.setShot(compHit); //gets computer's move
-			compHit = p1.HitOrMiss(c1.getShot(),p1);  //checks if hit or miss, updates p1 board and c1.win
-			
-			if (compHit){
+			compHit = p1.HitOrMiss(c1.getShot(), p1);  //checks if hit or miss, updates p1 board and c1.win
+
+			if (compHit) {
 				System.out.println("Computer hit!");
 				//c1.setWin(p1.lossCheck());
-			}
-			
-			else{
+			} else {
 				System.out.println("Computer missed!");
 			}
-			
-			p1.getBoard().setBoard(compHit,c1.getBoard(),c1.getShot());
+
+			p1.getBoard().setBoard(compHit, c1.getBoard(), c1.getShot());
 			System.out.println("P1: ");
-			screen.showPlayerBoard(playerBoard.getBoard());
+			screen.showPlayerBoard(p1.getBoard().getBoard());
 			System.out.println("C1: ");
-			screen.showComputerBoard(computerBoard.getBoard());
+			screen.showComputerBoard(c1.getBoard().getBoard());
 
 			//To be extra sure: setting win conditions again.
 			p1.setWin(c1.lossCheck());
 			c1.setWin(p1.lossCheck());
+		}
+
+		else{
+			System.out.println("You have already fired there!");
+		}
 		}
 
 		//displays game result messages
