@@ -1,7 +1,6 @@
 import java.util.Random;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /*
 */
@@ -18,7 +17,7 @@ public class Computer extends Player
 	protected boolean trueW = false;
 	private boolean oldMove;
 	public boolean feedbackHit = false;
-	
+
 	/*
 	 * Instances used within the class
 	 * An instance of random, an archaic implementation of weighted random selection, and an array for shot storage
@@ -26,7 +25,7 @@ public class Computer extends Player
 	private Random rand = new Random();
 	private int[] boardChoice = new int[] {0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 8, 9};
 	protected ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
-	
+
 	/*
 	 * Integers to be used as shot storage and switches
 	 */
@@ -272,7 +271,7 @@ public class Computer extends Player
 	 * Private method to improve readability of setShot method
 	 * Will adjust horizontal coordinate to represent a left-direction
 	 */
-	
+
 	private void checkWest() {
 		x--;
 		if (x>0) {
@@ -302,7 +301,7 @@ public class Computer extends Player
 	/*
 	 * Will set the difficulty of the computer through an int switch
 	 */
-	
+
 	//currently unused for 3 numbers, only 2 exist
 	//should probably be protected or something
 	public void setAI(int AI)
@@ -310,22 +309,4 @@ public class Computer extends Player
 		aiDiff = AI;
 	}
 
-	//Used only for the text version.
-	public void setAIText()
-	{
-		System.out.println("Select AI Difficulty:");
-		System.out.println("1. Easy");
-		System.out.println("2. Medium");
-		System.out.println("3. Hard");
-		Scanner kb = new Scanner(System.in);
-		int AI = kb.nextInt();
-		if (AI == 1 || AI == 2 || AI == 3)
-		{
-			setAI(AI);
-		}
-		else
-		{
-			System.out.println("Please only enter 1, 2, or 3.");
-			setAIText();
-		}
-	}}
+}
