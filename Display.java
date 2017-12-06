@@ -2,20 +2,20 @@
 package gui;
 */
 
-import java.util.Scanner;
-
+/**
+ * Used to represent the game boards in the text based version of the game
+ */
 public class Display {
-	
-	private int[] coord = new int[2];
+
 	private final static int MAXROW = 10;
 	private final static int MAXCOL = 10;
 
-	// Carrier 5 squares - shipCode=5;
-	// Battleship 4 squares- shipCode=6;
-	// Cruiser 3 squares- shipCode=7;
-	// Submarine 3 squares- shipCode=8;
-	// Destroyer 2 squares- shipCode=9;
 
+	/**
+	 * used to display the Player's board
+	 * shows ship placement, hits and misses
+	 * @param board the board array variable
+	 */
 	public void showPlayerBoard(int[][] board) {
 		//shows the tracking view of where the player has tried,
 		//symbolizing hits and misses
@@ -28,8 +28,10 @@ public class Display {
 				if(board[row][column]== -1){
 					//for off the board
 					System.out.print("\t"+"0");
-				}else if(board[row][column] == 0){
+
 					//not hit yet
+				}else if(board[row][column] == 0){
+					//to account for the extra spacing needed in the column displayed as 10
 					if(row == 9){
 						System.out.print("|"+"     "+"| ");
 					}
@@ -55,6 +57,12 @@ public class Display {
 		}
 	}
 
+	/**
+	 * used to display the Computer's board
+	 * shows hits and misses
+	 * @param board the board array variable
+	 */
+
 	public void showComputerBoard(int[][] board) {
 		//shows the tracking view of where the computer has tried,
 		//symbolizing hits and misses
@@ -70,6 +78,8 @@ public class Display {
 					System.out.print("\t"+"0");
 				}
 				else if(board[row][column] == 0){
+
+					//to account for the extra spacing required in the column displayed as 10
 					if(row == 9){
 						System.out.print("|"+"     "+"| ");
 					}
@@ -86,10 +96,10 @@ public class Display {
 					System.out.print(" "+"|"+"  X  "+"|");
 						//for if it hits the ship
 				}
-				else{
-					System.out.print(" "+"|"+"  S  "+"|");
-					//to show ship placement
-				}
+//				else{
+//					System.out.print(" "+"|"+"  S  "+"|");
+//					//to show ship placement (for debugging)
+//				}
 			}
 			System.out.println();
 		}
