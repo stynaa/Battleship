@@ -12,13 +12,14 @@ public class Computer extends Player
 	/*
 	* Direction booleans, used as switches to determine the nature and direction of the Computer's shots
 	*/
-	protected boolean lastGood = false;
-	protected boolean trueN = false;
-	protected boolean trueS = false;
-	protected boolean trueE = false;
-	protected boolean trueW = false;
+	private boolean lastGood = false;
+	private boolean trueN = false;
+	private boolean trueS = false;
+	private boolean trueE = false;
+	private boolean trueW = false;
 	private boolean oldMove;
-	public boolean feedbackHit = false;
+
+	private boolean feedbackHit = false;
 
 	/*
 	 * Instances used within the class
@@ -26,7 +27,7 @@ public class Computer extends Player
 	 */
 	private Random rand = new Random();
 	private int[] boardChoice = new int[] {0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 8, 9};
-	protected ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
+	private ArrayList<Point> shotStore = new ArrayList<Point>(); //Storing of shots
 
 	/*
 	 * Integers to be used as shot storage and switches
@@ -34,15 +35,15 @@ public class Computer extends Player
 
 	private int x = 0;
 	private int y = 0;
-	private int aiDiff = 2;
-	protected int shotType = 0;
+	private int aiDiff = 1;
+	private int shotType = 0;
 
-	static final int weighted = 0;
+	public static final int weighted = 0;
 
-	static final int shotNorth = -2;
-	static final int shotEast = -3;
-	static final int shotWest = -4;
-	static final int shotSouth = -5;
+	public static final int shotNorth = -2;
+	public static final int shotEast = -3;
+	public static final int shotWest = -4;
+	public static final int shotSouth = -5;
 
 	/**
 	 * Default constructor, calls the default constructor in the Player Class
@@ -52,34 +53,15 @@ public class Computer extends Player
 		super();
 	}
 
-	public boolean checkComputerSetup(int[][] boardToCheck, int row,
-	int col, int shipLength, int vertOrHor)
-	{
-		boolean emptySpace = true;
-		//Cycles through the array for the length of shipLength
-		for (int sLength = 0; sLength < shipLength; sLength++)
-		{
-			//0 = space is empty
-			if (boardToCheck[col][row] != 0)
-			emptySpace = false;
-			else
-			emptySpace = emptySpace && true;
-			//Alters what spaces to check, depending on ship placement.
-			if (vertOrHor == 0) //Vertical checking
-			col++;
-			else //Horizontal checking
-			row++;
-		}
-		return emptySpace;
-	}
 
-	/*
-	* An overridden setShot of Player
-	* Represents the standard difficulty of the Computer
-	* While-loop implementation
-	* Will adjust x and y based on boolean input
-	* Contains multiple private methods for readability
-	*/
+	/**
+	 * An overridden setShot of Player
+	 * Represents the standard difficulty of the Computer
+	 * While-loop implementation
+	 * Will adjust x and y based on boolean input
+	 * Contains multiple private methods for readability
+	 * @param shotFeedback boolean representing whether or not the last shot hit.
+	 */
 	public void setShot(Boolean shotFeedback) {
 			shotChoice(shotFeedback);
 			oldMove = false;
@@ -87,25 +69,27 @@ public class Computer extends Player
 				if (shotType == weighted) {
 					x = boardChoice[rand.nextInt(boardChoice.length)]; //X
 					y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
+
 				} else if (shotType == shotNorth) {
 					checkNorth();
 					oldMoveCheck();
 					oldMove = true;
+
 				} else if (shotType == shotSouth) {
 					checkSouth();
 					oldMoveCheck();
 					oldMove = true;
+
 				} else if (shotType == shotEast) {
 					checkEast();
 					oldMoveCheck();
 					oldMove = true;
+
 				} else if (shotType == shotWest) {
 					checkWest();
 					oldMoveCheck();
 					oldMove = true;
 				}
-//				System.out.println("WhileLoop");
-//				System.out.println("x: " + x + " y: " + y);
 
 			}
 			outofBounds();
@@ -113,17 +97,14 @@ public class Computer extends Player
 			shot[1] = x;
 			shot[0] = y;
 			oldMove = false;
-//			System.out.println(x + " " + y);
-//			System.out.println(shotType);
-//			System.out.println("shotFeedback: " + shotFeedback);
-//			System.out.println("lastGood: " + lastGood);
 
 	}
 
-	/*
- * randomShot class represents an 'easy' Computer to play against
- * Coordinates will be purely pseudo-randomly
- */
+
+	/**
+	 * randomShot class represents an 'easy' Computer to play against
+	 * Coordinates will be purely pseudo-randomly
+	 */
 	public void randomShot() {
 		while (shotStore.contains(new Point(x,y))) {
 			x = rand.nextInt(10);
@@ -133,9 +114,11 @@ public class Computer extends Player
 		shot[0] = y;
 	}
 
-	/*
+
+	/**
 	 * Private method to improve readability of setShot method
 	 * Receives the input of setShot, will assign a method to obtaining the next coordinates
+	 * @param shotFeedback whether or not last shot hit
 	 */
 	private void shotChoice(Boolean shotFeedback) {
 		if (!shotFeedback) {
@@ -152,14 +135,11 @@ public class Computer extends Player
 			shotType = -(tempDir + 2);
 			if (shotType == shotNorth) {
 				trueN = true;
-			}
-			else if (shotType == shotEast) {
+			} else if (shotType == shotEast) {
 				trueE = true;
-			}
-			else if (shotType == shotWest) {
+			} else if (shotType == shotWest) {
 				trueW = true;
-			}
-			else if (shotType == shotSouth) {
+			} else if (shotType == shotSouth) {
 				trueS = true;
 			}
 			lastGood = true;
@@ -169,14 +149,11 @@ public class Computer extends Player
 			//Shot-type should not change
 			if (trueN) {
 				shotType = shotNorth;
-			}
-			else if (trueS) {
+			} else if (trueS) {
 				shotType = shotSouth;
-			}
-			else if (trueW) {
+			} else if (trueW) {
 				shotType = shotWest;
-			}
-			else if (trueE) {
+			} else if (trueE) {
 				shotType = shotEast;
 			}
 		}
@@ -187,11 +164,11 @@ public class Computer extends Player
 			trueW = false;
 			trueS = false;
 			shotType = weighted;
-//			System.out.println("Else shotChoice");
 		}
 	}
-	/*
-	 *	Private method that will catch out of bound selections in setShot
+
+	/**
+	 * Private method that will catch out of bound selections in setShot
 	 */
 	private void outofBounds() {
 		shotStore.add(new Point(x,y));
@@ -204,10 +181,10 @@ public class Computer extends Player
 		shotType = weighted;
 	}
 
-	/*
+
+	/**
 	 * Private method that will prevent infinite loops in setShot
 	 */
-
 	private void oldMoveCheck() {
 		if (oldMove) {
 			shotType = weighted;
@@ -218,7 +195,8 @@ public class Computer extends Player
 		}
 	}
 
-	/*
+
+	/**
 	 * Private method to improve readability of setShot method
 	 * Will adjust vertical coordinate to represent an up-direction
 	 */
@@ -275,11 +253,21 @@ public class Computer extends Player
 		}
 	}
 
-	/*
-	 * Used in controller class to receive boolean input
+
+	/**
+	 * Mutator for the feedbackHit variable
+	 * @param shipHit whether or not the last shot hit a ship
 	 */
 	public void setFeedback(boolean shipHit) {
 		feedbackHit = shipHit;
+	}
+
+	/**
+	 * Accessor for the feedbackHit variable
+	 * @return feedback hit
+	 */
+	public boolean isFeedbackHit() {
+		return feedbackHit;
 	}
 
 
@@ -292,18 +280,24 @@ public class Computer extends Player
 	}
 
 
-
-	/*
+	/**
 	 * Will set the difficulty of the computer through an int switch
+	 * @param AI the input from the user to adjust the AI
 	 */
 	public void setAI(int AI)
 	{
 		aiDiff = AI;
 	}
 
+
+	/**
+	 * Accessor for the variable for the difficulty level of the Computer
+	 * @return aiDiff
+	 */
 	public int getAI()
 	{
 		return aiDiff;
 	}
+
 
 }
