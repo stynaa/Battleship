@@ -248,7 +248,14 @@ public class GamePlay {
 				computer.setWin(human.lossCheck());
 
 				//gets computer's move
-				computer.setShot(compHit);
+				//Harder AI
+				if(computer.getAI()==2) {
+					computer.setShot(compHit);
+				}
+				//Easy AI
+				else{
+					computer.randomShot();
+				}
 
 				//checks if hit or miss, updates human board and computer.win
 				compHit = human.HitOrMiss(computer.getShot(), human);

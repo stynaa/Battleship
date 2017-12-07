@@ -32,15 +32,13 @@ public class Computer extends Player
 	 * Integers to be used as shot storage and switches
 	 */
 
-	public int x = 0;
-	public int y = 0;
-	public int aiDiff = 3;
+	private int x = 0;
+	private int y = 0;
+	private int aiDiff = 2;
 	protected int shotType = 0;
-	static final int easy = 1;
-	static final int medium = 2;
-	static final int hard = 3;
+
 	static final int weighted = 0;
-	static final int chooseDirection = -10;
+
 	static final int shotNorth = -2;
 	static final int shotEast = -3;
 	static final int shotWest = -4;
@@ -83,56 +81,49 @@ public class Computer extends Player
 	* Contains multiple private methods for readability
 	*/
 	public void setShot(Boolean shotFeedback) {
-		shotChoice(shotFeedback);
-		oldMove = false;
-		while (shotStore.contains(new Point(x,y))) {
-			if (shotType == weighted) {
-				x = boardChoice[rand.nextInt(boardChoice.length)]; //X
-				y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
-			}
+			shotChoice(shotFeedback);
+			oldMove = false;
+			while (shotStore.contains(new Point(x, y))) {
+				if (shotType == weighted) {
+					x = boardChoice[rand.nextInt(boardChoice.length)]; //X
+					y = boardChoice[rand.nextInt(boardChoice.length)]; //Y
+				} else if (shotType == shotNorth) {
+					checkNorth();
+					oldMoveCheck();
+					oldMove = true;
+				} else if (shotType == shotSouth) {
+					checkSouth();
+					oldMoveCheck();
+					oldMove = true;
+				} else if (shotType == shotEast) {
+					checkEast();
+					oldMoveCheck();
+					oldMove = true;
+				} else if (shotType == shotWest) {
+					checkWest();
+					oldMoveCheck();
+					oldMove = true;
+				}
+//				System.out.println("WhileLoop");
+//				System.out.println("x: " + x + " y: " + y);
 
-			else if (shotType == shotNorth) {
-				checkNorth();
-				oldMoveCheck();
-				oldMove = true;
 			}
+			outofBounds();
+			shotStore.add(new Point(x, y));
+			shot[1] = x;
+			shot[0] = y;
+			oldMove = false;
+//			System.out.println(x + " " + y);
+//			System.out.println(shotType);
+//			System.out.println("shotFeedback: " + shotFeedback);
+//			System.out.println("lastGood: " + lastGood);
 
-			else if (shotType == shotSouth) {
-				checkSouth();
-				oldMoveCheck();
-				oldMove = true;
-			}
-
-			else if (shotType == shotEast) {
-				checkEast();
-				oldMoveCheck();
-				oldMove = true;
-			}
-
-			else if (shotType == shotWest) {
-				checkWest();
-				oldMoveCheck();
-				oldMove = true;
-			}
-			System.out.println("WhileLoop");
-			System.out.println("x: " + x + " y: " + y);
-
-		}
-		outofBounds();
-		shotStore.add(new Point(x,y));
-		shot[1] = x;
-		shot[0] = y;
-		oldMove = false;
-		System.out.println(x +" "+ y);
-		System.out.println(shotType);
-		System.out.println("shotFeedback: " +shotFeedback);
-		System.out.println("lastGood: " + lastGood);
+	}
 
 	/*
-	 * randomShot class represents an 'easy' Computer to play against
-	 * Coordinates will be purely pseudo-randomly
-	 */
-	}
+ * randomShot class represents an 'easy' Computer to play against
+ * Coordinates will be purely pseudo-randomly
+ */
 	public void randomShot() {
 		while (shotStore.contains(new Point(x,y))) {
 			x = rand.nextInt(10);
@@ -196,7 +187,7 @@ public class Computer extends Player
 			trueW = false;
 			trueS = false;
 			shotType = weighted;
-			System.out.println("Else shotChoice");
+//			System.out.println("Else shotChoice");
 		}
 	}
 	/*
@@ -300,15 +291,19 @@ public class Computer extends Player
 		return lastGood;
 	}
 
+
+
 	/*
 	 * Will set the difficulty of the computer through an int switch
 	 */
-
-	//currently unused for 3 numbers, only 2 exist
-	//should probably be protected or something
 	public void setAI(int AI)
 	{
 		aiDiff = AI;
+	}
+
+	public int getAI()
+	{
+		return aiDiff;
 	}
 
 }
