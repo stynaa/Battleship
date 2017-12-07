@@ -1,3 +1,4 @@
+//package logic;
 
 public abstract class Player {
 	private boolean win = false;
