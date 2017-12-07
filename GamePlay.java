@@ -1,83 +1,98 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Controller class for the text based version of the game
+ */
 public class GamePlay {
-	
-	int MAXROW = 10;
-	int MAXCOL = 10;
-	int shipSize;
-	char direction;
-	Display screen = new Display();
 
-	// Carrier  5 squares - shipCode=5;
-	// Battleship  4 squares- shipCode=6;
-	// Cruiser  3 squares- shipCode=7;
-	// Submarine  3 squares- shipCode=8;
-	// Destroyer  2 squares- shipCode=9;
+	private char direction;
+	private Display screen = new Display();
 
+
+	/**
+	 * Runs through a loop to set up ships systematically from largest to smallest
+	 * @return human - the user's player object
+	 */
 	public Human setPlayer() {
-		
-		//gets user input to pick positions on the board
-		//checks that none of the ships overlap
-		
-		Human p = new Human();
-		int maxship = p.getBoard().getShipList().size();
+
+		Human human = new Human();
+		int maxship = human.getBoard().getShipList().size();
 		int boardTotal = 0;
 
 		for (int i = 0; i < maxship; i++) {
 			System.out.println("This is your " + (i + 1) + " boat out of " + maxship + ".");
-			Ship boat = p.getBoard().getShipList().get(i);
+			Ship boat = human.getBoard().getShipList().get(i);
 			int shipCode = boat.getShipCode();
 			int shipSize = boat.getShipSize();
 
 			boardTotal = boardTotal + (shipCode * shipSize);
-			p.setShot(getInputForShot());
-			p.setDirection(getInputForDirection());
-			setPlayerShips(p, shipCode, boat, boardTotal);
+			human.setShot(getInputForShot());
+			human.setDirection(getInputForDirection());
+			setPlayerShips(human, boat, boardTotal);
 		}
-		return p;
+		return human;
 	}
 
-	public void setPlayerShips(Human p, int shipCode, Ship boat, int boardTotal) {
-		
-		if (p.getBoard().checkDirection(shipCode, p.getDirection(),p.getShot())) {
-			p.getBoard().setBoard(boat, p.getShot());
-			p.getBoard().checkBoard(boardTotal);
-//			System.out.println(boardTotal);
-			
-			if (!p.getBoard().getBoardOK()) {
-				p.getBoard().copyBoard(p.getBoard().getOldBoard());
+	/**
+	 * Responsible for placing the ships on the player's board
+	 * Checks that no ships overlap
+	 * Checks that ships are placed within the board
+	 * @param human the user's player object
+	 * @param boat the ship currently being placed
+	 * @param boardTotal the expected current sum of the board if all of the ships are placed properly. boardTotal+=shipCode*shipSize
+	 */
+
+	public void setPlayerShips(Human human, Ship boat, int boardTotal) {
+
+		//Checks that the ship is placed within the board
+		if (human.getBoard().checkDirection(boat.getShipCode(), human.getDirection(),human.getShot())) {
+			human.getBoard().setBoard(boat, human.getShot());
+			human.getBoard().checkBoard(boardTotal);
+
+			//Checks that ships are not placed on top of each other
+			if (!human.getBoard().getBoardOK()) {
+				human.getBoard().copyBoard(human.getBoard().getOldBoard());
 				System.out.println("Please select a valid position on the board. Note that you cannot place a ship ontop of another.");
 				System.out.println();
-				p.setShot(getInputForShot());
-				p.setDirection(getInputForDirection());
-				setPlayerShips(p, shipCode, boat, boardTotal);
-			} 
-			else {
-				p.getBoard().setOldBoard(p.getBoard().getBoard());
+				human.setShot(getInputForShot());
+				human.setDirection(getInputForDirection());
+				setPlayerShips(human, boat, boardTotal);
 			}
-		} 
-		
+			else {
+				//resets board to before the current ship was placed
+				human.getBoard().setOldBoard(human.getBoard().getBoard());
+			}
+		}
+
 		else {
 			System.out.println("Direction is out of bounds.");
 			System.out.println("Please select again.");
-			p.getBoard().copyBoard(p.getBoard().getOldBoard());
-			p.setShot(getInputForShot());
-			p.setDirection(getInputForDirection());
-			setPlayerShips(p, shipCode, boat, boardTotal);
+			human.getBoard().copyBoard(human.getBoard().getOldBoard());
+			human.setShot(getInputForShot());
+			human.setDirection(getInputForDirection());
+			setPlayerShips(human, boat, boardTotal);
 		}
-		screen.showPlayerBoard(p.getBoard().getBoard());
+		screen.showPlayerBoard(human.getBoard().getBoard());
 	}
 
-
-	//Creates Computer's board and sets up AI.
+	/**
+	 * Creates Computer object, sets the computer's ship and sets the AI difficulty level.
+	 * @return computer the computer's object
+	 */
 	public Computer setComputer(){
-		Computer c = new Computer();
-		c.getBoard().placeComputerShip();
-		c.setAI(getInputForAI());
-		return c;
+		Computer computer = new Computer();
+		computer.getBoard().placeComputerShip();
+		computer.setAI(getInputForAI());
+		return computer;
 	}
 
+
+	/**
+	 * Used to get input from the user for ship placement and shot firing
+	 * Recursive if shot is not within the range of the board or the input type is incorrect
+	 * @return shot - two element array with {row,column} of the coordinates
+	 */
 	public int[] getInputForShot(){
 		int[] shot = new int[2];
 		System.out.println("Enter your coordinates...");
@@ -111,6 +126,10 @@ public class GamePlay {
 	}
 
 
+	/**
+	 * Gets input from the user for selecting the difficulty of their computer opponnent
+	 * @return AI an integer representing either Easy or Harder
+	 */
 	public int getInputForAI(){
 		System.out.println("Select AI Difficulty:");
 		System.out.println("1. Easy");
@@ -129,11 +148,14 @@ public class GamePlay {
 		return AI;
 	}
 
-
-	//Converts the letters for row of ship placement into int.
+	/**
+	 * Converts the letters for row of ship placement into int.
+	 * @param row the character the user entered for the row
+	 * @return num an integer representing the row of the coordinate in the array
+	 */
 	public int Char2Int(char row){
 		int num = -1;
-		
+
 		if (row == 'A' || row == 'a') {
 			num = 0;
 		} else if (row == 'B' || row == 'b') {
@@ -158,8 +180,12 @@ public class GamePlay {
 		return num;
 	}
 
+	/**
+	 * Gets input from the user for direction of their ship placement
+	 * @return direction - char to represent either north, south, east or west
+	 */
 	public char getInputForDirection(){ ;
-					   
+
 		try {
 			Scanner keyboard = new Scanner(System.in);
 			System.out.println(" Direction of ship (N,S,E,W):");
@@ -173,81 +199,87 @@ public class GamePlay {
 		return direction;
 	}
 
+
+	/**
+	 * Main method, runs the text based version of the Battleship game
+	 * @param args
+	 */
 	public static void main(String args[]) {
-		
+
 		GamePlay game = new GamePlay();
 		Display screen = new Display();
 
 		//sets up Human's board
-		Human p1 = game.setPlayer();
-		Board playerBoard = p1.getBoard();
+		Human human = game.setPlayer();
+		Board playerBoard = human.getBoard();
 		screen.showPlayerBoard(playerBoard.getBoard());
 
 		//sets up Computer's board
-		Computer c1 = game.setComputer();
-		Board computerBoard = c1.getBoard();
+		Computer computer = game.setComputer();
+		Board computerBoard = computer.getBoard();
 		screen.showComputerBoard(computerBoard.getBoard());
 		boolean compHit = false;
 
-		while (!p1.getWin() && !c1.getWin())
+		while (!human.getWin() && !computer.getWin())
 		{
 			//gets player's move
-			p1.setWin(c1.lossCheck());
-			p1.setShot(game.getInputForShot());
-			if(c1.isShotOK(p1.getShot(),c1)) {
+			human.setWin(computer.lossCheck());
+			human.setShot(game.getInputForShot());
 
-			boolean playerHit = c1.HitOrMiss(p1.getShot(), c1); //checks if hit or miss, updates c1 board and p1.win
+			//Checks that the shot location  has not already been used
+			if(computer.isShotOK(human.getShot(),computer)) {
 
-			if (playerHit) {
-				System.out.println("You hit!");
-				//c1.setWin(c1.lossCheck());
-			} else {
-				System.out.println("You missed!");
+				//checks if hit or miss, updates computer board and human.win
+				boolean playerHit = computer.HitOrMiss(human.getShot(), computer);
+				if (playerHit) {
+					System.out.println("You hit!");
+				} else {
+					System.out.println("You missed!");
+				}
+
+				//updates the computer's board based on the user's input.
+				computer.getBoard().setBoard(playerHit, human.getBoard(), human.getShot());
+				computer.setWin(human.lossCheck());
+
+				//gets computer's move
+				computer.setShot(compHit);
+
+				//checks if hit or miss, updates human board and computer.win
+				compHit = human.HitOrMiss(computer.getShot(), human);
+				if (compHit) {
+					System.out.println("Computer hit!");
+				} else {
+					System.out.println("Computer missed!");
+				}
+
+				//Displays the game progress
+				human.getBoard().setBoard(compHit, computer.getBoard(), computer.getShot());
+				System.out.println("P1: ");
+				screen.showPlayerBoard(human.getBoard().getBoard());
+				System.out.println("C1: ");
+				screen.showComputerBoard(computer.getBoard().getBoard());
+
+				//Reviews if either player has met the winning conditions
+				human.setWin(computer.lossCheck());
+				computer.setWin(human.lossCheck());
 			}
 
-			//updates the computer's board based on the user's input.
-			c1.getBoard().setBoard(playerHit, p1.getBoard(), p1.getShot());
-			c1.setWin(p1.lossCheck());
-			c1.setShot(compHit); //gets computer's move
-			compHit = p1.HitOrMiss(c1.getShot(), p1);  //checks if hit or miss, updates p1 board and c1.win
-
-			if (compHit) {
-				System.out.println("Computer hit!");
-				//c1.setWin(p1.lossCheck());
-			} else {
-				System.out.println("Computer missed!");
+			else{
+				System.out.println("You have already fired there!");
 			}
-
-			p1.getBoard().setBoard(compHit, c1.getBoard(), c1.getShot());
-			System.out.println("P1: ");
-			screen.showPlayerBoard(p1.getBoard().getBoard());
-			System.out.println("C1: ");
-			screen.showComputerBoard(c1.getBoard().getBoard());
-
-			//To be extra sure: setting win conditions again.
-			p1.setWin(c1.lossCheck());
-			c1.setWin(p1.lossCheck());
-		}
-
-		else{
-			System.out.println("You have already fired there!");
-		}
 		}
 
 		//displays game result messages
-		if (p1.getWin() && !c1.getWin()) {
+		if (human.getWin() && !computer.getWin()) {
 			System.out.println("You win!");
-		} 
-		else if (!p1.getWin() && !c1.getWin()) {
+		}
+		else if (!human.getWin() && !computer.getWin()) {
 			System.out.println("Computer wins! You lose!");
-		} 
-		else if (p1.getWin() && c1.getWin()) {
+		}
+		else if (human.getWin() && computer.getWin()) {
 			System.out.println("It's a tie!");
 		}
-		else {
-			// System.out.println("BLARGH!");
-		}
-		
+
 		System.out.println("GAME OVER");
 	}
 }
