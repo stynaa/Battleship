@@ -200,12 +200,12 @@ public class Controller implements ActionListener {
 					shipCode++;
 					boardTotal = boardTotal + (shipCode * human.getBoard().getShip(shipCode).getShipSize());
 					if (shipCode >= 10) {
-						String s = "You have placed all of your ships!";
-						start.updateDirectionMsg(s);
+						String message = "You have placed all of your ships!";
+						start.updateDirectionMsg(message);
 					}
 				} else {
-					String s = "Place your ship first.";
-					start.updateDirectionMsg(s);
+					String message = "Place your ship first.";
+					start.updateDirectionMsg(message);
 				}
 			}
 
@@ -390,6 +390,7 @@ public class Controller implements ActionListener {
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
 			writer.println(" HIGH SCORES ");
 			writer.println("-----------");
+
 			//Writes each score
 			for(Score score: sortedScores){
 				writer.println("*" + score.getName() + "*");
@@ -427,7 +428,7 @@ public class Controller implements ActionListener {
 					String guesses = reader.readLine();
 					guesses = guesses.substring(9);
 					int score = Integer.parseInt(guesses);
-					//System.out.println(score); for debugging
+					//System.out.println(score); //for debugging
 
 					//Creating a score object and adding each score to the sortedScores array List
 					Score highScore = new Score(score,name);
