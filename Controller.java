@@ -151,7 +151,7 @@ public class Controller implements ActionListener {
 			}
 			//Harder mode
 			else{
-				computer.setShot(computer.feedbackHit);
+				computer.setShot(computer.isFeedbackHit());
 				shipHit = human.HitOrMiss(computer.getShot(), human);
 				computer.setFeedback(shipHit);
 			}
