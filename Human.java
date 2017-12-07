@@ -1,3 +1,5 @@
+//package logic;
+
 /**
  * Human Class to represent the user's game play
  *  Class is maintained help with readability in the Controller classes
