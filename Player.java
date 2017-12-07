@@ -9,9 +9,9 @@ public abstract class Player {
 	private Board board;
 	private int[] shot = new int[2];
 
-	public static int MAXROW = 10;
-	public static int MAXCOL = 10;
-	
+	public static final int MAXROW = 10;
+	public static final int MAXCOL = 10;
+
 	private char direction;
 	private String message="";
 
