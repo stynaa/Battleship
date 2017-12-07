@@ -1,5 +1,9 @@
 //package logic;
 
+/**
+ * Player class is the abstract parent of Computer & Human
+ * Manages the repeated information between the two classes
+ */
 public abstract class Player {
 	private boolean win = false;
 	private Board board;
@@ -9,27 +13,31 @@ public abstract class Player {
 	private char direction;
 	private String message="";
 
-	/*
-	Player Constructor - nothing taken in
-	creates a new board
-	*/
+
+	/**
+	 * Default Player Constructor
+	 * Creates a new board object
+	 */
 	public Player() {
 		board = new Board();
 	}
 
-	/*
-	Player Constructor - takes in a Player
-	saves board and shot from the player to copy
-	*/
+
+	/**
+	 * Copy Player Constructor
+	 * @param toCopy the player object that is to be copied
+	 * saves board and shot from the player to copy
+	 */
 	public Player(Player toCopy){
 		board = new Board(toCopy.getBoard());
 		setShot(toCopy.getShot());
 	}
 
-	/*
-	getShot
-	returns the shot currently saved in player class
-	*/
+
+	/**
+	 * Accessor for the shot variable
+	 * @return shotCopy the shot currently saved in the Player Class
+	 */
 	public int[] getShot() {
 		int[] shotCopy = new int[2];
 		shotCopy[0] = shot[0];
@@ -37,44 +45,25 @@ public abstract class Player {
 		return shotCopy;
 	}
 
-	/*
-	setShot
-	takes in a shot coordinate and saves it as player's shot
-	*/
+
+	/**
+	 * Mutator for the Player's shot variable
+	 * @param shotCoordinate copies the coordinates to the Player's shot variable
+	 */
 	public void setShot(int[] shotCoordinate) {
 		shot[0] = shotCoordinate[0];
 		shot[1] = shotCoordinate[1];
 	}
 
-	/*
-	HitOrMiss - nothing taken in
-	Gets the opponent's shot (saved in shot)
-	Checks current state of player board at the coordinate of the opponent's shot
-	Returns true if the player board at opponent's shot coordinate is equal to a ship value
-	alters player's board accordingly to record that the ship has been shot
-	*/
-	public boolean HitOrMiss() {
-		int[] oppShot=getShot();
 
-		boolean oppHit = false;
-		if (board.getBoard()[oppShot[0]][oppShot[1]] == 1) {
-
-			board.getBoard()[oppShot[0]][oppShot[1]] = 3;
-			oppHit = true;
-
-		} else {
-			board.getBoard()[oppShot[0]][oppShot[1]] = 2;
-			oppHit = false;
-		}
-		return oppHit;
-	}
-
-	/*
-	HitOrMiss - takes in opponent's shot and current player
-	Checks current state of current player board at the coordinate of the opponent's shot
-	Returns true if the player board at opponent's shot coordinate is equal to a ship value
-	sets the message according to the result
-	*/
+	/**
+	 * Checks current state of current player board at the coordinate of the opponent's shot
+	 * Returns true if the player board at opponent's shot coordinate is equal to a ship value
+	 * sets the message according to the result
+	 * @param oppShot the shot that the opponent has selected
+	 * @param curPlayer the player whose board is being fired at
+	 * @return oppHit whether or not the opponent hit the Player's ship
+	 */
 	public boolean HitOrMiss(int[] oppShot, Player curPlayer){
 		boolean oppHit = false;
 		if (curPlayer.getBoard().getBoard()[oppShot[0]][oppShot[1]] == 5||curPlayer.getBoard().getBoard()[oppShot[0]][oppShot[1]] == 6||
@@ -93,11 +82,12 @@ public abstract class Player {
 		return oppHit;
 	}
 
-	/*
-	lossCheck
-	checks the values inside of the player's board for remaining unhit ship values
-	returns false (opponent has not won) if there are still unhit ships within the player's board
-	*/
+
+	/**
+	 * checks the values inside of the player's board for remaining unhit ship values
+	 * returns false (opponent has not won) if there are still unhit ships within the player's board
+	 * @return oppwin  whether or not the opponent has won the game
+	 */
 	public boolean lossCheck() {
 		boolean oppwin = true;
 		int[][] gameBoard = board.getBoard();
@@ -114,11 +104,14 @@ public abstract class Player {
 		return oppwin;
 	}
 
-	/*
-	checkShot - takes in opponent's shot and current player
-	Checks current state of current player board at the coordinate of the opponent's shot
-	Returns false if the player board at opponent's shot coordinate is equal to a hit or miss value
-	*/
+
+	/**
+	 * Checks current state of current player board at the coordinate of the opponent's shot
+	 * Returns false if the player board at opponent's shot coordinate is equal to a hit or miss value
+	 * @param oppShot the coordinate that the opponent has selected
+	 * @param curPlayer the Player whose board is being fired at
+	 * @return shotOK whether or not the shot has been used already
+	 */
 	public boolean isShotOK(int[] oppShot, Player curPlayer){
 		boolean shotOK=true;
 		if (curPlayer.getBoard().getBoard()[oppShot[0]][oppShot[1]] == 2||curPlayer.getBoard().getBoard()[oppShot[0]][oppShot[1]] == 3){
@@ -127,58 +120,64 @@ public abstract class Player {
 		return shotOK;
 	}
 
-	/*
-	getWin
-	returns whether or not player has won
-	*/
+
+	/**
+	 * returns whether or not player has won
+	 * @return win boolean that the Player has won
+	 */
 	public boolean getWin() {
 		return win;
 	}
 
-	/*
-	setWin
-	sets the win boolean in player
-	*/
+
+	/**
+	 * sets the win boolean in player
+	 * @param result boolean whether or not the player has won
+	 */
 	public void setWin(boolean result) {
 		win = result;
 	}
 
-	/*
-	getBoard
-	returns player's board
-	*/
+
+	/**
+	 * returns player's board object
+	 * @return board object
+	 */
 	public Board getBoard() {
 		return board;
 	}
 
-	/*
-	setDirection
-	sets the direction in player for placing ships
-	*/
+
+	/**
+	 * sets the direction in player for placing ships
+	 * @param aDirection to copy and set the direction variable
+	 */
 	public void setDirection(char aDirection){
 		direction = aDirection;
 	}
 
-	/*
-	getDirection
-	returns the direction set in player for placing ships
-	*/
+
+	/**
+	 * returns the direction set in player for placing ships
+	 * @return direction
+	 */
 	public char getDirection(){
 		return direction;
 	}
 
-	/*
-	setMessage
-	sets the message in player for player status
-	*/
+	/**
+	 * sets the message in Player for during game play
+	 * @param aMessage a String to copy for the message
+	 */
 	public void setMessage(String aMessage){
 		message = aMessage;
 	}
 
-	/*
-	getMessage
-	returns the message saved in player for display
-	*/
+
+	/**
+	 * returns the message saved in player for display
+	 * @return message the player's current message variable
+	 */
 	public String getMessage(){
 		return message;
 	}
