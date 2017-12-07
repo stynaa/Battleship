@@ -1,3 +1,9 @@
+/*
+package control;
+import gui.*;
+import logic.*;
+*/
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
