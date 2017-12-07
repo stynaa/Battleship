@@ -1,3 +1,5 @@
+//package logic;
+
 import java.util.Random;
 import java.awt.Point;
 import java.util.ArrayList;
