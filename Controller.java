@@ -142,10 +142,20 @@ public class Controller implements ActionListener {
 				gui.getInfoPanel().setComputerMessage("");
 			}
 
+			System.out.println(computer.getAI());
 			//Gets the computer's move
-			computer.setShot(computer.feedbackHit);
-			shipHit = human.HitOrMiss(computer.getShot(), human);
-			computer.setFeedback(shipHit);
+			//Easy mode
+			if(computer.getAI()==1){
+				computer.setAI(1);
+				computer.randomShot();
+			}
+			//Harder mode
+			else{
+				computer.setShot(computer.feedbackHit);
+				shipHit = human.HitOrMiss(computer.getShot(), human);
+				computer.setFeedback(shipHit);
+			}
+
 
 			//Updates the human's board and displays the result of the computer's move
 			human.getBoard().setBoard(shipHit, computer.getBoard(), computer.getShot());
