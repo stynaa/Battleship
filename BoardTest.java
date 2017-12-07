@@ -2,6 +2,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+
+//javac -cp .;junit-4.12.jar;hamcrest-core-1.3.jar *.java
+//java -cp .;junit-4.12.jar;hamcrest-core-1.3.jar org.junit.runner.JUnitCore BoardTest
 public class BoardTest 
 {
 
@@ -54,17 +57,71 @@ public class BoardTest
 	public void test_convertCoordToPosition()
 	{
 		Board test = new Board();
-		int[] coordinates = new int[2];
-		coordinates[0] = 5;
-		coordinates[1] = 5;
-		test.convertCoordToPosition(coordinates, 1);
+		test.setCoord(5, 5);
+		test.convertCoordToPosition(1);
 		
 		int[][] array = test.getBoard();
 		boolean same = (array[5][5] == 1);
 		
-		assertEquals("Tried converting coordinates (6, 5) onto the board: value at (6,5) should be 1", same);
+		assertTrue("Tried converting coordinates (5, 5) onto the board: value at (5,5) should be 1", same);
+	}
+
+	@Test
+	public void test_checkComputerSetup_emptySpot()
+	{
+		Board test = new Board();
+		test.setCoord(5, 5);
+		test.convertCoordToPosition(3);
+
+		boolean isSpaceEmpty = test.checkComputerSetup(test.getBoard(), 0, 0, 2, 0);
+		
+		assertTrue("Created ship at 5, 5: space at 0,0 should be considered empty", isSpaceEmpty);
 	}
 	
+	@Test
+	public void test_checkComputerSetup_sameStartingPoint()
+	{
+		Board test = new Board();
+		test.setCoord(5, 5);
+		test.convertCoordToPosition(3);
+
+		boolean isSpaceEmpty = test.checkComputerSetup(test.getBoard(), 5, 5, 2, 0);
+		
+		assertFalse("Created ship at 5, 5: space should not be considered empty", isSpaceEmpty);
+	}
+	
+	@Test
+	public void test_checkComputerSetup_checkingCol()
+	{
+		Board test = new Board();
+		test.setCoord(5, 1);
+		test.convertCoordToPosition(3);
+		test.setCoord(5, 2);
+		test.convertCoordToPosition(3);
+		test.setCoord(5, 3);
+		test.convertCoordToPosition(3);
+		
+		boolean isSpaceEmpty = test.checkComputerSetup(test.getBoard(), 0, 5, 3, 1);
+		
+		assertFalse("Created ship at 5, 1 to 5, 3: starting at 5, 0, should not be considered empty.", isSpaceEmpty);
+	}
+	
+	@Test
+	public void test_checkComputerSetup_checkingRow()
+	{
+		Board test = new Board();
+		test.setCoord(1, 5);
+		test.convertCoordToPosition(3);
+		test.setCoord(2, 5);
+		test.convertCoordToPosition(3);
+		test.setCoord(3, 5);
+		test.convertCoordToPosition(3);
+		
+		boolean isSpaceEmpty = test.checkComputerSetup(test.getBoard(), 5, 0, 3, 0);
+		
+		assertFalse("Created ship at 1, 5 to 3, 5: starting at 0, 5, should not be considered empty.", isSpaceEmpty);
+	}
+	/*
 	@Test
 	public void test_Char2Int_lowercase()
 	{
@@ -135,6 +192,6 @@ public class BoardTest
 		assertEquals("Entered char 'H' to Char2Int", 7, resultH);
 		assertEquals("Entered char 'I' to Char2Int", 8, resultI);
 		assertEquals("Entered char 'J' to Char2Int", 9, resultJ);
-	}
+		*/
 	
 }
