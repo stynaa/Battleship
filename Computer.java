@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Computer class represents the user's opponent in the game
- * 
+ *
  * Contains two difficulty levels:
  *
  * Easy level aiDiff=1, finds a random shot and fires there
@@ -102,8 +102,10 @@ public class Computer extends Player
 			}
 			outofBounds();
 			shotStore.add(new Point(x, y));
-			shot[1] = x;
-			shot[0] = y;
+			int[] coord = {y,x};
+			setShot(coord);
+//			shot[1] = x;
+//			shot[0] = y;
 			oldMove = false;
 
 	}
@@ -118,8 +120,10 @@ public class Computer extends Player
 			x = rand.nextInt(10);
 			y = rand.nextInt(10);
 		}
-		shot[1] = x;
-		shot[0] = y;
+		int[] coord = {y,x};
+		setShot(coord);
+//		shot[1] = x;
+//		shot[0] = y;
 	}
 
 

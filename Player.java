@@ -7,9 +7,11 @@
 public abstract class Player {
 	private boolean win = false;
 	private Board board;
-	int[] shot = new int[2];
+	private int[] shot = new int[2];
+
 	public static int MAXROW = 10;
 	public static int MAXCOL = 10;
+	
 	private char direction;
 	private String message="";
 
