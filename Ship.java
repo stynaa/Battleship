@@ -1,3 +1,5 @@
+//package logic
+
 /** Ship class contains the ship specific attributes of shipSize and shipCode
 * Ship Code 5 = Carrier Ship
 * Ship Code 6 = Battleship
