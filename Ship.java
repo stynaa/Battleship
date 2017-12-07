@@ -20,6 +20,16 @@ public class Ship {
         this.shipCode = shipCode;
         setShipSize(shipCode);
     }
+    
+    /** Copy constructor for the Ship class
+    * @param toCopy: the original ship to create a copy off of.
+    * shipCode effects the length of the ship
+    **/
+    
+    public Ship(Ship toCopy){
+        this.shipCode = toCopy.getShipCode();
+        setShipSize(toCopy.getShipCode());
+    }
 
     /** accessor for the shipCode variable
     * @return shipCode the code for type of ship

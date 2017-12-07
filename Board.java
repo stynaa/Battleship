@@ -417,6 +417,12 @@ public class Board
 	 */
 	public ArrayList<Ship> getShipList()
 	{
+		ArrayList<Ship> newShipList = new ArrayList<Ship>();
+		for (int length = 0; length < shipList.size(); length++)
+		{
+			Ship copiedShip = new Ship(shipList.get(length));
+			newShipList.add(copiedShip);
+		}
 		return shipList;
 
 	}
