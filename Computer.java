@@ -4,7 +4,15 @@ import java.util.Random;
 import java.awt.Point;
 import java.util.ArrayList;
 
-/*
+/**
+ * Computer class represents the user's opponent in the game
+ * 
+ * Contains two difficulty levels:
+ *
+ * Easy level aiDiff=1, finds a random shot and fires there
+ *
+ * Harder level aiDiff=2, fires randomly until there is a hit.
+ * Then it fires around that point to find the direction that the ship lays
 */
 
 public class Computer extends Player
