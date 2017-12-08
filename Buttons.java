@@ -1,7 +1,7 @@
-/*
-package gui;
+
+package display;
 import logic.*;
-*/
+
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -83,13 +83,10 @@ public class Buttons extends  JPanel{
                 //Creates a red file if image cannot be found
                 fireImage = new BufferedImage(48, 48, BufferedImage.TYPE_INT_RGB);
                 File fire = new File("Fire.png");
-                int red = 255;
-                int green = 0;
-                int blue = 0;
-                int col = red | green | blue;
+                Color red = new Color(255, 0, 0);
                 for (int x = 0; x < 48; x++) {
                     for (int y = 0; y < 48; y++) {
-                        fireImage.setRGB(x, y, col);
+                        fireImage.setRGB(x, y, red.getRGB());
                     }
                 }
                 ImageIO.write(fireImage, "PNG", fire);
