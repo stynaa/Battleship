@@ -1,7 +1,9 @@
-/* For packages
-package control;
-import gui.*;
-import logic.*;
+/*package battleship;
+
+
+import battleship.gui.*;
+
+import battleship.logic.*;
 */
 
 import javax.swing.*;
@@ -17,8 +19,8 @@ import java.util.Collections;
 
 
 /**
- * Controller class implements the model view controller design
- * Connected with both the game logic and the GUI's to run Battleship.
+ * battleship.Controller class implements the model view controller design
+ * Connected with both the game battleship.logic and the GUI's to run Battleship.
  */
 public class Controller implements ActionListener {
 
@@ -146,7 +148,6 @@ public class Controller implements ActionListener {
 			//Gets the computer's move
 			//Easy mode
 			if(computer.getAI()==1){
-				computer.setAI(1);
 				computer.randomShot();
 			}
 			//Harder mode

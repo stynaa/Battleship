@@ -1,4 +1,5 @@
-//package logic;
+/*package battleship.logic;
+*/
 
 import java.util.Random;
 import java.awt.Point;
@@ -116,12 +117,15 @@ public class Computer extends Player
 	 * Coordinates will be purely pseudo-randomly
 	 */
 	public void randomShot() {
-		while (shotStore.contains(new Point(x,y))) {
-			x = rand.nextInt(10);
-			y = rand.nextInt(10);
-		}
+//		while (shotStore.contains(new Point(x,y))) {
+//			x = rand.nextInt(10);
+//			y = rand.nextInt(10);
+//		}
+		x= rand.nextInt(10);
+		y=rand.nextInt(10);
 		int[] coord = {y,x};
 		setShot(coord);
+//		return coord;
 //		shot[1] = x;
 //		shot[0] = y;
 	}
