@@ -1,3 +1,6 @@
+package tests;
+import logic.*;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -7,7 +10,6 @@ import org.junit.Test;
 //java -cp .;junit-4.12.jar;hamcrest-core-1.3.jar org.junit.runner.JUnitCore BoardTest
 public class BoardTest 
 {
-
 	@Test
 	public void test_defaultConstructor()
 	{
@@ -121,6 +123,63 @@ public class BoardTest
 		
 		assertFalse("Created ship at 1, 5 to 3, 5: starting at 0, 5, should not be considered empty.", isSpaceEmpty);
 	}
+	
+	@Test
+	public void test_checkDirection_invalid()
+	{
+		Board test = new Board();
+		int[] coordinate1 =  new int[2];
+		coordinate1[0] = 0;
+		coordinate1[1] = 0;
+		boolean northValid = test.checkDirection(3, 'N', coordinate1);
+		
+		coordinate1[0] = 10;
+		coordinate1[1] = 10;
+		boolean southValid = test.checkDirection(3, 'S', coordinate1);
+		
+		coordinate1[0] = 0;
+		coordinate1[1] = 0;
+		boolean eastValid = test.checkDirection(3, 'E', coordinate1);
+		
+		coordinate1[0] = 10;
+		coordinate1[1] = 10;
+		boolean westValid = test.checkDirection(3, 'W', coordinate1);
+		
+				
+		assertFalse("At 0,0, placing a ship North should be invald", northValid);
+		assertFalse("At 10,10, placing a ship South should be invald", southValid);
+		assertFalse("At 0,0, placing a ship East should be invald", eastValid);
+		assertFalse("At 10,10, placing a ship West should be invald", westValid);
+	}
+	
+	@Test
+	public void test_checkDirection_valid()
+	{
+		Board test = new Board();
+		int[] coordinate1 =  new int[2];
+		coordinate1[0] = 5;
+		coordinate1[1] = 5;
+		boolean northValid = test.checkDirection(3, 'N', coordinate1);
+		
+		coordinate1[0] = 5;
+		coordinate1[1] = 5;
+		boolean southValid = test.checkDirection(3, 'S', coordinate1);
+		
+		coordinate1[0] = 5;
+		coordinate1[1] = 5;
+		boolean eastValid = test.checkDirection(3, 'E', coordinate1);
+		
+		coordinate1[0] = 5;
+		coordinate1[1] = 5;
+		boolean westValid = test.checkDirection(3, 'W', coordinate1);
+				
+		assertTrue("At 5,5, placing a ship North should be vald", northValid);
+		assertTrue("At 5,5, placing a ship South should be vald", southValid);
+		assertTrue("At 5,5, placing a ship East should be vald", eastValid);
+		assertTrue("At 5,5, placing a ship West should be vald", westValid);
+	}
+	
+	
 	/*
 	@Test
 	public void test_Char2Int_lowercase()
