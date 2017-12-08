@@ -1,5 +1,5 @@
 
-package display;
+package gui;
 import logic.*;
 
 
